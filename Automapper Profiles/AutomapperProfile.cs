@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GameStoreWebAPI.Models.Dtos.In;
 
 namespace GameStoreWebAPI.Models
 {
