@@ -1,4 +1,4 @@
-﻿namespace GameStoreWebAPI.Models.In
+﻿namespace GameStoreWebAPI.Models.Dtos.In
 {
     public class GenreForCreationDto
     {
