@@ -1,5 +1,6 @@
 using GameStoreWebAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +12,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-builder.Services.AddDbContext<GameStoreDBContext>(
-        opt => opt.UseSqlServer("name = Sailtor Server"));
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddDbContext<GameStoreDBContext>(
+        opt => opt.UseSqlServer(
+            builder.Configuration.GetConnectionString("LocalDb")));
+}
+else
+{
+    builder.Services.AddDbContext<GameStoreDBContext>(
+            opt => opt.UseSqlServer(
+                builder.Configuration.GetConnectionString("ProductionDb")));
+}
 
 var app = builder.Build();
 

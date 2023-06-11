@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>04e42258-e358-4689-a98b-96df78f2cfbe</UserSecretsId>
+    <UserSecretsId>GameStoreWebAPI</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
