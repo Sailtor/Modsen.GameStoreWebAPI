@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GameStoreWebAPI.Models;
+using GameStoreWebAPI.Models.Dtos.In;
+using AutoMapper;
 
 namespace GameStoreWebAPI.Controllers
 {
@@ -13,11 +15,22 @@ namespace GameStoreWebAPI.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly GameStoreDBContext _context;
 
-        public UsersController(GameStoreDBContext context)
+        public UsersController(IMapper mapper, GameStoreDBContext context)
         {
+            _mapper = mapper;
             _context = context;
+        }
+
+        [HttpPost("api/users/register")]
+        public async Task<ActionResult<User>> Register(UserForCreationDto user)
+        {
+            _context.Users.Add(_mapper.Map<UserForCreationDto, User>(user));
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         // GET: api/Users

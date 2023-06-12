@@ -1,4 +1,5 @@
 using GameStoreWebAPI.Models;
+using GameStoreWebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -43,6 +44,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false
         };
     });
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddTransient<ITokenService, TokenService>();
 
 builder.Services.AddDbContext<GameStoreDBContext>(
     opt => opt.UseSqlServer(

@@ -29,6 +29,12 @@ namespace GameStoreWebAPI.Models
                 .ForMember(dest => dest.RoleId, opt => opt.MapFrom(scr => 0));
             CreateMap<User, UserForResponceDto>();
 
+            /*CreateMap<UserForLoginDto, User>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(scr => 0))
+                .ForMember(dest => dest.RoleId, opt => opt.MapFrom(scr => 0))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(scr => ""));
+            CreateMap<User, UserForLoginDto>();*/
+
             CreateMap<PurchaseForCreationDto, Purchase>()
                 .ForMember(dest => dest.PurchaseDate, opt => opt.MapFrom(scr => DateTime.Now));
             CreateMap<Purchase, PurchaseForResponceDto>();
