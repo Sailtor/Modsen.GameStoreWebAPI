@@ -34,7 +34,7 @@ namespace GameStoreWebAPI.Controllers
 
             var principal = _tokenService.GetPrincipalFromExpiredToken(accessToken, _configuration.GetValue<string>("Jwt Settings:Key:GameStoreWebAPIKey"));
 
-            var userID = principal.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value; //this is mapped to the Name claim by default
+            var userID = principal.FindFirstValue("UserID");
             var user = _context.Users.SingleOrDefault(u => u.Id == Convert.ToInt32(userID));
 
             if (user is null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
@@ -57,7 +57,7 @@ namespace GameStoreWebAPI.Controllers
         [Route("api/users/revoke")]
         public IActionResult Revoke()
         {
-            var userID = User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value; //this is mapped to the Name claim by default
+            var userID = User.FindFirstValue("UserID"); //this is mapped to the Name claim by default
             var user = _context.Users.SingleOrDefault(u => u.Id == Convert.ToInt32(userID));
 
             if (user == null) return BadRequest();

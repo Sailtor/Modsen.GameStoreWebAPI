@@ -16,7 +16,7 @@ namespace GameStoreWebAPI.Services
             string result = "";
             if (_httpContextAccessor.HttpContext != null)
             {
-                result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                result = _httpContextAccessor.HttpContext.User.FindFirstValue("UserID");
             }
             return result;
         }

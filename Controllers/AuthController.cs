@@ -52,7 +52,7 @@ namespace GameStoreWebAPI.Controllers
 
             List<Claim> claims = new()
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim("UserID", user.Id.ToString()),
                 new Claim(ClaimTypes.Role, user.RoleId.ToString())
             };
 
