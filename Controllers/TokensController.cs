@@ -15,9 +15,9 @@ namespace GameStoreWebAPI.Controllers
         private readonly ITokenService _tokenService;
         private readonly IConfiguration _configuration;
 
-        public TokenController(GameStoreDBContext userContext, ITokenService tokenService, IConfiguration configuration)
+        public TokenController(GameStoreDBContext context, ITokenService tokenService, IConfiguration configuration)
         {
-            _context = userContext;
+            _context = context;
             _tokenService = tokenService;
             _configuration = configuration;
         }
@@ -32,7 +32,7 @@ namespace GameStoreWebAPI.Controllers
             string accessToken = tokenApiModel.AccessToken;
             string refreshToken = tokenApiModel.RefreshToken;
 
-            var principal = _tokenService.GetPrincipalFromExpiredToken(accessToken, _configuration.GetValue<string>("Jwt Settings:Key:GameStoreWebAPIKey"));
+            var principal = _tokenService.GetPrincipalFromExpiredToken(accessToken, _configuration.GetValue<string>("Jwt Settings:Key"));
 
             var userID = principal.FindFirstValue("UserID");
             var user = _context.Users.SingleOrDefault(u => u.Id == Convert.ToInt32(userID));
@@ -40,12 +40,12 @@ namespace GameStoreWebAPI.Controllers
             if (user is null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
                 return BadRequest("Invalid client request");
 
-            var newAccessToken = _tokenService.GenerateAccessToken(principal.Claims, _configuration.GetValue<string>("Jwt Settings:Key:GameStoreWebAPIKey"));
+            var newAccessToken = _tokenService.GenerateAccessToken(principal.Claims, _configuration.GetValue<string>("Jwt Settings:Key"));
             var newRefreshToken = _tokenService.GenerateRefreshToken();
 
             user.RefreshToken = newRefreshToken;
 
-            _userContext.SaveChanges();
+            _context.SaveChanges();
 
             return Ok(new AuthenticatedResponse()
             {
@@ -63,7 +63,7 @@ namespace GameStoreWebAPI.Controllers
             if (user == null) return BadRequest();
 
             user.RefreshToken = null;
-            _userContext.SaveChanges();
+            _context.SaveChanges();
 
             return NoContent();
         }

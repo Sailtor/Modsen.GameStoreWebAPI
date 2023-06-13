@@ -40,7 +40,7 @@ namespace GameStoreWebAPI.Controllers
         [HttpPost("api/users/login")]
         public async Task<ActionResult<string>> Login(UserForLoginDto creds)
         {
-            User user = await _context.Users.FirstAsync(u => u.Login == creds.Login);
+            User? user = await _context.Users.FirstOrDefaultAsync(u => u.Login == creds.Login);
             if (user == null)
             {
                 return BadRequest("User with this login not found");
@@ -56,7 +56,7 @@ namespace GameStoreWebAPI.Controllers
                 new Claim(ClaimTypes.Role, user.RoleId.ToString())
             };
 
-            var accessToken = _tokenService.GenerateAccessToken(claims, _configuration.GetValue<string>("Jwt Settings:Key:GameStoreWebAPIKey"));
+            var accessToken = _tokenService.GenerateAccessToken(claims, _configuration.GetValue<string>("Jwt Settings:Key"));
             var refreshToken = _tokenService.GenerateRefreshToken();
 
             user.RefreshToken = refreshToken;
