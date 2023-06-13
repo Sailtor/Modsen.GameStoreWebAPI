@@ -16,6 +16,8 @@ namespace GameStoreWebAPI.Models
         public string Login { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string Email { get; set; } = null!;
+        public string? RefreshToken { get; set; }
+        public DateTime? RefreshTokenExpiryTime { get; set; }
 
         public virtual Role Role { get; set; } = null!;
         public virtual ICollection<Purchase> Purchases { get; set; }

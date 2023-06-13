@@ -29,7 +29,8 @@ namespace GameStoreWebAPI.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Name=ConnectionStrings:Sailtor Server");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=SAILTOR;Initial Catalog=GameStoreDB;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             }
         }
 
@@ -46,7 +47,7 @@ namespace GameStoreWebAPI.Models
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.Description).HasMaxLength(256);
+                entity.Property(e => e.Description).HasMaxLength(2048);
 
                 entity.Property(e => e.DeveloperId).HasColumnName("DeveloperID");
 
@@ -70,7 +71,7 @@ namespace GameStoreWebAPI.Models
                         r => r.HasOne<Game>().WithMany().HasForeignKey("GameId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__GamesGenr__GameI__398D8EEE"),
                         j =>
                         {
-                            j.HasKey("GameId", "GenreId").HasName("PK__GamesGen__DA80C7886504C626");
+                            j.HasKey("GameId", "GenreId").HasName("PK__GamesGen__DA80C788CA0FB24E");
 
                             j.ToTable("GamesGenres");
 
@@ -87,7 +88,7 @@ namespace GameStoreWebAPI.Models
                         r => r.HasOne<Game>().WithMany().HasForeignKey("GameId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__GamesPlat__GameI__35BCFE0A"),
                         j =>
                         {
-                            j.HasKey("GameId", "PlatformId").HasName("PK__GamesPla__95ED08B03A7BF4D4");
+                            j.HasKey("GameId", "PlatformId").HasName("PK__GamesPla__95ED08B060D966A0");
 
                             j.ToTable("GamesPlatforms");
 
@@ -114,7 +115,7 @@ namespace GameStoreWebAPI.Models
             modelBuilder.Entity<Purchase>(entity =>
             {
                 entity.HasKey(e => new { e.UserId, e.GameId })
-                    .HasName("PK__Purchase__D52345D128A58DD1");
+                    .HasName("PK__Purchase__D52345D1BD2532B0");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
 
@@ -138,7 +139,7 @@ namespace GameStoreWebAPI.Models
             modelBuilder.Entity<Review>(entity =>
             {
                 entity.HasKey(e => new { e.UserId, e.GameId })
-                    .HasName("PK__Review__D52345D177B702A6");
+                    .HasName("PK__Review__D52345D10AD2BEB8");
 
                 entity.ToTable("Review");
 
@@ -148,7 +149,7 @@ namespace GameStoreWebAPI.Models
 
                 entity.Property(e => e.ReviewDate).HasColumnType("datetime");
 
-                entity.Property(e => e.ReviewText).HasMaxLength(256);
+                entity.Property(e => e.ReviewText).HasMaxLength(2048);
 
                 entity.HasOne(d => d.Game)
                     .WithMany(p => p.Reviews)
@@ -172,10 +173,10 @@ namespace GameStoreWebAPI.Models
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasIndex(e => e.Login, "UQ__Users__5E55825BF96C7D68")
+                entity.HasIndex(e => e.Login, "UQ__Users__5E55825BCEC4CBFF")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Email, "UQ__Users__A9D105348F8B0ADD")
+                entity.HasIndex(e => e.Email, "UQ__Users__A9D105340F62E5AD")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");
@@ -185,6 +186,10 @@ namespace GameStoreWebAPI.Models
                 entity.Property(e => e.Login).HasMaxLength(256);
 
                 entity.Property(e => e.Password).HasMaxLength(256);
+
+                entity.Property(e => e.RefreshToken).HasMaxLength(256);
+
+                entity.Property(e => e.RefreshTokenExpiryTime).HasColumnType("datetime");
 
                 entity.Property(e => e.RoleId).HasColumnName("RoleID");
 
