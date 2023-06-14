@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GameStoreWebAPI.Models;
 using GameStoreWebAPI.Models.Dtos.In;
 using AutoMapper;
+using GameStoreWebAPI.Models.Dtos.Out;
 
 namespace GameStoreWebAPI.Controllers
 {
@@ -25,7 +26,7 @@ namespace GameStoreWebAPI.Controllers
         }
 
         [HttpPost("api/users/register")]
-        public async Task<ActionResult<User>> Register(UserForCreationDto user)
+        public async Task<ActionResult<UserForResponceDto>> Register(UserForCreationDto user)
         {
             _context.Users.Add(_mapper.Map<UserForCreationDto, User>(user));
             await _context.SaveChangesAsync();
