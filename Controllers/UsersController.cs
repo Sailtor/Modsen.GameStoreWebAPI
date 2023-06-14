@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GameStoreWebAPI.Models;
 using GameStoreWebAPI.Models.Dtos.In;
 using AutoMapper;
+using GameStoreWebAPI.Models.Dtos.Out;
 using Microsoft.AspNetCore.Authorization;
 
 namespace GameStoreWebAPI.Controllers

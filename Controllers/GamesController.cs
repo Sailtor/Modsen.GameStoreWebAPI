@@ -6,39 +6,45 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GameStoreWebAPI.Models;
+using Microsoft.AspNetCore.Authorization;
+using AutoMapper;
+using GameStoreWebAPI.Models.Dtos.Out;
+using GameStoreWebAPI.Models.Dtos.In;
 
 namespace GameStoreWebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/games")]
+    //[Authorize] //turned off during development 
     [ApiController]
     public class GamesController : ControllerBase
     {
         private readonly GameStoreDBContext _context;
+        private readonly IMapper _mapper;
 
-        public GamesController(GameStoreDBContext context)
+        public GamesController(GameStoreDBContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        // GET: api/Games
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Game>>> GetGames()
+        public async Task<ActionResult<IEnumerable<GameForResponceDto>>> GetGames()
         {
-          if (_context.Games == null)
-          {
-              return NotFound();
-          }
-            return await _context.Games.ToListAsync();
+            if (_context.Games == null)
+            {
+                return NotFound();
+            }
+            return Ok(_mapper.Map<List<Game>, List<GameForResponceDto>>(await _context.Games.ToListAsync()));
         }
 
-        // GET: api/Games/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Game>> GetGame(int id)
+        public async Task<ActionResult<GameForResponceDto>> GetGame(int id)
         {
-          if (_context.Games == null)
-          {
-              return NotFound();
-          }
+            if (_context.Games == null)
+            {
+                return NotFound();
+            }
+
             var game = await _context.Games.FindAsync(id);
 
             if (game == null)
@@ -46,7 +52,23 @@ namespace GameStoreWebAPI.Controllers
                 return NotFound();
             }
 
-            return game;
+            return Ok(_mapper.Map<Game, GameForResponceDto>(game));
+        }
+
+        [Authorize (Roles ="1")]
+        [HttpPost]
+        public async Task<ActionResult<GameForResponceDto>> PostGame(GameForCreationDto game)
+        {
+            if (_context.Games == null)
+            {
+                return Problem("Entity set 'GameStoreDBContext.Games'  is null.");
+            }
+            var mappedGame = _mapper.Map<Game>(game);
+
+            _context.Games.Add(mappedGame);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetGame", new { id = mappedGame.Id }, _mapper.Map<Game, GameForResponceDto>(mappedGame));
         }
 
         // PUT: api/Games/5
@@ -80,20 +102,7 @@ namespace GameStoreWebAPI.Controllers
             return NoContent();
         }
 
-        // POST: api/Games
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Game>> PostGame(Game game)
-        {
-          if (_context.Games == null)
-          {
-              return Problem("Entity set 'GameStoreDBContext.Games'  is null.");
-          }
-            _context.Games.Add(game);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGame", new { id = game.Id }, game);
-        }
 
         // DELETE: api/Games/5
         [HttpDelete("{id}")]
