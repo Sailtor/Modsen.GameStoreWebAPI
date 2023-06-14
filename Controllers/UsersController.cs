@@ -8,10 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using GameStoreWebAPI.Models;
 using GameStoreWebAPI.Models.Dtos.In;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameStoreWebAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -23,7 +23,7 @@ namespace GameStoreWebAPI.Controllers
             _mapper = mapper;
             _context = context;
         }
-
+        [AllowAnonymous]
         [HttpPost("api/users/register")]
         public async Task<ActionResult<User>> Register(UserForCreationDto user)
         {
@@ -32,6 +32,7 @@ namespace GameStoreWebAPI.Controllers
 
             return Ok();
         }
+        /* --- UNTOUCHED AUTO-(de)GENERATED CODE DOWN THERE --- */
 
         // GET: api/Users
         [HttpGet]
