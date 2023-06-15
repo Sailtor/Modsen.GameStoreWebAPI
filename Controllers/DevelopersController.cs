@@ -62,7 +62,7 @@ namespace GameStoreWebAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "1")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutGame(int developerid, DeveloperForCreationDto developer)
+        public async Task<IActionResult> PutDeveloper(int developerid, DeveloperForCreationDto developer)
         {
            
             var developerEntity = _context.Developers.Find(developerid);
