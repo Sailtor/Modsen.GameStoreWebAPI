@@ -9,12 +9,12 @@ using GameStoreWebAPI.Models;
 using GameStoreWebAPI.Models.Dtos.In;
 using AutoMapper;
 using GameStoreWebAPI.Models.Dtos.Out;
-//using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GameStoreWebAPI.Controllers
 {
     [Route("api/[controller]")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class RolesController : ControllerBase
     {
@@ -28,7 +28,7 @@ namespace GameStoreWebAPI.Controllers
         }
 
         // GET: api/Roles
-        //[Authorize(Roles = "1")]
+        [Authorize(Roles = "1")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RoleForResponceDto>>> GetRoles()
         {
@@ -40,7 +40,7 @@ namespace GameStoreWebAPI.Controllers
         }
 
         // GET: api/Roles/5
-        //[Authorize(Roles = "1")]
+        [Authorize(Roles = "1")]
         [HttpGet("{id}")]
         public async Task<ActionResult<RoleForResponceDto>> GetRole(int id)
         {
@@ -60,7 +60,7 @@ namespace GameStoreWebAPI.Controllers
 
         // PUT: api/Roles/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[Authorize(Roles = "1")]
+        [Authorize(Roles = "1")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRole(int roleid, RoleForCreationDto roles)
         {
@@ -81,7 +81,7 @@ namespace GameStoreWebAPI.Controllers
 
         // POST: api/Roles
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[Authorize(Roles = "1")]
+        [Authorize(Roles = "1")]
         [HttpPost]
         public async Task<ActionResult<RoleForResponceDto>> PostRole(RoleForCreationDto role)
         {
@@ -96,7 +96,7 @@ namespace GameStoreWebAPI.Controllers
         }
 
         // DELETE: api/Roles/5
-        //[Authorize(Roles = "1")]
+        [Authorize(Roles = "1")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRole(int id)
         {
