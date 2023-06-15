@@ -9,19 +9,17 @@ using System.Security.Claims;
 
 namespace GameStoreWebAPI.Controllers
 {
-    //[Route("api/[controller]")]
+    [Route("api/users")]
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IMapper _mapper;
         private readonly GameStoreDBContext _context;
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
 
-        public AuthController(IMapper mapper, GameStoreDBContext context, IConfiguration configuration, IUserService userService, ITokenService tokenService)
+        public AuthController(GameStoreDBContext context, IConfiguration configuration, IUserService userService, ITokenService tokenService)
         {
-            _mapper = mapper;
             _context = context;
             _configuration = configuration;
             _userService = userService;
@@ -36,8 +34,8 @@ namespace GameStoreWebAPI.Controllers
             return Ok(userName);
         }
         */
-
-        [HttpPost("api/users/login")]
+        [AllowAnonymous]
+        [HttpPost("login")]
         public async Task<ActionResult<string>> Login(UserForLoginDto creds)
         {
             User? user = await _context.Users.FirstOrDefaultAsync(u => u.Login == creds.Login);

@@ -1,13 +1,13 @@
 ﻿using GameStoreWebAPI.Models;
 using GameStoreWebAPI.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace GameStoreWebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize (Roles = "1,2")]
+    [Route("api/users")]
     [ApiController]
     public class TokenController : ControllerBase
     {
@@ -23,7 +23,7 @@ namespace GameStoreWebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("api/users/refreshtoken")]
+        [Route("refreshtoken")]
         public IActionResult Refresh(TokenApiModel tokenApiModel)
         {
             if (tokenApiModel is null)
@@ -53,11 +53,12 @@ namespace GameStoreWebAPI.Controllers
                 RefreshToken = newRefreshToken
             });
         }
-        [HttpPost, Authorize]
-        [Route("api/users/revoke")]
+
+        [HttpPost]
+        [Route("revoke")]
         public IActionResult Revoke()
         {
-            var userID = User.FindFirstValue("UserID"); //this is mapped to the Name claim by default
+            var userID = User.FindFirstValue("UserID");
             var user = _context.Users.SingleOrDefault(u => u.Id == Convert.ToInt32(userID));
 
             if (user == null) return BadRequest();
