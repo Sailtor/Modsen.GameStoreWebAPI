@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GameStoreWebAPI.Models;
 using GameStoreWebAPI.Models.Dtos.In;
+using GameStoreWebAPI.Models.Dtos.Out;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 
@@ -24,9 +25,11 @@ namespace GameStoreWebAPI.Controllers
             _mapper = mapper;
             _context = context;
         }
+        
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(UserForCreationDto user)
+        public async Task<ActionResult<UserForResponceDto>> Register(UserForCreationDto user)
+
         {
             _context.Users.Add(_mapper.Map<UserForCreationDto, User>(user));
             await _context.SaveChangesAsync();
