@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using GameStoreWebAPI.Models;
+﻿using GameStoreWebAPI.Models;
 using GameStoreWebAPI.Models.Dtos.In;
 using GameStoreWebAPI.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -15,25 +14,15 @@ namespace GameStoreWebAPI.Controllers
     {
         private readonly GameStoreDBContext _context;
         private readonly IConfiguration _configuration;
-        private readonly IUserService _userService;
         private readonly ITokenService _tokenService;
 
-        public AuthController(GameStoreDBContext context, IConfiguration configuration, IUserService userService, ITokenService tokenService)
+        public AuthController(GameStoreDBContext context, IConfiguration configuration, ITokenService tokenService)
         {
             _context = context;
             _configuration = configuration;
-            _userService = userService;
             _tokenService = tokenService;
         }
-        /*
-        [HttpGet("api/users/getid")]
-        [Authorize]
-        public ActionResult<string> GetUserId()
-        {
-            var userName = _userService.GetUserId();
-            return Ok(userName);
-        }
-        */
+
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login(UserForLoginDto creds)

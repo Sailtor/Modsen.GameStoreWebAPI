@@ -91,7 +91,7 @@ namespace GameStoreWebAPI.Controllers
             }
 
             _mapper.Map(game, gameEntity);
-            _context.Set<Game>().Update(gameEntity);
+            _context.Games.Update(gameEntity);
             await _context.SaveChangesAsync();
 
             return NoContent();
