@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GameStoreWebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using GameStoreWebAPI.Models.Dtos.Out;
 using GameStoreWebAPI.Models.Dtos.In;
-using NuGet.Protocol.Core.Types;
 
 namespace GameStoreWebAPI.Controllers
 {
@@ -206,6 +200,7 @@ namespace GameStoreWebAPI.Controllers
 
             return NoContent();
         }
+
         [Authorize (Roles ="1")]
         [HttpDelete("{gameid}/platforms/{platformid}")]
         public async Task<IActionResult> DeletePlatformFromGame(int gameid, int platformid)
