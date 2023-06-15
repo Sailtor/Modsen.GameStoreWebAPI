@@ -14,7 +14,7 @@ using GameStoreWebAPI.Models.Dtos.In;
 namespace GameStoreWebAPI.Controllers
 {
     [Route("api/genres")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class GenresController : ControllerBase
     {
@@ -60,7 +60,7 @@ namespace GameStoreWebAPI.Controllers
 
         // PUT: api/Genres/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[Authorize(Roles = "1")]
+        [Authorize(Roles = "1")]
         [HttpPut("{genreid}")]
         public async Task<IActionResult> PutGenre(int genreid,GenreForCreationDto genre)
         {
@@ -121,12 +121,7 @@ namespace GameStoreWebAPI.Controllers
             _context.Genres.Remove(dbGenre);
             await _context.SaveChangesAsync();
 
-            return Ok(await _context.Genres.ToListAsync());
-        }
-
-        private bool GenreExists(int id)
-        {
-            return (_context.Genres?.Any(e => e.Id == id)).GetValueOrDefault();
+            return NoContent();
         }
     }
 }

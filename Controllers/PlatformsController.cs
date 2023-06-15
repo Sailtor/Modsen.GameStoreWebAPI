@@ -15,7 +15,7 @@ using AutoMapper;
 namespace GameStoreWebAPI.Controllers
 {
     [Route("api/platforms")]
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class PlatformsController : ControllerBase
     {
@@ -60,7 +60,7 @@ namespace GameStoreWebAPI.Controllers
 
         // PUT: api/Platforms/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[Authorize(Roles = "1")]
+        [Authorize(Roles = "1")]
         [HttpPut("{platformid}")]
         public async Task<IActionResult> PutPlatform(int platformid, PlatformForCreationDto platform)
         {
@@ -90,7 +90,7 @@ namespace GameStoreWebAPI.Controllers
 
         // POST: api/Platforms
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[Authorize(Roles = "1")]
+        [Authorize(Roles = "1")]
         [HttpPost]
         public async Task<ActionResult<List<PlatformForResponceDto>>> PostPlatform(PlatformForCreationDto platform)
         {
@@ -112,7 +112,7 @@ namespace GameStoreWebAPI.Controllers
         }
 
         // DELETE: api/Platforms/5
-        //[Authorize(Roles = "1")]
+        [Authorize(Roles = "1")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePlatform(int id)
         {
@@ -123,7 +123,7 @@ namespace GameStoreWebAPI.Controllers
             _context.Platforms.Remove(dbPlatform);
             await _context.SaveChangesAsync();
 
-            return Ok(await _context.Platforms.ToListAsync());
+            return NoContent();
         }
     }
 }
