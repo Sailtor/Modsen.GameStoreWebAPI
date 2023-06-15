@@ -8,12 +8,12 @@ namespace GameStoreWebAPI.Models
     {
         public AutomapperProfile()
         {
-            CreateMap<PlatformForCreationDto, Platform>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(scr => 0));
+            CreateMap<PlatformForCreationDto, Platform>();
+                //.ForMember(dest => dest.Id, opt => opt.MapFrom(scr => 0));
             CreateMap<Platform, PlatformForResponceDto>();
 
-            CreateMap<GenreForCreationDto, Genre>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(scr => 0));
+            CreateMap<GenreForCreationDto, Genre>();
+                //.ForMember(dest => dest.Id, opt => opt.MapFrom(scr => 0));
             CreateMap<Genre, GenreForResponceDto>();
 
             CreateMap<DeveloperForCreationDto, Developer>()
