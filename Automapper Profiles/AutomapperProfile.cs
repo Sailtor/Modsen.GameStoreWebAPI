@@ -43,8 +43,8 @@ namespace GameStoreWebAPI.Models
                 .ForMember(dest => dest.ReviewDate, opt => opt.MapFrom(scr => DateTime.Now));
             CreateMap<Review, ReviewForResponceDto>();
 
-            CreateMap<GameForCreationDto, Game>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(scr => 0));
+            CreateMap<GameForCreationDto, Game>();
+                //.ForMember(dest => dest.Id, opt => opt.MapFrom(scr => 0));
             CreateMap<Game, GameForResponceDto>();
         }
     }
