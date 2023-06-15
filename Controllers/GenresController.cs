@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace GameStoreWebAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class GenresController : ControllerBase
     {
@@ -29,11 +30,13 @@ namespace GameStoreWebAPI.Controllers
           {
               return NotFound();
           }
-            return await _context.Genres.ToListAsync();
+            return Ok(await _context.Genres.ToListAsync());
         }
 
         // GET: api/Genres/5
+        
         [HttpGet("{id}")]
+        
         public async Task<ActionResult<Genre>> GetGenre(int id)
         {
           if (_context.Genres == null)
@@ -47,42 +50,30 @@ namespace GameStoreWebAPI.Controllers
                 return NotFound();
             }
 
-            return genre;
+            return Ok(genre);
         }
 
         // PUT: api/Genres/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutGenre(int id, Genre genre)
+        [Authorize(Roles = "1")]
+        [HttpPut]
+        public async Task<IActionResult> PutGenre(Genre genre)
         {
-            if (id != genre.Id)
-            {
-                return BadRequest();
-            }
+            var dbGenre = await _context.Genres.FindAsync(genre.Id);
 
-            _context.Entry(genre).State = EntityState.Modified;
+            if (dbGenre == null)
+                return BadRequest("Genre not found.");
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!GenreExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            dbGenre.Name = genre.Name;
 
-            return NoContent();
+            await _context.SaveChangesAsync();
+
+            return Ok(await _context.Genres.ToListAsync());
         }
 
         // POST: api/Genres
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "1")]
         [HttpPost]
         public async Task<ActionResult<Genre>> PostGenre(Genre genre)
         {
@@ -93,27 +84,22 @@ namespace GameStoreWebAPI.Controllers
             _context.Genres.Add(genre);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetGenre", new { id = genre.Id }, genre);
+            return Ok(await _context.Genres.ToListAsync());
         }
 
         // DELETE: api/Genres/5
+        [Authorize(Roles = "1")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGenre(int id)
         {
-            if (_context.Genres == null)
-            {
-                return NotFound();
-            }
-            var genre = await _context.Genres.FindAsync(id);
-            if (genre == null)
-            {
-                return NotFound();
-            }
+            var dbGenre = await _context.Genres.FindAsync(id);
+            if (dbGenre == null)
+                return BadRequest("Genre not found.");
 
-            _context.Genres.Remove(genre);
+            _context.Genres.Remove(dbGenre);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(await _context.Genres.ToListAsync());
         }
 
         private bool GenreExists(int id)
