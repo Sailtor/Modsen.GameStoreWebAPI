@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace GameStoreWebAPI.Controllers
 {
+    [Route ("api/users")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -24,7 +25,7 @@ namespace GameStoreWebAPI.Controllers
             _context = context;
         }
         [AllowAnonymous]
-        [HttpPost("api/users/register")]
+        [HttpPost("register")]
         public async Task<ActionResult<User>> Register(UserForCreationDto user)
         {
             _context.Users.Add(_mapper.Map<UserForCreationDto, User>(user));

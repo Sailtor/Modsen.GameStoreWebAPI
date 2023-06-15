@@ -7,6 +7,7 @@ using System.Security.Claims;
 namespace GameStoreWebAPI.Controllers
 {
     [Authorize (Roles = "1,2")]
+    [Route("api/users")]
     [ApiController]
     public class TokenController : ControllerBase
     {
@@ -22,7 +23,7 @@ namespace GameStoreWebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("api/users/refreshtoken")]
+        [Route("refreshtoken")]
         public IActionResult Refresh(TokenApiModel tokenApiModel)
         {
             if (tokenApiModel is null)
@@ -54,7 +55,7 @@ namespace GameStoreWebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("api/users/revoke")]
+        [Route("revoke")]
         public IActionResult Revoke()
         {
             var userID = User.FindFirstValue("UserID");

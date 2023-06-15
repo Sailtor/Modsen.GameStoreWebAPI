@@ -9,6 +9,7 @@ using System.Security.Claims;
 
 namespace GameStoreWebAPI.Controllers
 {
+    [Route("api/users")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -34,7 +35,7 @@ namespace GameStoreWebAPI.Controllers
         }
         */
         [AllowAnonymous]
-        [HttpPost("api/users/login")]
+        [HttpPost("login")]
         public async Task<ActionResult<string>> Login(UserForLoginDto creds)
         {
             User? user = await _context.Users.FirstOrDefaultAsync(u => u.Login == creds.Login);
