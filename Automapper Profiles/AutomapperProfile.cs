@@ -16,8 +16,8 @@ namespace GameStoreWebAPI.Models
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(scr => 0));
             CreateMap<Genre, GenreForResponceDto>();
 
-            CreateMap<DeveloperForCreationDto, Developer>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(scr => 0));
+            CreateMap<DeveloperForCreationDto, Developer>();
+                //.ForMember(dest => dest.Id, opt => opt.MapFrom(scr => 0));
             CreateMap<Developer, DeveloperForResponceDto>();
 
             CreateMap<RoleForCreationDto, Role>()
