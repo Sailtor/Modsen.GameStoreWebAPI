@@ -8,110 +8,119 @@ using Microsoft.EntityFrameworkCore;
 using GameStoreWebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using GameStoreWebAPI.Models.Dtos.Out;
+using GameStoreWebAPI.Models.Dtos.In;
+using AutoMapper;
 
 namespace GameStoreWebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/platforms")]
+    [Authorize]
     [ApiController]
     public class PlatformsController : ControllerBase
     {
         private readonly GameStoreDBContext _context;
+        private readonly IMapper _mapper;
 
-        public PlatformsController(GameStoreDBContext context)
+        public PlatformsController(GameStoreDBContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Platforms
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Platform>>> GetPlatforms()
-        {
-          if (_context.Platforms == null)
-          {
-              return NotFound();
-          }
-            return await _context.Platforms.ToListAsync();
-        }
-
-        // GET: api/Platforms/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Platform>> GetPlatform(int id)
-        {
-          if (_context.Platforms == null)
-          {
-              return NotFound();
-          }
-            var platform = await _context.Platforms.FindAsync(id);
-
-            if (platform == null)
-            {
-                return NotFound();
-            }
-
-            return platform;
-        }
-
-        // PUT: api/Platforms/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPlatform(int id, Platform platform)
-        {
-            if (id != platform.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(platform).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (_context.Platforms.Any(e => e.Id == id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Platforms
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Platform>> PostPlatform(Platform platform)
-        {
-          if (_context.Platforms == null)
-          {
-              return Problem("Entity set 'GameStoreDBContext.Platforms'  is null.");
-          }
-            _context.Platforms.Add(platform);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPlatform", new { id = platform.Id }, platform);
-        }
-
-        // DELETE: api/Platforms/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePlatform(int id)
+        public async Task<ActionResult<List<Platform>>> GetPlatforms()
         {
             if (_context.Platforms == null)
             {
                 return NotFound();
             }
-            var platform = await _context.Platforms.FindAsync(id);
+            return Ok(_mapper.Map<List<Platform>, List<PlatformForResponceDto>>(await _context.Platforms.ToListAsync()));
+        }
+
+        // GET: api/Platforms/5
+        [HttpGet("{platformid}")]
+        public async Task<ActionResult<PlatformForResponceDto>> GetPlatform(int platformid)
+        {
+            if (_context.Platforms == null)
+            {
+                return NotFound();
+            }
+
+            var platform = await _context.Platforms.FindAsync(platformid);
+
             if (platform == null)
             {
                 return NotFound();
             }
 
-            _context.Platforms.Remove(platform);
+            return Ok(_mapper.Map<Platform, PlatformForResponceDto>(platform));
+        }
+
+        // PUT: api/Platforms/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "1")]
+        [HttpPut("{platformid}")]
+        public async Task<IActionResult> PutPlatform(int platformid, PlatformForCreationDto platform)
+        {
+            if (platform is null)
+            {
+                return BadRequest("Platform object is null");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid model object");
+            }
+
+            var platformEntity = _context.Platforms.Find(platformid);
+            if (platformEntity is null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(platform, platformEntity);
+            _context.Set<Platform>().Update(platformEntity);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+
+
+        // POST: api/Platforms
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "1")]
+        [HttpPost]
+        public async Task<ActionResult<List<PlatformForResponceDto>>> PostPlatform(PlatformForCreationDto platform)
+        {
+            if (platform is null)
+            {
+                return BadRequest("Platform object is null");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid model object");
+            }
+
+            var mappedPlatform = _mapper.Map<Platform>(platform);
+
+            _context.Platforms.Add(mappedPlatform);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetPlatform", new { id = mappedPlatform.Id }, _mapper.Map<Platform, PlatformForResponceDto>(mappedPlatform));
+        }
+
+        // DELETE: api/Platforms/5
+        [Authorize(Roles = "1")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePlatform(int id)
+        {
+            var dbPlatform = await _context.Platforms.FindAsync(id);
+            if (dbPlatform == null)
+                return BadRequest("Platform not found.");
+
+            _context.Platforms.Remove(dbPlatform);
             await _context.SaveChangesAsync();
 
             return NoContent();
