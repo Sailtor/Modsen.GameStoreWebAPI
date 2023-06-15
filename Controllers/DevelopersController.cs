@@ -6,21 +6,29 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GameStoreWebAPI.Models;
+using Microsoft.AspNetCore.Authorization;
+using GameStoreWebAPI.Models.Dtos.In;
+using AutoMapper;
+using GameStoreWebAPI.Models.Dtos.Out;
 
 namespace GameStoreWebAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class DevelopersController : ControllerBase
     {
         private readonly GameStoreDBContext _context;
+        private readonly IMapper _mapper;
 
-        public DevelopersController(GameStoreDBContext context)
+        public DevelopersController(GameStoreDBContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Developers
+        [Authorize(Roles = "1,2")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Developer>>> GetDevelopers()
         {
@@ -28,10 +36,11 @@ namespace GameStoreWebAPI.Controllers
           {
               return NotFound();
           }
-            return await _context.Developers.ToListAsync();
+            return Ok(await _context.Developers.ToListAsync());
         }
 
         // GET: api/Developers/5
+        [Authorize(Roles = "1,2")]
         [HttpGet("{id}")]
         public async Task<ActionResult<Developer>> GetDeveloper(int id)
         {
@@ -46,56 +55,48 @@ namespace GameStoreWebAPI.Controllers
                 return NotFound();
             }
 
-            return developer;
+            return Ok(developer);
         }
 
         // PUT: api/Developers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "1")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutDeveloper(int id, Developer developer)
+        public async Task<IActionResult> PutGame(int developerid, DeveloperForCreationDto developer)
         {
-            if (id != developer.Id)
+           
+            var developerEntity = _context.Developers.Find(developerid);
+            if (developerEntity is null)
             {
-                return BadRequest();
+                return NotFound();
             }
 
-            _context.Entry(developer).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!DeveloperExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _mapper.Map(developer, developerEntity);
+            _context.Set<Developer>().Update(developerEntity);
+            await _context.SaveChangesAsync();
 
             return NoContent();
+      
         }
 
         // POST: api/Developers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize(Roles = "1")]
         [HttpPost]
-        public async Task<ActionResult<Developer>> PostDeveloper(Developer developer)
+        public async Task<ActionResult<Developer>> PostDeveloper(DeveloperForCreationDto developer)
         {
           if (_context.Developers == null)
           {
               return Problem("Entity set 'GameStoreDBContext.Developers'  is null.");
           }
-            _context.Developers.Add(developer);
+            var mappedDeveloper = _mapper.Map<Developer>(developer);
+            _context.Developers.Add(mappedDeveloper);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetDeveloper", new { id = developer.Id }, developer);
+            return CreatedAtAction("GetDeveloper", new { id = mappedDeveloper.Id }, _mapper.Map<Developer, DeveloperForResponceDto>(mappedDeveloper));
         }
 
         // DELETE: api/Developers/5
+        [Authorize(Roles = "1")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDeveloper(int id)
         {
@@ -112,7 +113,7 @@ namespace GameStoreWebAPI.Controllers
             _context.Developers.Remove(developer);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(await _context.Developers.ToListAsync());
         }
 
         private bool DeveloperExists(int id)
