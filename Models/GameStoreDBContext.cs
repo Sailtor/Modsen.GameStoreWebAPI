@@ -71,7 +71,7 @@ namespace GameStoreWebAPI.Models
                         r => r.HasOne<Game>().WithMany().HasForeignKey("GameId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__GamesGenr__GameI__398D8EEE"),
                         j =>
                         {
-                            j.HasKey("GameId", "GenreId").HasName("PK__GamesGen__DA80C788CA0FB24E");
+                            j.HasKey("GameId", "GenreId").HasName("PK__GamesGen__DA80C78846F82486");
 
                             j.ToTable("GamesGenres");
 
@@ -88,7 +88,7 @@ namespace GameStoreWebAPI.Models
                         r => r.HasOne<Game>().WithMany().HasForeignKey("GameId").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK__GamesPlat__GameI__35BCFE0A"),
                         j =>
                         {
-                            j.HasKey("GameId", "PlatformId").HasName("PK__GamesPla__95ED08B060D966A0");
+                            j.HasKey("GameId", "PlatformId").HasName("PK__GamesPla__95ED08B0F9E5EDE7");
 
                             j.ToTable("GamesPlatforms");
 
@@ -115,7 +115,7 @@ namespace GameStoreWebAPI.Models
             modelBuilder.Entity<Purchase>(entity =>
             {
                 entity.HasKey(e => new { e.UserId, e.GameId })
-                    .HasName("PK__Purchase__D52345D1BD2532B0");
+                    .HasName("PK__Purchase__D52345D10AF4019E");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
 
@@ -139,7 +139,7 @@ namespace GameStoreWebAPI.Models
             modelBuilder.Entity<Review>(entity =>
             {
                 entity.HasKey(e => new { e.UserId, e.GameId })
-                    .HasName("PK__Review__D52345D10AD2BEB8");
+                    .HasName("PK__Review__D52345D18161759A");
 
                 entity.ToTable("Review");
 
@@ -173,10 +173,10 @@ namespace GameStoreWebAPI.Models
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.HasIndex(e => e.Login, "UQ__Users__5E55825BCEC4CBFF")
+                entity.HasIndex(e => e.Login, "UQ__Users__5E55825B25F41094")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Email, "UQ__Users__A9D105340F62E5AD")
+                entity.HasIndex(e => e.Email, "UQ__Users__A9D10534F2941804")
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("ID");

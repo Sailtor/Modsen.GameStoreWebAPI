@@ -50,8 +50,6 @@ builder.Services.AddAuthentication(opt =>
         };
     });
 
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 
 builder.Services.AddDbContext<GameStoreDBContext>(
