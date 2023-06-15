@@ -10,11 +10,12 @@ using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using GameStoreWebAPI.Models.Dtos.Out;
 using GameStoreWebAPI.Models.Dtos.In;
+using NuGet.Protocol.Core.Types;
 
 namespace GameStoreWebAPI.Controllers
 {
     [Route("api/games")]
-    //[Authorize] //turned off during development 
+    [Authorize]
     [ApiController]
     public class GamesController : ControllerBase
     {
@@ -37,15 +38,15 @@ namespace GameStoreWebAPI.Controllers
             return Ok(_mapper.Map<List<Game>, List<GameForResponceDto>>(await _context.Games.ToListAsync()));
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<GameForResponceDto>> GetGame(int id)
+        [HttpGet("{gameid}")]
+        public async Task<ActionResult<GameForResponceDto>> GetGame(int gameid)
         {
             if (_context.Games == null)
             {
                 return NotFound();
             }
 
-            var game = await _context.Games.FindAsync(id);
+            var game = await _context.Games.FindAsync(gameid);
 
             if (game == null)
             {
@@ -59,10 +60,15 @@ namespace GameStoreWebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<GameForResponceDto>> PostGame(GameForCreationDto game)
         {
-            if (_context.Games == null)
+            if (game is null)
             {
-                return Problem("Entity set 'GameStoreDBContext.Games'  is null.");
+                return BadRequest("Game object is null");
             }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid model object");
+            }
+
             var mappedGame = _mapper.Map<Game>(game);
 
             _context.Games.Add(mappedGame);
@@ -71,47 +77,91 @@ namespace GameStoreWebAPI.Controllers
             return CreatedAtAction("GetGame", new { id = mappedGame.Id }, _mapper.Map<Game, GameForResponceDto>(mappedGame));
         }
 
-        // PUT: api/Games/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutGame(int id, Game game)
+        [Authorize (Roles ="1")]
+        [HttpPut("{gameid}")]
+        public async Task<IActionResult> PutGame(int gameid, GameForCreationDto game)
         {
-            if (id != game.Id)
+            if (game is null)
             {
-                return BadRequest();
+                return BadRequest("Game object is null");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid model object");
             }
 
-            _context.Entry(game).State = EntityState.Modified;
+            var gameEntity = _context.Games.Find(gameid);
+            if (gameEntity is null)
+            {
+                return NotFound();
+            }
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!GameExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            _mapper.Map(game, gameEntity);
+            _context.Set<Game>().Update(gameEntity);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-
-
-        // DELETE: api/Games/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteGame(int id)
+        [Authorize (Roles ="1")]
+        [HttpPut("{gameid}/genres/{genreid}")]
+        public async Task<IActionResult> PutGenreInGame(int gameid, int genreid)
         {
-            if (_context.Games == null)
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid model object");
+            }
+
+            var gameEntity =  await _context.Games.FindAsync(gameid);
+            if (gameEntity is null)
             {
                 return NotFound();
             }
+
+            var genreEntity = await _context.Genres.FindAsync(genreid);
+            if (genreEntity is null)
+            {
+                return NotFound();
+            }
+
+            gameEntity.Genres.Add(genreEntity);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [Authorize (Roles ="1")]
+        [HttpPut("{gameid}/platforms/{platformid}")]
+        public async Task<IActionResult> PutPlatformInGame(int gameid, int platformid)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid model object");
+            }
+
+            var gameEntity = await _context.Games.FindAsync(gameid);
+
+            if (gameEntity is null)
+            {
+                return NotFound();
+            }
+            var platformEntity = await _context.Platforms.FindAsync(platformid);
+
+            if (platformEntity is null)
+            {
+                return NotFound();
+            }
+
+            gameEntity.Platforms.Add(platformEntity);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [Authorize (Roles ="1")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteGame(int id)
+        {
             var game = await _context.Games.FindAsync(id);
             if (game == null)
             {
@@ -124,9 +174,68 @@ namespace GameStoreWebAPI.Controllers
             return NoContent();
         }
 
-        private bool GameExists(int id)
+        [Authorize (Roles ="1")]
+        [HttpDelete("{gameid}/genres/{genreid}")]
+        public async Task<IActionResult> DeleteGenreFromGame(int gameid, int genreid)
         {
-            return (_context.Games?.Any(e => e.Id == id)).GetValueOrDefault();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid model object");
+            }
+
+            var genreEntity = await _context.Genres.FindAsync(genreid);
+            if (genreEntity is null)
+            {
+                return NotFound("Genre with this id not found");
+            }
+
+            var gameEntity = _context.Games.Include(g => g.Genres.Where(g => g.Id == genreid)).Where(g => g.Id == gameid).FirstOrDefault();
+
+            if (gameEntity is null)
+            {
+                return NotFound("Game with this id not found");
+            }
+
+            if (!gameEntity.Genres.Any(g => g.Id == genreid))
+            {
+                return NotFound("Game with this id doesn't have genre with this id");
+            }
+
+            gameEntity.Genres.Remove(genreEntity);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+        [Authorize (Roles ="1")]
+        [HttpDelete("{gameid}/platforms/{platformid}")]
+        public async Task<IActionResult> DeletePlatformFromGame(int gameid, int platformid)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid model object");
+            }
+
+            var platformEntity = await _context.Platforms.FindAsync(platformid);
+            if (platformEntity is null)
+            {
+                return NotFound("Platform with this id not found");
+            }
+
+            var gameEntity = _context.Games.Include(g => g.Platforms.Where(g => g.Id == platformid)).Where(g => g.Id == gameid).FirstOrDefault();
+            if (gameEntity is null)
+            {
+                return NotFound("Game with this id not found");
+            }
+
+            if (!gameEntity.Platforms.Any(g => g.Id == platformid))
+            {
+                return NotFound("Game with this id doesn't have platform with this id");
+            }
+
+            gameEntity.Platforms.Remove(platformEntity);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
     }
 }
