@@ -52,10 +52,10 @@ builder.Services.AddAuthentication(opt =>
 
 builder.Services.AddTransient<ITokenService, TokenService>();
 
+
 builder.Services.AddDbContext<GameStoreDBContext>(
     opt => opt.UseSqlServer(
-        builder.Configuration.GetConnectionString(
-            builder.Environment.IsDevelopment() ? "LocalDb" : "ProductionDb")));
+        builder.Configuration.GetConnectionString("MS SQL Database")));
 
 var app = builder.Build();
 

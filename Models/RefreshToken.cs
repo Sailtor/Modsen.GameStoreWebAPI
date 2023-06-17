@@ -1,4 +1,4 @@
-﻿namespace GameStoreWebAPI
+﻿namespace GameStoreWebAPI.Models
 {
     public class RefreshToken
     {
