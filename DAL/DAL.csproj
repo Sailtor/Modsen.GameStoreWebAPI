@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Data\Model configurations\" />
     <Folder Include="Repository\Impementation\" />
     <Folder Include="Repository\UnitOfWork\" />
   </ItemGroup>

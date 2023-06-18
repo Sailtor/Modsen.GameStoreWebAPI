@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameStoreWebAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace GameStoreWebAPI.Models
+namespace DAL.Data
 {
     public partial class GameStoreDBContext : DbContext
     {

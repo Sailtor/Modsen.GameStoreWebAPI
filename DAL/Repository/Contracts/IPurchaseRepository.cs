@@ -1,4 +1,5 @@
-﻿using GameStoreWebAPI.Models;
+﻿using DAL.Models;
+using GameStoreWebAPI.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository.Contracts
 {
-    public interface IPlatformRepository : IRepository<Platform, int>
+    public interface IPurchaseRepository :IRepository<Purchase, CompoundKeyUserGame>
     {
     }
 }

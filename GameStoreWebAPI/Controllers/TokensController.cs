@@ -1,4 +1,5 @@
-﻿using GameStoreWebAPI.Models;
+﻿using DAL.Data;
+using GameStoreWebAPI.Models;
 using GameStoreWebAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

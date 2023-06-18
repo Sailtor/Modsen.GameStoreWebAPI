@@ -5,7 +5,9 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameStoreWebAPI", "GameStoreWebAPI.csproj", "{4B35132E-280A-42EA-8DD7-A650675B7ED6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "..\DAL\DAL.csproj", "{AC4FC73A-AC7C-4165-94E7-C91E2ADFDCAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "..\DAL\DAL.csproj", "{AC4FC73A-AC7C-4165-94E7-C91E2ADFDCAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "..\BLL\BLL.csproj", "{8E87FCDE-7604-43B1-AAE7-523E562269A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{AC4FC73A-AC7C-4165-94E7-C91E2ADFDCAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC4FC73A-AC7C-4165-94E7-C91E2ADFDCAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC4FC73A-AC7C-4165-94E7-C91E2ADFDCAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E87FCDE-7604-43B1-AAE7-523E562269A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E87FCDE-7604-43B1-AAE7-523E562269A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E87FCDE-7604-43B1-AAE7-523E562269A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E87FCDE-7604-43B1-AAE7-523E562269A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

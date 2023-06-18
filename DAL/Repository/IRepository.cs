@@ -2,9 +2,8 @@
 
 namespace DAL.Repository
 {
-    internal interface IRepository<TEntity,TId> 
+    public interface IRepository<TEntity,TId> 
         where TEntity : class 
-        where TId : class
     {
         Task<TEntity> GetAsync(TId id);
         Task<IEnumerable<TEntity>> GetAllAsync();
