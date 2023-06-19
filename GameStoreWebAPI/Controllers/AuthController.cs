@@ -1,13 +1,14 @@
-﻿using DAL.Data;
+﻿using BLL.Dtos.InDto;
+using BLL.Services.Contracts;
+using DAL.Data;
+using DAL.Models;
 using GameStoreWebAPI.Models;
-using GameStoreWebAPI.Models.Dtos.In;
-using GameStoreWebAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
-namespace GameStoreWebAPI.Controllers
+namespace API.Controllers
 {
     [Route("api/users")]
     [ApiController]

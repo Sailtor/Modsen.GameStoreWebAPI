@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GameStoreWebAPI.Models;
-using GameStoreWebAPI.Models.Dtos.In;
 using AutoMapper;
-using GameStoreWebAPI.Models.Dtos.Out;
 using Microsoft.AspNetCore.Authorization;
 using DAL.Data;
+using DAL.Models;
+using BLL.Dtos.InDto;
+using BLL.Dtos.OutDto;
 
-namespace GameStoreWebAPI.Controllers
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]
@@ -93,7 +93,7 @@ namespace GameStoreWebAPI.Controllers
             var mappedRoles = _mapper.Map<Role>(role);
             _context.Roles.Add(mappedRoles);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetRole", new { id = mappedRoles.Id }, _mapper.Map <Role, RoleForResponceDto>(mappedRoles));
+            return CreatedAtAction("GetRole", new { id = mappedRoles.Id }, _mapper.Map<Role, RoleForResponceDto>(mappedRoles));
         }
 
         // DELETE: api/Roles/5

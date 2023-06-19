@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace GameStoreWebAPI.Services
+namespace BLL.Services.Contracts
 {
     public interface ITokenService
     {

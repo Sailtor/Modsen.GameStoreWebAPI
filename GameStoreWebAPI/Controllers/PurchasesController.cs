@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GameStoreWebAPI.Models;
 using DAL.Data;
+using DAL.Models;
 
-namespace GameStoreWebAPI.Controllers
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -25,10 +25,10 @@ namespace GameStoreWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Purchase>>> GetPurchases()
         {
-          if (_context.Purchases == null)
-          {
-              return NotFound();
-          }
+            if (_context.Purchases == null)
+            {
+                return NotFound();
+            }
             return await _context.Purchases.ToListAsync();
         }
 
@@ -36,10 +36,10 @@ namespace GameStoreWebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Purchase>> GetPurchase(int id)
         {
-          if (_context.Purchases == null)
-          {
-              return NotFound();
-          }
+            if (_context.Purchases == null)
+            {
+                return NotFound();
+            }
             var purchase = await _context.Purchases.FindAsync(id);
 
             if (purchase == null)
@@ -86,10 +86,10 @@ namespace GameStoreWebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Purchase>> PostPurchase(Purchase purchase)
         {
-          if (_context.Purchases == null)
-          {
-              return Problem("Entity set 'GameStoreDBContext.Purchases'  is null.");
-          }
+            if (_context.Purchases == null)
+            {
+                return Problem("Entity set 'GameStoreDBContext.Purchases'  is null.");
+            }
             _context.Purchases.Add(purchase);
             try
             {

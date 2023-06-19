@@ -1,10 +1,11 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using BLL.Services.Contracts;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace GameStoreWebAPI.Services
+namespace BLL.Services.Implementation
 {
     public class TokenService : ITokenService
     {

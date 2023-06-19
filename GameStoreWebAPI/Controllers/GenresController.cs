@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GameStoreWebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
-using GameStoreWebAPI.Models.Dtos.Out;
-using GameStoreWebAPI.Models.Dtos.In;
 using DAL.Data;
+using BLL.Dtos.OutDto;
+using BLL.Dtos.InDto;
+using DAL.Models;
 
-namespace GameStoreWebAPI.Controllers
+namespace API.Controllers
 {
     [Route("api/genres")]
     [Authorize]
@@ -32,23 +32,23 @@ namespace GameStoreWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GenreForResponceDto>>> GetGenres()
         {
-          if (_context.Genres == null)
-          {
-              return NotFound();
-          }
+            if (_context.Genres == null)
+            {
+                return NotFound();
+            }
             return Ok(_mapper.Map<List<Genre>, List<GenreForResponceDto>>(await _context.Genres.ToListAsync()));
         }
 
         // GET: api/Genres/5
-        
+
         [HttpGet("{genreid}")]
-        
+
         public async Task<ActionResult<GenreForResponceDto>> GetGenre(int genreid)
         {
-          if (_context.Genres == null)
-          {
-              return NotFound();
-          }
+            if (_context.Genres == null)
+            {
+                return NotFound();
+            }
             var genre = await _context.Genres.FindAsync(genreid);
 
             if (genre == null)
@@ -63,7 +63,7 @@ namespace GameStoreWebAPI.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "1")]
         [HttpPut("{genreid}")]
-        public async Task<IActionResult> PutGenre(int genreid,GenreForCreationDto genre)
+        public async Task<IActionResult> PutGenre(int genreid, GenreForCreationDto genre)
         {
             if (genre is null)
             {

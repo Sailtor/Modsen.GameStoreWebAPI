@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GameStoreWebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
-using GameStoreWebAPI.Models.Dtos.Out;
-using GameStoreWebAPI.Models.Dtos.In;
 using AutoMapper;
 using DAL.Data;
+using BLL.Dtos.OutDto;
+using BLL.Dtos.InDto;
+using DAL.Models;
 
-namespace GameStoreWebAPI.Controllers
+namespace API.Controllers
 {
     [Route("api/platforms")]
     [Authorize]

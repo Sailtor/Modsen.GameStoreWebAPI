@@ -1,13 +1,14 @@
-﻿using DAL.Data;
+﻿using BLL.Services.Contracts;
+using DAL.Data;
+using DAL.Models;
 using GameStoreWebAPI.Models;
-using GameStoreWebAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace GameStoreWebAPI.Controllers
+namespace API.Controllers
 {
-    [Authorize (Roles = "1,2")]
+    [Authorize(Roles = "1,2")]
     [Route("api/users")]
     [ApiController]
     public class TokenController : ControllerBase

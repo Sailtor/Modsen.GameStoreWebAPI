@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GameStoreWebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
-using GameStoreWebAPI.Models.Dtos.Out;
-using GameStoreWebAPI.Models.Dtos.In;
 using DAL.Data;
+using BLL.Dtos.OutDto;
+using BLL.Dtos.InDto;
+using DAL.Models;
 
-namespace GameStoreWebAPI.Controllers
+namespace API.Controllers
 {
     [Route("api/games")]
     [Authorize]
@@ -51,7 +51,7 @@ namespace GameStoreWebAPI.Controllers
             return Ok(_mapper.Map<Game, GameForResponceDto>(game));
         }
 
-        [Authorize (Roles ="1")]
+        [Authorize(Roles = "1")]
         [HttpPost]
         public async Task<ActionResult<GameForResponceDto>> PostGame(GameForCreationDto game)
         {
@@ -72,7 +72,7 @@ namespace GameStoreWebAPI.Controllers
             return CreatedAtAction("GetGame", new { id = mappedGame.Id }, _mapper.Map<Game, GameForResponceDto>(mappedGame));
         }
 
-        [Authorize (Roles ="1")]
+        [Authorize(Roles = "1")]
         [HttpPut("{gameid}")]
         public async Task<IActionResult> PutGame(int gameid, GameForCreationDto game)
         {
@@ -98,7 +98,7 @@ namespace GameStoreWebAPI.Controllers
             return NoContent();
         }
 
-        [Authorize (Roles ="1")]
+        [Authorize(Roles = "1")]
         [HttpPut("{gameid}/genres/{genreid}")]
         public async Task<IActionResult> PutGenreInGame(int gameid, int genreid)
         {
@@ -107,7 +107,7 @@ namespace GameStoreWebAPI.Controllers
                 return BadRequest("Invalid model object");
             }
 
-            var gameEntity =  await _context.Games.FindAsync(gameid);
+            var gameEntity = await _context.Games.FindAsync(gameid);
             if (gameEntity is null)
             {
                 return NotFound();
@@ -125,7 +125,7 @@ namespace GameStoreWebAPI.Controllers
             return NoContent();
         }
 
-        [Authorize (Roles ="1")]
+        [Authorize(Roles = "1")]
         [HttpPut("{gameid}/platforms/{platformid}")]
         public async Task<IActionResult> PutPlatformInGame(int gameid, int platformid)
         {
@@ -153,7 +153,7 @@ namespace GameStoreWebAPI.Controllers
             return NoContent();
         }
 
-        [Authorize (Roles ="1")]
+        [Authorize(Roles = "1")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGame(int id)
         {
@@ -169,7 +169,7 @@ namespace GameStoreWebAPI.Controllers
             return NoContent();
         }
 
-        [Authorize (Roles ="1")]
+        [Authorize(Roles = "1")]
         [HttpDelete("{gameid}/genres/{genreid}")]
         public async Task<IActionResult> DeleteGenreFromGame(int gameid, int genreid)
         {
@@ -202,7 +202,7 @@ namespace GameStoreWebAPI.Controllers
             return NoContent();
         }
 
-        [Authorize (Roles ="1")]
+        [Authorize(Roles = "1")]
         [HttpDelete("{gameid}/platforms/{platformid}")]
         public async Task<IActionResult> DeletePlatformFromGame(int gameid, int platformid)
         {

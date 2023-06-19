@@ -1,5 +1,5 @@
-﻿using DAL.Repository.Contracts;
-using GameStoreWebAPI.Models;
+﻿using DAL.Models;
+using DAL.Repository.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repository.Impementation

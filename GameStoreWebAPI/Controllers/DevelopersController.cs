@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GameStoreWebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
-using GameStoreWebAPI.Models.Dtos.In;
 using AutoMapper;
-using GameStoreWebAPI.Models.Dtos.Out;
 using DAL.Data;
+using BLL.Dtos.OutDto;
+using DAL.Models;
+using BLL.Dtos.InDto;
 
-namespace GameStoreWebAPI.Controllers
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [Authorize]
@@ -33,10 +33,10 @@ namespace GameStoreWebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Developer>>> GetDevelopers()
         {
-          if (_context.Developers == null)
-          {
-              return NotFound();
-          }
+            if (_context.Developers == null)
+            {
+                return NotFound();
+            }
             return Ok(await _context.Developers.ToListAsync());
         }
 
@@ -45,10 +45,10 @@ namespace GameStoreWebAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Developer>> GetDeveloper(int id)
         {
-          if (_context.Developers == null)
-          {
-              return NotFound();
-          }
+            if (_context.Developers == null)
+            {
+                return NotFound();
+            }
             var developer = await _context.Developers.FindAsync(id);
 
             if (developer == null)
@@ -65,7 +65,7 @@ namespace GameStoreWebAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDeveloper(int developerid, DeveloperForCreationDto developer)
         {
-           
+
             var developerEntity = _context.Developers.Find(developerid);
             if (developerEntity is null)
             {
@@ -77,7 +77,7 @@ namespace GameStoreWebAPI.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-      
+
         }
 
         // POST: api/Developers
@@ -86,10 +86,10 @@ namespace GameStoreWebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Developer>> PostDeveloper(DeveloperForCreationDto developer)
         {
-          if (_context.Developers == null)
-          {
-              return Problem("Entity set 'GameStoreDBContext.Developers'  is null.");
-          }
+            if (_context.Developers == null)
+            {
+                return Problem("Entity set 'GameStoreDBContext.Developers'  is null.");
+            }
             var mappedDeveloper = _mapper.Map<Developer>(developer);
             _context.Developers.Add(mappedDeveloper);
             await _context.SaveChangesAsync();

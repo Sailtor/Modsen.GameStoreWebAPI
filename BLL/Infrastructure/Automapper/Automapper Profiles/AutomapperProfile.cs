@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using GameStoreWebAPI.Models.Dtos.In;
-using GameStoreWebAPI.Models.Dtos.Out;
+using BLL.Dtos.InDto;
+using BLL.Dtos.OutDto;
+using DAL.Models;
 
 namespace GameStoreWebAPI.Models
 {

@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GameStoreWebAPI.Models;
 using AutoMapper;
-using GameStoreWebAPI.Models.Dtos.Out;
-using GameStoreWebAPI.Models.Dtos.In;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using DAL.Data;
+using DAL.Models;
+using BLL.Dtos.InDto;
+using BLL.Dtos.OutDto;
 
-namespace GameStoreWebAPI.Controllers
+namespace API.Controllers
 {
     [Authorize]
     [Route("api")]
@@ -188,7 +188,7 @@ namespace GameStoreWebAPI.Controllers
                 return BadRequest("Invalid model object");
             }
 
-            if (HttpContext.User.FindFirstValue(ClaimTypes.Role)!= "1")
+            if (HttpContext.User.FindFirstValue(ClaimTypes.Role) != "1")
             {
                 int tokenUserId = Convert.ToInt32(HttpContext.User.FindFirstValue("UserID"));
 
