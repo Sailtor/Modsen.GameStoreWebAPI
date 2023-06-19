@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Data\Model configurations\" />
-    <Folder Include="Repository\UnitOfWork\" />
   </ItemGroup>
 
   <ItemGroup>
