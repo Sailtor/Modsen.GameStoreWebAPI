@@ -17,6 +17,6 @@ namespace DAL.Repository.UnitOfWork
         IReviewRepository Review { get; }
         IRoleRepository Role { get; }
         IUserRepository User { get; }
-        void Save();
+        Task SaveAsync();
     }
 }

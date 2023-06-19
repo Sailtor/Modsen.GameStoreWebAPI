@@ -92,11 +92,11 @@ namespace DAL.Repository.UnitOfWork
         }
         public UnitOfWork (GameStoreDBContext context)
         {
-            _context = _context;
+            _context = context;
         }
-        public void Save()
+        public async Task SaveAsync()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 }

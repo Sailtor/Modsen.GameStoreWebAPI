@@ -12,11 +12,11 @@ namespace DAL.Repository.Impementation
 
         public async Task<Game> GetByIdIncludeAsync(int gameid)
         {
-            return await _context.Set<Game>().
-                Include(g => g.Platforms).
-                Include(g => g.Genres).
-                Where(g => g.Id == gameid).
-                FirstOrDefaultAsync();
+            return await _context.Set<Game>()
+                                 .Include(g => g.Platforms)
+                                 .Include(g => g.Genres)
+                                 .Where(g => g.Id == gameid)
+                                 .FirstOrDefaultAsync();
         }
 
         /*

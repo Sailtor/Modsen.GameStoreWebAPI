@@ -12,6 +12,7 @@ using DAL.Data;
 using BLL.Dtos.OutDto;
 using BLL.Dtos.InDto;
 using DAL.Models;
+using BLL.Services.Contracts;
 
 namespace API.Controllers
 {
@@ -20,77 +21,36 @@ namespace API.Controllers
     [ApiController]
     public class PlatformsController : ControllerBase
     {
-        private readonly GameStoreDBContext _context;
+        private readonly IPlatformService _platformService;
         private readonly IMapper _mapper;
 
-        public PlatformsController(GameStoreDBContext context, IMapper mapper)
+        public PlatformsController(IPlatformService service, IMapper mapper)
         {
-            _context = context;
+            _platformService = service;
             _mapper = mapper;
         }
 
-        // GET: api/Platforms
         [HttpGet]
-        public async Task<ActionResult<List<Platform>>> GetPlatforms()
+        public async Task<ActionResult<List<PlatformForResponceDto>>> GetPlatforms()
         {
-            if (_context.Platforms == null)
-            {
-                return NotFound();
-            }
-            return Ok(_mapper.Map<List<Platform>, List<PlatformForResponceDto>>(await _context.Platforms.ToListAsync()));
+            return Ok(await _platformService.GetAllPlatformsAsync());
         }
 
-        // GET: api/Platforms/5
         [HttpGet("{platformid}")]
         public async Task<ActionResult<PlatformForResponceDto>> GetPlatform(int platformid)
         {
-            if (_context.Platforms == null)
-            {
-                return NotFound();
-            }
-
-            var platform = await _context.Platforms.FindAsync(platformid);
-
-            if (platform == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(_mapper.Map<Platform, PlatformForResponceDto>(platform));
+            return Ok(await _platformService.GetPlatformByIdAsync(platformid));
         }
 
-        // PUT: api/Platforms/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "1")]
         [HttpPut("{platformid}")]
         public async Task<IActionResult> PutPlatform(int platformid, PlatformForCreationDto platform)
         {
-            if (platform is null)
-            {
-                return BadRequest("Platform object is null");
-            }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Invalid model object");
-            }
-
-            var platformEntity = _context.Platforms.Find(platformid);
-            if (platformEntity is null)
-            {
-                return NotFound();
-            }
-
-            _mapper.Map(platform, platformEntity);
-            _context.Set<Platform>().Update(platformEntity);
-            await _context.SaveChangesAsync();
+            await _platformService.UpdatePlatformAsync(platformid, platform);
 
             return NoContent();
         }
 
-
-
-        // POST: api/Platforms
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [Authorize(Roles = "1")]
         [HttpPost]
         public async Task<ActionResult<List<PlatformForResponceDto>>> PostPlatform(PlatformForCreationDto platform)
