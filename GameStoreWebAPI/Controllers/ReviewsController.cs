@@ -11,6 +11,7 @@ using GameStoreWebAPI.Models.Dtos.Out;
 using GameStoreWebAPI.Models.Dtos.In;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using DAL.Data;
 
 namespace GameStoreWebAPI.Controllers
 {

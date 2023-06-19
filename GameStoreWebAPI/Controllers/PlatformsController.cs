@@ -11,6 +11,7 @@ using System.Data;
 using GameStoreWebAPI.Models.Dtos.Out;
 using GameStoreWebAPI.Models.Dtos.In;
 using AutoMapper;
+using DAL.Data;
 
 namespace GameStoreWebAPI.Controllers
 {

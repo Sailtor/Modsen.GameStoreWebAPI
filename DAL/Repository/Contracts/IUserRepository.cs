@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Repository.Contracts
 {
-    public interface IPlatformRepository : IRepository<Platform, int>
+    public interface IUserRepository : IRepository<User, int>
     {
     }
 }

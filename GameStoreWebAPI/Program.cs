@@ -1,4 +1,4 @@
-using GameStoreWebAPI.Models;
+using DAL.Data;
 using GameStoreWebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;

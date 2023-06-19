@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using GameStoreWebAPI.Models.Dtos.In;
 using AutoMapper;
 using GameStoreWebAPI.Models.Dtos.Out;
+using DAL.Data;
 
 namespace GameStoreWebAPI.Controllers
 {
