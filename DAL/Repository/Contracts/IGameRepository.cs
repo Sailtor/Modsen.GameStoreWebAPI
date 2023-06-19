@@ -9,6 +9,7 @@ namespace DAL.Repository.Contracts
 {
     public interface IGameRepository : IRepository<Game,int>
     {
+        public Task<Game> GetByIdIncludeAsync(int gameid);
         /*
         public void AddGameGenreAsync(int gameid, int genreid);
         public void AddGamePlatformAsync(int gameid, int platformid);

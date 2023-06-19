@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
-namespace DAL.Repository.Impementation
+namespace DAL.Repository
 {
-    public class RepositoryBase<TEntity,TId> : IRepository<TEntity,TId> where TEntity: class
+    public class RepositoryBase<TEntity, TId> : IRepository<TEntity, TId> where TEntity : class
     {
         protected readonly DbContext _context;
 
@@ -11,7 +11,7 @@ namespace DAL.Repository.Impementation
         {
             _context = context;
         }
-        
+
         public async Task<TEntity> GetByIdAsync(TId id)
         {
             return await _context.Set<TEntity>().FindAsync(id);

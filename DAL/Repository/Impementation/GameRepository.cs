@@ -9,6 +9,16 @@ namespace DAL.Repository.Impementation
         public GameRepository(DbContext context) : base(context)
         {
         }
+
+        public async Task<Game> GetByIdIncludeAsync(int gameid)
+        {
+            return await _context.Set<Game>().
+                Include(g => g.Platforms).
+                Include(g => g.Genres).
+                Where(g => g.Id == gameid).
+                FirstOrDefaultAsync();
+        }
+
         /*
         public async void AddGameGenreAsync(int gameid, int genreid)
         {

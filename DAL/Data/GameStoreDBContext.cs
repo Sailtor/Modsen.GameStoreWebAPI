@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using GameStoreWebAPI.Models;
+﻿using GameStoreWebAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
