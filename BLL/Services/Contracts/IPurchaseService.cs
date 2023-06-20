@@ -8,8 +8,8 @@ namespace BLL.Services.Contracts
     public interface IPurchaseService
     {
         public Task<IEnumerable<PurchaseForResponceDto>> GetUserPurchasesAsync(int userid);
-        public Task<PurchaseForResponceDto> GetUserPurchaseByIdAsync(int usergameid);
-        public Task AddUserPurchaseAsync(PurchaseForCreationDto purchase, int usergameid);
+        public Task<PurchaseForResponceDto> GetUserPurchaseByIdAsync(int userid , int gameid);
+        public Task AddUserPurchaseAsync(PurchaseForCreationDto purchase, int userid, int gameid);
         public Task DeleteUserPurchaseAsync(int usergameid);
     }
 }
