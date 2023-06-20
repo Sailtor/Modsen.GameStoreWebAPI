@@ -10,10 +10,9 @@ namespace BLL.Services.Contracts
         public Task AddGameAsync(GameForCreationDto game);
         public Task UpdateGameAsync(int gameid, GameForCreationDto game);
         public Task AddGameGenreAsync(int gameid, int genreid);
-        public Task AddGamePlatformAsync(int platformid, int gameid);
-
-        public Task DeleteGamePlatformAsync(int platformid, int gameid);
-        public Task DeleteGameGenreAsync(int genreid, int gameid);
+        public Task AddGamePlatformAsync(int gameid, int platformid);
+        public Task DeleteGamePlatformAsync(int gameid, int platformid);
+        public Task DeleteGameGenreAsync(int gameid, int genreid);
         public Task DeleteGameAsync(int gameid);
 
     }
