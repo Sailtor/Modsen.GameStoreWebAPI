@@ -14,7 +14,12 @@ namespace DAL.Repository
 
         public async Task<TEntity> GetByIdAsync(TId entityid)
         {
-            return await _context.Set<TEntity>().FindAsync(entityid);
+            var entity = await _context.Set<TEntity>().FindAsync(entityid);
+            if (entity is null)
+            {
+                throw new Exception("NotFound");
+            }
+            return entity;
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
@@ -24,7 +29,12 @@ namespace DAL.Repository
 
         public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await _context.Set<TEntity>().Where(predicate).ToListAsync();
+            var entities = await _context.Set<TEntity>().Where(predicate).ToListAsync();
+            if (entities is null)
+            {
+                throw new Exception("NotFound");
+            }
+            return entities;
         }
 
         public async Task AddAsync(TEntity entity)
@@ -35,6 +45,10 @@ namespace DAL.Repository
         public async Task Delete(TId entityid)
         {
             TEntity? entity = await _context.Set<TEntity>().FindAsync(entityid);
+            if (entity is null)
+            {
+                throw new Exception("NotFound");
+            }
             _context.Set<TEntity>().Remove(entity);
         }
     }
