@@ -9,8 +9,8 @@ namespace DAL.Repository
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity,bool>> predicate);
 
-        void AddAsync(TEntity entity);
-        void AddRangeAsync(IEnumerable<TEntity> entities);
+        Task AddAsync(TEntity entity);
+        Task AddRangeAsync(IEnumerable<TEntity> entities);
 
         void Delete(TEntity entity);
         void DeleteRange(IEnumerable<TEntity> entities);
