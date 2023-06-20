@@ -7,7 +7,7 @@ using DAL.Repository.UnitOfWork;
 
 namespace BLL.Services.Implementation
 {
-    internal class PlatformService : IPlatformService
+    public class PlatformService : IPlatformService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;

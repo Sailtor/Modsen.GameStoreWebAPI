@@ -1,21 +1,11 @@
-using BLL.Services.Contracts;
-using BLL.Services.Implementation;
-using DAL.Data;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+using API.Extentions;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -29,33 +19,14 @@ builder.Services.AddSwaggerGen(options =>
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.ConfigureMsSqlServerContext(builder.Configuration);
+builder.Services.ConfigureEntityServices();
+builder.Services.ConfigureUnitOfWork();
+builder.Services.ConfigureTokenService();
+builder.Services.ConfigureAuthentication(builder.Configuration);
+builder.Services.ConfigureAuthorization();
+builder.Services.ConfigureAutomapper();
 
-builder.Services.AddAuthorization();
-builder.Services.AddAuthentication(opt =>
-{
-    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-                .GetBytes(builder.Configuration.GetSection("Jwt Settings:Key").Value)),
-        };
-    });
-
-builder.Services.AddTransient<ITokenService, TokenService>();
-
-
-builder.Services.AddDbContext<GameStoreDBContext>(
-    opt => opt.UseSqlServer(
-        builder.Configuration.GetConnectionString("MS SQL Database")));
 
 var app = builder.Build();
 

@@ -1,18 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
-using System.Data;
-using AutoMapper;
-using DAL.Data;
+﻿using BLL.Dtos.InDto;
 using BLL.Dtos.OutDto;
-using BLL.Dtos.InDto;
-using DAL.Models;
 using BLL.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
@@ -22,12 +12,10 @@ namespace API.Controllers
     public class PlatformsController : ControllerBase
     {
         private readonly IPlatformService _platformService;
-        private readonly IMapper _mapper;
 
-        public PlatformsController(IPlatformService service, IMapper mapper)
+        public PlatformsController(IPlatformService service)
         {
             _platformService = service;
-            _mapper = mapper;
         }
 
         [HttpGet]
@@ -55,35 +43,15 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<List<PlatformForResponceDto>>> PostPlatform(PlatformForCreationDto platform)
         {
-            if (platform is null)
-            {
-                return BadRequest("Platform object is null");
-            }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Invalid model object");
-            }
-
-            var mappedPlatform = _mapper.Map<Platform>(platform);
-
-            _context.Platforms.Add(mappedPlatform);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPlatform", new { id = mappedPlatform.Id }, _mapper.Map<Platform, PlatformForResponceDto>(mappedPlatform));
+            await _platformService.AddPlatformAsync(platform);
+            return NoContent();
         }
 
-        // DELETE: api/Platforms/5
         [Authorize(Roles = "1")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePlatform(int id)
+        public async Task<IActionResult> DeletePlatform(int platformid)
         {
-            var dbPlatform = await _context.Platforms.FindAsync(id);
-            if (dbPlatform == null)
-                return BadRequest("Platform not found.");
-
-            _context.Platforms.Remove(dbPlatform);
-            await _context.SaveChangesAsync();
-
+            await _platformService.DeletePlatformAsync(platformid);
             return NoContent();
         }
     }
