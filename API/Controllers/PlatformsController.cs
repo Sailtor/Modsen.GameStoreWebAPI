@@ -48,7 +48,7 @@ namespace API.Controllers
         }
 
         [Authorize(Roles = "1")]
-        [HttpDelete("{id}")]
+        [HttpDelete("{platformid}")]
         public async Task<IActionResult> DeletePlatform(int platformid)
         {
             await _platformService.DeletePlatformAsync(platformid);
