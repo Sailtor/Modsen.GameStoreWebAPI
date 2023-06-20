@@ -12,9 +12,9 @@ namespace DAL.Repository
             _context = context;
         }
 
-        public async Task<TEntity> GetByIdAsync(TId id)
+        public async Task<TEntity> GetByIdAsync(TId entityid)
         {
-            return await _context.Set<TEntity>().FindAsync(id);
+            return await _context.Set<TEntity>().FindAsync(entityid);
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
@@ -32,19 +32,10 @@ namespace DAL.Repository
             await _context.Set<TEntity>().AddAsync(entity);
         }
 
-        public async Task AddRangeAsync(IEnumerable<TEntity> entities)
+        public async Task Delete(TId entityid)
         {
-            await _context.Set<TEntity>().AddRangeAsync(entities);
-        }
-
-        public void Delete(TEntity entity)
-        {
+            TEntity? entity = await _context.Set<TEntity>().FindAsync(entityid);
             _context.Set<TEntity>().Remove(entity);
-        }
-
-        public void DeleteRange(IEnumerable<TEntity> entities)
-        {
-            _context.Set<TEntity>().RemoveRange(entities);
         }
     }
 }

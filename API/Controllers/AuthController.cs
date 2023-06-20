@@ -2,7 +2,6 @@
 using BLL.Services.Contracts;
 using DAL.Data;
 using DAL.Models;
-using GameStoreWebAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
