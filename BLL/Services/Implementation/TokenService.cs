@@ -1,8 +1,6 @@
 ﻿using BLL.Exceptions;
 using BLL.Services.Contracts;
 using DAL.Models;
-using DAL.Repository.UnitOfWork;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
