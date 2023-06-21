@@ -67,7 +67,7 @@ namespace BLL.Services.Implementation
 
             var principal = GetPrincipalFromExpiredToken(accessToken, _configuration.GetRequiredSection("Jwt settings:Key").Value);
 
-            var userID = principal.FindFirst("UserID");
+            var userID = principal.FindFirst("UserID").Value;
             var user = await _userService.GetFullUserByIdAsync(Convert.ToInt32(userID));
 
             if (user is null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
@@ -91,7 +91,7 @@ namespace BLL.Services.Implementation
 
         public async Task RevokeTokenAsync(ClaimsPrincipal User)
         {
-            var userID = User.FindFirst("UserID");
+            var userID = User.FindFirst("UserID").Value;
             var user = await _userService.GetFullUserByIdAsync(Convert.ToInt32(userID));
 
             user.RefreshToken = null;
