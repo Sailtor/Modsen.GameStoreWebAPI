@@ -11,6 +11,7 @@ using DAL.Data;
 using BLL.Dtos.OutDto;
 using BLL.Dtos.InDto;
 using DAL.Models;
+using BLL.Services.Contracts;
 
 namespace API.Controllers
 {
@@ -19,16 +20,13 @@ namespace API.Controllers
     [ApiController]
     public class GenresController : ControllerBase
     {
-        private readonly GameStoreDBContext _context;
-        private readonly IMapper _mapper;
+        private readonly IGenreService _genreService;
 
-        public GenresController(GameStoreDBContext context, IMapper mapper)
+        public GenresController(IGenreService service)
         {
-            _context = context;
-            _mapper = mapper;
+            _genreService = service;
         }
 
-        // GET: api/Genres
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GenreForResponceDto>>> GetGenres()
         {
