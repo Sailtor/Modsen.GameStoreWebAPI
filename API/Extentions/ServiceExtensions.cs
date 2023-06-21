@@ -21,7 +21,14 @@ namespace API.Extentions
         public static void ConfigureEntityServices(this IServiceCollection services)
         {
             //Inject new services here
+            services.AddScoped<IDeveloperService, DeveloperService>();
+            services.AddScoped<IGameService, GameService>();
+            services.AddScoped<IGenreService, GenreService>();
             services.AddScoped<IPlatformService, PlatformService>();
+            services.AddScoped<IPurchaseService, PurchaseService>();
+            services.AddScoped<IReviewService, ReviewService>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IUserService, UserService>();
         }
         public static void ConfigureUnitOfWork(this IServiceCollection services)
         {
@@ -33,6 +40,7 @@ namespace API.Extentions
         }
         public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddScoped<IAuthService, AuthService>();
             services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
