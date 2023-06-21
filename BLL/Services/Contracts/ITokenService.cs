@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using DAL.Models;
+using System.Security.Claims;
 
 namespace BLL.Services.Contracts
 {
@@ -7,5 +8,7 @@ namespace BLL.Services.Contracts
         string GenerateAccessToken(IEnumerable<Claim> claims, string APIkey);
         string GenerateRefreshToken();
         ClaimsPrincipal GetPrincipalFromExpiredToken(string token, string APIkey);
+        Task<AuthenticatedResponse> RefreshTokenAsync(TokenApiModel tokenApiModel);
+        Task RevokeTokenAsync(ClaimsPrincipal User);
     }
 }

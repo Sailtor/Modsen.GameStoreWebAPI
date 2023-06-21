@@ -1,142 +1,84 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using DAL.Data;
-using BLL.Dtos.InDto;
-using DAL.Models;
+﻿using BLL.Dtos.InDto;
 using BLL.Dtos.OutDto;
+using BLL.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
     [Route("api/users")]
+    [Authorize]
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IMapper _mapper;
-        private readonly GameStoreDBContext _context;
+        private readonly IUserService _userService;
 
-        public UsersController(IMapper mapper, GameStoreDBContext context)
+        public UsersController(IUserService userService)
         {
-            _mapper = mapper;
-            _context = context;
+            _userService = userService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<UserForResponceDto>>> GetUsers()
+        {
+            return Ok(await _userService.GetAllUsersAsync());
+        }
+
+        [HttpGet("{userid}")]
+        public async Task<ActionResult<UserForResponceDto>> GetUser(int userid)
+        {
+            return Ok(await _userService.GetUserByIdAsync(userid));
+        }
+
+        [HttpPut("{userid}")]
+        public async Task<IActionResult> PutUser(int userid, UserForCreationDto userForCreation)
+        {
+            if (HttpContext.User.FindFirstValue(ClaimTypes.Role) != "1")
+            {
+                int tokenUserId = Convert.ToInt32(HttpContext.User.FindFirstValue("UserID"));
+
+                if (tokenUserId != userid)
+                {
+                    return Unauthorized();
+                }
+            }
+            await _userService.UpdateUserAsync(userForCreation, userid);
+            return NoContent();
+        }
+
+        [Authorize(Roles = "1")]
+        [HttpPut("{userid}/roles/{roleid}")]
+        public async Task<IActionResult> PutRoleInUser(int userid, int roleid)
+        {
+            await _userService.UpdateUserRoleAsync(userid, roleid);
+            return NoContent();
         }
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<ActionResult<UserForResponceDto>> Register(UserForCreationDto user)
-
+        public async Task<ActionResult<UserForResponceDto>> Register(UserForCreationDto userForCreation)
         {
-            _context.Users.Add(_mapper.Map<UserForCreationDto, User>(user));
-            await _context.SaveChangesAsync();
-
+            await _userService.RegisterUserAsync(userForCreation);
             return Ok();
         }
-        /* --- UNTOUCHED AUTO-(de)GENERATED CODE DOWN THERE --- */
 
-        // GET: api/Users
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        [HttpDelete("{userid}")]
+        public async Task<IActionResult> DeleteRole(int userid)
         {
-            if (_context.Users == null)
+            if (HttpContext.User.FindFirstValue(ClaimTypes.Role) != "1")
             {
-                return NotFound();
-            }
-            return await _context.Users.ToListAsync();
-        }
+                int tokenUserId = Convert.ToInt32(HttpContext.User.FindFirstValue("UserID"));
 
-        // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
-        {
-            if (_context.Users == null)
-            {
-                return NotFound();
-            }
-            var user = await _context.Users.FindAsync(id);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return user;
-        }
-
-        // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
-        {
-            if (id != user.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
+                if (tokenUserId != userid)
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
+                    return Unauthorized();
                 }
             }
-
+            await _userService.DeleteUserAsync(userid);
             return NoContent();
         }
 
-        // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
-        {
-            if (_context.Users == null)
-            {
-                return Problem("Entity set 'GameStoreDBContext.Users'  is null.");
-            }
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
-        }
-
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
-        {
-            if (_context.Users == null)
-            {
-                return NotFound();
-            }
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool UserExists(int id)
-        {
-            return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+        /* --- TOUCHED (de)GENERATED CODE UP THERE --- */
     }
 }

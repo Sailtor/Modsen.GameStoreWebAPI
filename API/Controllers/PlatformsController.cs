@@ -35,7 +35,6 @@ namespace API.Controllers
         public async Task<IActionResult> PutPlatform(int platformid, PlatformForCreationDto platform)
         {
             await _platformService.UpdatePlatformAsync(platformid, platform);
-
             return NoContent();
         }
 

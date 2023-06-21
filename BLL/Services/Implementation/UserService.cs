@@ -28,6 +28,11 @@ namespace BLL.Services.Implementation
             return _mapper.Map<UserForResponceDto>(await _unitOfWork.User.GetByIdAsync(userid));
         }
 
+        public async Task<User> GetFullUserByIdAsync(int userid)
+        {
+            return await _unitOfWork.User.GetByIdAsync(userid);
+        }
+
         public async Task RegisterUserAsync(UserForCreationDto user)
         {
             await _unitOfWork.User.AddAsync(_mapper.Map<User>(user));
@@ -51,6 +56,11 @@ namespace BLL.Services.Implementation
         {
             _ = await _unitOfWork.User.GetByIdAsync(userid);
             await _unitOfWork.User.Delete(userid);
+            await _unitOfWork.SaveAsync();
+        }
+
+        public async Task SaveAsync()
+        {
             await _unitOfWork.SaveAsync();
         }
     }
