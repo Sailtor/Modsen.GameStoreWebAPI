@@ -3,7 +3,7 @@ using DAL.Models;
 
 namespace BLL.Services.Contracts
 {
-    internal interface IAuthService
+    public interface IAuthService
     {
         Task<AuthenticatedResponse> Login(UserForLoginDto creds);
     }
