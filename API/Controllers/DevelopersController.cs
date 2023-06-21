@@ -13,9 +13,9 @@ namespace API.Controllers
     {
         private readonly IDeveloperService _developerService;
 
-        public DevelopersController(IDeveloperService service)
+        public DevelopersController(IDeveloperService developerService)
         {
-            _developerService = service;
+            _developerService = developerService;
         }
 
         [HttpGet]
