@@ -9,7 +9,7 @@ namespace BLL.Services.Contracts
         public Task<UserForResponceDto> GetUserByIdAsync(int userid);
         public Task RegisterUserAsync(UserForCreationDto user);
         public Task UpdateUserRoleAsync(int userid, int roleid);
-        public Task UpdateUserAsync(int userid);
+        public Task UpdateUserAsync(UserForCreationDto user, int userid);
         public Task DeleteUserAsync(int userid);
     }
 }
