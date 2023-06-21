@@ -1,4 +1,4 @@
-﻿using GameStoreWebAPI.Models;
+﻿using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 

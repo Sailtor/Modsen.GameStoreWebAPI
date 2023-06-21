@@ -5,14 +5,12 @@ namespace DAL.Repository
     public interface IRepository<TEntity,TId> 
         where TEntity : class 
     {
-        Task<TEntity> GetByIdAsync(TId id);
+        Task<TEntity> GetByIdAsync(TId entityid);
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity,bool>> predicate);
 
-        void AddAsync(TEntity entity);
-        void AddRangeAsync(IEnumerable<TEntity> entities);
+        Task AddAsync(TEntity entity);
 
-        void Delete(TEntity entity);
-        void DeleteRange(IEnumerable<TEntity> entities);
+        Task Delete(TId entityid);
     }
 }

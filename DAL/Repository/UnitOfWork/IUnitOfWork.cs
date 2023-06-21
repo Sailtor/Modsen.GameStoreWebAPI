@@ -1,9 +1,4 @@
 ﻿using DAL.Repository.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Repository.UnitOfWork
 {
@@ -17,6 +12,6 @@ namespace DAL.Repository.UnitOfWork
         IReviewRepository Review { get; }
         IRoleRepository Role { get; }
         IUserRepository User { get; }
-        void Save();
+        Task SaveAsync();
     }
 }

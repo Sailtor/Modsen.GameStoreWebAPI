@@ -1,4 +1,4 @@
-﻿namespace GameStoreWebAPI.Models
+﻿namespace DAL.Models
 {
     public class RefreshToken
     {

@@ -1,4 +1,4 @@
-﻿namespace GameStoreWebAPI.Models.Dtos.In
+﻿namespace BLL.Dtos.InDto
 {
     public class GameForCreationDto
     {

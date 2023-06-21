@@ -1,4 +1,4 @@
-﻿namespace GameStoreWebAPI.Models.Dtos.Out
+﻿namespace BLL.Dtos.OutDto
 {
     public class ReviewForResponceDto
     {
