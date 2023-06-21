@@ -37,20 +37,14 @@ namespace BLL.Services.Implementation
         public async Task UpdatePlatformAsync(int platformid, PlatformForCreationDto platformForUpdate)
         {
             var platform = await _unitOfWork.Platform.GetByIdAsync(platformid);
-            if (platform != null)
-            {
-                _mapper.Map(platformForUpdate, platform);
-                await _unitOfWork.SaveAsync();
-            }
+            _mapper.Map(platformForUpdate, platform);
+            await _unitOfWork.SaveAsync();
         }
         public async Task DeletePlatformAsync(int platformid)
         {
-            var platform = await _unitOfWork.Platform.GetByIdAsync(platformid);
-            if (platform != null)
-            {
-                await _unitOfWork.Platform.Delete(platformid);
-                await _unitOfWork.SaveAsync();
-            }
+            _ = await _unitOfWork.Platform.GetByIdAsync(platformid);
+            await _unitOfWork.Platform.Delete(platformid);
+            await _unitOfWork.SaveAsync();
         }
     }
 }

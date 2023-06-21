@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BLL.Exceptions;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace DAL.Repository
@@ -17,7 +18,7 @@ namespace DAL.Repository
             var entity = await _context.Set<TEntity>().FindAsync(entityid);
             if (entity is null)
             {
-                throw new Exception("NotFound");
+                throw new DatabaseNotFoundException();
             }
             return entity;
         }
@@ -32,7 +33,7 @@ namespace DAL.Repository
             var entities = await _context.Set<TEntity>().Where(predicate).ToListAsync();
             if (entities is null)
             {
-                throw new Exception("NotFound");
+                throw new DatabaseNotFoundException();
             }
             return entities;
         }
@@ -47,7 +48,7 @@ namespace DAL.Repository
             TEntity? entity = await _context.Set<TEntity>().FindAsync(entityid);
             if (entity is null)
             {
-                throw new Exception("NotFound");
+                throw new DatabaseNotFoundException();
             }
             _context.Set<TEntity>().Remove(entity);
         }
