@@ -12,6 +12,7 @@ namespace BLL.Infrastructure.Automapper.Automapper_Profiles
             CreateMap<UserForCreationDto, User>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(scr => 0))
                 .ForMember(dest => dest.RoleId, opt => opt.MapFrom(scr => 2));
+            CreateMap<UserForUpdateDto, User>();
             CreateMap<User, UserForResponceDto>();
         }
     }

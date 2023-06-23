@@ -47,15 +47,15 @@ namespace BLL.Services.Implementation
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task UpdateUserReviewAsync(int userid, int gameid, ReviewForCreationDto reviewForCreation)
+        public async Task UpdateUserReviewAsync(ReviewForUpdateDto reviewForUpdate)
         {
             CompoundKeyUserGame key = new()
             {
-                UserId = userid,
-                GameId = gameid
+                UserId = reviewForUpdate.UserId,
+                GameId = reviewForUpdate.GameId
             };
             Review review = await _unitOfWork.Review.GetByIdAsync(key);
-            _mapper.Map(reviewForCreation, review);
+            _mapper.Map(reviewForUpdate, review);
             await _unitOfWork.SaveAsync();
         }
 

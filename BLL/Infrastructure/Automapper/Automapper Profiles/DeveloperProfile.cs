@@ -10,6 +10,7 @@ namespace BLL.Infrastructure.Automapper.Automapper_Profiles
         public DeveloperProfile()
         {
             CreateMap<DeveloperForCreationDto, Developer>();
+            CreateMap<DeveloperForUpdateDto, Developer>();
             CreateMap<Developer, DeveloperForResponceDto>();
         }
     }

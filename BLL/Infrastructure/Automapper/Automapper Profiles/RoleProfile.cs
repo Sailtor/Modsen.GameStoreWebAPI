@@ -10,6 +10,7 @@ namespace BLL.Infrastructure.Automapper.Automapper_Profiles
         public RoleProfile()
         {
             CreateMap<RoleForCreationDto, Role>();
+            CreateMap<RoleForUpdateDto, Role>();
             CreateMap<Role, RoleForResponceDto>();
         }
     }

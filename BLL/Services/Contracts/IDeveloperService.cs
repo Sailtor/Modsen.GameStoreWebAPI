@@ -8,7 +8,7 @@ namespace BLL.Services.Contracts
         Task<IEnumerable<DeveloperForResponceDto>> GetAllDevelopersAsync();
         Task<DeveloperForResponceDto> GetDeveloperByIdAsync(int developerid);
         Task AddDeveloperAsync(DeveloperForCreationDto developer);
-        Task UpdateDeveloperAsync(int developerid, DeveloperForCreationDto developer);
+        Task UpdateDeveloperAsync(DeveloperForUpdateDto developerForUpdate);
         Task DeleteDeveloperAsync(int developerid);
     }
 }

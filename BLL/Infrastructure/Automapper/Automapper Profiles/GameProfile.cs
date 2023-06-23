@@ -10,7 +10,7 @@ namespace BLL.Infrastructure.Automapper.Automapper_Profiles
         public GameProfile()
         {
             CreateMap<GameForCreationDto, Game>();
-            //.ForMember(dest => dest.Id, opt => opt.MapFrom(scr => 0));
+            CreateMap<GameForUpdateDto, Game>();
             CreateMap<Game, GameForResponceDto>()
                 .ForMember(dest => dest.Score, opt => opt.MapFrom((src, dest, score) =>
                 {

@@ -10,6 +10,7 @@ namespace BLL.Infrastructure.Automapper.Automapper_Profiles
         public PlatformProfile()
         {
             CreateMap<PlatformForCreationDto, Platform>();
+            CreateMap<PlatformForUpdateDto, Platform>();
             CreateMap<Platform, PlatformForResponceDto>();
         }
     }

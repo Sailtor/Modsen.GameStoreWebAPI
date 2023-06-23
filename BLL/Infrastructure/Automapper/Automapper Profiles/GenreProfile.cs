@@ -10,6 +10,7 @@ namespace BLL.Infrastructure.Automapper.Automapper_Profiles
         public GenreProfile()
         {
             CreateMap<GenreForCreationDto, Genre>();
+            CreateMap<GenreForUpdateDto, Genre>();
             CreateMap<Genre, GenreForResponceDto>();
         }
     }

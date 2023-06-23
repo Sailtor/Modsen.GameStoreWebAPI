@@ -38,10 +38,10 @@ namespace BLL.Services.Implementation
             await _unitOfWork.User.AddAsync(_mapper.Map<User>(user));
         }
 
-        public async Task UpdateUserAsync(UserForCreationDto user, int userid)
+        public async Task UpdateUserAsync(UserForUpdateDto userForUpdate)
         {
-            User userEntity = await _unitOfWork.User.GetByIdAsync(userid);
-            _mapper.Map(userEntity, user);
+            User user = await _unitOfWork.User.GetByIdAsync(userForUpdate.Id);
+            _mapper.Map(userForUpdate, user);
             await _unitOfWork.SaveAsync();
         }
 

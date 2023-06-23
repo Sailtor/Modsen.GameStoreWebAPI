@@ -8,7 +8,7 @@ namespace BLL.Services.Contracts
         Task<IEnumerable<PlatformForResponceDto>> GetAllPlatformsAsync();
         Task<PlatformForResponceDto> GetPlatformByIdAsync(int platformid);
         Task AddPlatformAsync(PlatformForCreationDto platform);
-        Task UpdatePlatformAsync(int platformid, PlatformForCreationDto platform);
+        Task UpdatePlatformAsync(PlatformForUpdateDto platformForUpdate);
         Task DeletePlatformAsync(int platformid);
     }
 }
