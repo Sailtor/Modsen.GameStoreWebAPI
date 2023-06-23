@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Execution;
 using BLL.Dtos.InDto;
 using BLL.Dtos.OutDto;
 using DAL.Models;
@@ -11,17 +12,8 @@ namespace BLL.Infrastructure.Automapper.Automapper_Profiles
         {
             CreateMap<GameForCreationDto, Game>();
             CreateMap<GameForUpdateDto, Game>();
-            CreateMap<Game, GameForResponceDto>();
-                /*.ForMember(dest => dest.Score, opt => opt.MapFrom((src, dest, score) =>
-                {
-                    byte intermScore = 0;
-                    foreach (Review review in src.Reviews)
-                    {
-                        intermScore += review.Score;
-                    }
-                    intermScore /= src.Reviews.Count;
-                }
-                ));*/
+            CreateMap<Game, GameForResponceDto>()
+                .ForMember(dest => dest.Score, opt => opt.MapFrom<GameScoreValueResolver>());
         }
     }
 }

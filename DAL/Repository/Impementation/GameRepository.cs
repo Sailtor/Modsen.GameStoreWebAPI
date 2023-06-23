@@ -16,6 +16,7 @@ namespace DAL.Repository.Impementation
             var game = await _context.Set<Game>()
                                  .Include(g => g.Platforms)
                                  .Include(g => g.Genres)
+                                 .Include(g => g.Reviews)
                                  .Where(g => g.Id == gameid)
                                  .FirstOrDefaultAsync();
             if (game is null)

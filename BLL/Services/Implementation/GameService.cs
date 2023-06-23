@@ -24,7 +24,7 @@ namespace BLL.Services.Implementation
 
         public async Task<GameForResponceDto> GetGameByIdAsync(int gameid)
         {
-            return _mapper.Map<GameForResponceDto>(await _unitOfWork.Game.GetByIdAsync(gameid));
+            return _mapper.Map<GameForResponceDto>(await _unitOfWork.Game.GetByIdIncludeAsync(gameid));
         }
 
         public async Task AddGameAsync(GameForCreationDto gameForCreation)
