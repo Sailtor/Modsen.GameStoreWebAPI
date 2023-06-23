@@ -31,10 +31,10 @@ namespace API.Controllers
         }
 
         [Authorize(Roles = "1")]
-        [HttpPut("{platformid}")]
-        public async Task<IActionResult> PutPlatform(int platformid, PlatformForCreationDto platform)
+        [HttpPut]
+        public async Task<IActionResult> PutPlatform(PlatformForUpdateDto platformForUpdate)
         {
-            await _platformService.UpdatePlatformAsync(platformid, platform);
+            await _platformService.UpdatePlatformAsync(platformForUpdate);
             return NoContent();
         }
 

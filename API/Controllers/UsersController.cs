@@ -31,19 +31,19 @@ namespace API.Controllers
             return Ok(await _userService.GetUserByIdAsync(userid));
         }
 
-        [HttpPut("{userid}")]
-        public async Task<IActionResult> PutUser(int userid, UserForCreationDto userForCreation)
+        [HttpPut]
+        public async Task<IActionResult> PutUser(UserForUpdateDto userForUpdate)
         {
             if (HttpContext.User.FindFirstValue(ClaimTypes.Role) != "1")
             {
                 int tokenUserId = Convert.ToInt32(HttpContext.User.FindFirstValue("UserID"));
 
-                if (tokenUserId != userid)
+                if (tokenUserId != userForUpdate.Id)
                 {
                     return Unauthorized();
                 }
             }
-            await _userService.UpdateUserAsync(userForCreation, userid);
+            await _userService.UpdateUserAsync(userForUpdate);
             return NoContent();
         }
 

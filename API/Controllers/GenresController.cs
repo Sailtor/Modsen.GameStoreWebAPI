@@ -40,10 +40,10 @@ namespace API.Controllers
         }
 
         [Authorize(Roles = "1")]
-        [HttpPut("{genreid}")]
-        public async Task<IActionResult> PutGenre(int genreid, GenreForCreationDto genreForCreation)
+        [HttpPut]
+        public async Task<IActionResult> PutGenre(GenreForUpdateDto genreForUpdate)
         {
-            await _genreService.UpdateGenreAsync(genreid, genreForCreation);
+            await _genreService.UpdateGenreAsync(genreForUpdate);
             return NoContent();
         }
 

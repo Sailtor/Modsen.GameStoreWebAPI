@@ -54,19 +54,19 @@ namespace API.Controllers
             return NoContent();
         }
 
-        [HttpPut("users/{userid}/reviews/{gameid}")]
-        public async Task<IActionResult> PutUserReviewForGame(int userid, int gameid, ReviewForCreationDto reviewForCreation)
+        [HttpPut("reviews")]
+        public async Task<IActionResult> PutUserReviewForGame(ReviewForUpdateDto reviewForUpdate)
         {
             if (HttpContext.User.FindFirstValue(ClaimTypes.Role) != "1")
             {
                 int tokenUserId = Convert.ToInt32(HttpContext.User.FindFirstValue("UserID"));
 
-                if (tokenUserId != userid)
+                if (tokenUserId != reviewForUpdate.UserId)
                 {
                     return Unauthorized();
                 }
             }
-            await _reviewService.UpdateUserReviewAsync(userid, gameid, reviewForCreation);
+            await _reviewService.UpdateUserReviewAsync(reviewForUpdate);
             return NoContent();
         }
 
