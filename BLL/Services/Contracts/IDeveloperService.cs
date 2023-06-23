@@ -5,10 +5,10 @@ namespace BLL.Services.Contracts
 {
     public interface IDeveloperService
     {
-        public Task<IEnumerable<DeveloperForResponceDto>> GetAllDevelopersAsync();
-        public Task<DeveloperForResponceDto> GetDeveloperByIdAsync(int developerid);
-        public Task AddDeveloperAsync(DeveloperForCreationDto developer);
-        public Task UpdateDeveloperAsync(int developerid, DeveloperForCreationDto developer);
-        public Task DeleteDeveloperAsync(int developerid);
+        Task<IEnumerable<DeveloperForResponceDto>> GetAllDevelopersAsync();
+        Task<DeveloperForResponceDto> GetDeveloperByIdAsync(int developerid);
+        Task AddDeveloperAsync(DeveloperForCreationDto developer);
+        Task UpdateDeveloperAsync(int developerid, DeveloperForCreationDto developer);
+        Task DeleteDeveloperAsync(int developerid);
     }
 }

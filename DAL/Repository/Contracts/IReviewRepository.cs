@@ -4,7 +4,7 @@ namespace DAL.Repository.Contracts
 {
     public interface IReviewRepository : IRepository<Review, CompoundKeyUserGame>
     {
-        public Task<IEnumerable<Review>> GetGameReviewsAsync(int gameid);
-        public Task<IEnumerable<Review>> GetUserReviewsAsync(int userid);
+        Task<IEnumerable<Review>> GetGameReviewsAsync(int gameid);
+        Task<IEnumerable<Review>> GetUserReviewsAsync(int userid);
     }
 }

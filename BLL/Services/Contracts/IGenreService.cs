@@ -5,10 +5,10 @@ namespace BLL.Services.Contracts
 {
     public interface IGenreService
     {
-        public Task<IEnumerable<GenreForResponceDto>> GetAllGenresAsync();
-        public Task<GenreForResponceDto> GetGenreByIdAsync(int genreid);
-        public Task AddGenreAsync(GenreForCreationDto genre);
-        public Task UpdateGenreAsync(int genreid, GenreForCreationDto genre);
-        public Task DeleteGenreAsync(int genreid);
+        Task<IEnumerable<GenreForResponceDto>> GetAllGenresAsync();
+        Task<GenreForResponceDto> GetGenreByIdAsync(int genreid);
+        Task AddGenreAsync(GenreForCreationDto genre);
+        Task UpdateGenreAsync(int genreid, GenreForCreationDto genre);
+        Task DeleteGenreAsync(int genreid);
     }
 }

@@ -5,10 +5,10 @@ namespace BLL.Services.Contracts
 {
     public interface IPlatformService
     {
-        public Task<IEnumerable<PlatformForResponceDto>> GetAllPlatformsAsync();
-        public Task<PlatformForResponceDto> GetPlatformByIdAsync(int platformid);
-        public Task AddPlatformAsync(PlatformForCreationDto platform);
-        public Task UpdatePlatformAsync(int platformid, PlatformForCreationDto platform);
-        public Task DeletePlatformAsync(int platformid);
+        Task<IEnumerable<PlatformForResponceDto>> GetAllPlatformsAsync();
+        Task<PlatformForResponceDto> GetPlatformByIdAsync(int platformid);
+        Task AddPlatformAsync(PlatformForCreationDto platform);
+        Task UpdatePlatformAsync(int platformid, PlatformForCreationDto platform);
+        Task DeletePlatformAsync(int platformid);
     }
 }

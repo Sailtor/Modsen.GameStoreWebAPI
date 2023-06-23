@@ -5,10 +5,10 @@ namespace BLL.Services.Contracts
 {
     public interface IRoleService
     {
-        public Task<IEnumerable<RoleForResponceDto>> GetAllRolesAsync();
-        public Task<RoleForResponceDto> GetRoleByIdAsync(int roleid);
-        public Task AddRoleAsync(RoleForCreationDto role);
-        public Task UpdateRoleAsync(int roleid, RoleForCreationDto role);
-        public Task DeleteRoleAsync(int roleid);
+        Task<IEnumerable<RoleForResponceDto>> GetAllRolesAsync();
+        Task<RoleForResponceDto> GetRoleByIdAsync(int roleid);
+        Task AddRoleAsync(RoleForCreationDto role);
+        Task UpdateRoleAsync(int roleid, RoleForCreationDto role);
+        Task DeleteRoleAsync(int roleid);
     }
 }
