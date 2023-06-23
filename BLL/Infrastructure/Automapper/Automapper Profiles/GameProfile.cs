@@ -11,8 +11,8 @@ namespace BLL.Infrastructure.Automapper.Automapper_Profiles
         {
             CreateMap<GameForCreationDto, Game>();
             CreateMap<GameForUpdateDto, Game>();
-            CreateMap<Game, GameForResponceDto>()
-                .ForMember(dest => dest.Score, opt => opt.MapFrom((src, dest, score) =>
+            CreateMap<Game, GameForResponceDto>();
+                /*.ForMember(dest => dest.Score, opt => opt.MapFrom((src, dest, score) =>
                 {
                     byte intermScore = 0;
                     foreach (Review review in src.Reviews)
@@ -21,7 +21,7 @@ namespace BLL.Infrastructure.Automapper.Automapper_Profiles
                     }
                     intermScore /= src.Reviews.Count;
                 }
-                ));
+                ));*/
         }
     }
 }

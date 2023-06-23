@@ -1,4 +1,4 @@
-﻿using BLL.Exceptions;
+﻿using DAL.Exceptions;
 using DAL.Models;
 using DAL.Repository.Contracts;
 using Microsoft.EntityFrameworkCore;

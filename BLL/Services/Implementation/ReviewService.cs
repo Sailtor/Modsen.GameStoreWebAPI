@@ -20,12 +20,12 @@ namespace BLL.Services.Implementation
 
         public async Task<IEnumerable<ReviewForResponceDto>> GetUserReviewsByIdAsync(int userid)
         {
-            return _mapper.Map<IEnumerable<ReviewForResponceDto>>(await _unitOfWork.Purchase.FindAsync(p => p.UserId == userid));
+            return _mapper.Map<IEnumerable<ReviewForResponceDto>>(await _unitOfWork.Review.FindAsync(p => p.UserId == userid));
         }
 
         public async Task<IEnumerable<ReviewForResponceDto>> GetGameReviewsByIdAsync(int gameid)
         {
-            return _mapper.Map<IEnumerable<ReviewForResponceDto>>(await _unitOfWork.Purchase.FindAsync(p => p.GameId == gameid));
+            return _mapper.Map<IEnumerable<ReviewForResponceDto>>(await _unitOfWork.Review.FindAsync(p => p.GameId == gameid));
         }
 
         public async Task<ReviewForResponceDto> GetGameReviewByIdAsync(int gameid, int userid)

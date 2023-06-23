@@ -1,4 +1,4 @@
-﻿namespace BLL.Exceptions
+﻿namespace DAL.Exceptions
 {
     public class DatabaseNotFoundException : Exception
     {
