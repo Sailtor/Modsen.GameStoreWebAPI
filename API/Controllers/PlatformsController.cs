@@ -3,6 +3,7 @@ using BLL.Dtos.OutDto;
 using BLL.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Controllers
 {
@@ -42,7 +43,22 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<List<PlatformForResponceDto>>> PostPlatform(PlatformForCreationDto platform)
         {
-            await _platformService.AddPlatformAsync(platform);
+            var context = new ValidationContext(platform);
+            var results = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(platform, context, results, true))
+            {
+                Console.WriteLine("Failed to create Platform object");
+                foreach (var error in results)
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
+                Console.WriteLine();
+            }
+            else
+            {
+                await _platformService.AddPlatformAsync(platform);
+            }
+            
             return NoContent();
         }
 
