@@ -36,6 +36,7 @@ namespace BLL.Services.Implementation
         public async Task RegisterUserAsync(UserForCreationDto user)
         {
             await _unitOfWork.User.AddAsync(_mapper.Map<User>(user));
+            await _unitOfWork.SaveAsync();
         }
 
         public async Task UpdateUserAsync(UserForUpdateDto userForUpdate)
@@ -48,8 +49,8 @@ namespace BLL.Services.Implementation
         public async Task UpdateUserRoleAsync(int userid, int roleid)
         {
             User userEntity = await _unitOfWork.User.GetByIdAsync(userid);
-            Role roleEntity = await _unitOfWork.Role.GetByIdAsync(userid);
-            userEntity.Role = roleEntity;
+            Role roleEntity = await _unitOfWork.Role.GetByIdAsync(roleid);
+            userEntity.RoleId = roleEntity.Id;
             await _unitOfWork.SaveAsync();
         }
         public async Task DeleteUserAsync(int userid)

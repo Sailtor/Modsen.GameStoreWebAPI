@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repository.Impementation
 {
-    public class ReviewRepository : RepositoryBase<Review, CompoundKeyUserGame>, IReviewRepository
+    public class ReviewRepository : RepositoryBase<Review, int>, IReviewRepository
     {
         public ReviewRepository(DbContext context) : base(context)
         {

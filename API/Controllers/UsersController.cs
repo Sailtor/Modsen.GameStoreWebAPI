@@ -53,7 +53,7 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<ActionResult<UserForResponceDto>> Register(UserForCreationDto userForCreation)
+        public async Task<ActionResult> Register(UserForCreationDto userForCreation)
         {
             await _userService.RegisterUserAsync(userForCreation);
             return Ok();

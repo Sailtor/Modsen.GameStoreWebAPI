@@ -2,7 +2,7 @@
 
 namespace DAL.Repository.Contracts
 {
-    public interface IPurchaseRepository :IRepository<Purchase, CompoundKeyUserGame>
+    public interface IPurchaseRepository :IRepository<Purchase, int>
     {
     }
 }

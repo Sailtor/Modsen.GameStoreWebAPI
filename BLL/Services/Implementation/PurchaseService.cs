@@ -25,12 +25,7 @@ namespace BLL.Services.Implementation
 
         public async Task<PurchaseForResponceDto> GetUserPurchaseByIdAsync(int gameid, int userid)
         {
-            CompoundKeyUserGame key = new()
-            {
-                UserId = userid,
-                GameId = gameid
-            };
-            return _mapper.Map<PurchaseForResponceDto>(await _unitOfWork.Purchase.GetByIdAsync(key));
+            return _mapper.Map<PurchaseForResponceDto>(await _unitOfWork.Purchase.GetByIdAsync(userid, gameid));
         }
 
         public async Task AddUserPurchaseAsync(PurchaseForCreationDto purchaseForCreation, int gameid, int userid)
@@ -44,13 +39,8 @@ namespace BLL.Services.Implementation
 
         public async Task DeleteUserPurchaseAsync(int gameid, int userid)
         {
-            CompoundKeyUserGame key = new()
-            {
-                UserId = userid,
-                GameId = gameid
-            };
-            _ = await _unitOfWork.Purchase.GetByIdAsync(key);
-            await _unitOfWork.Purchase.Delete(key);
+            _ = await _unitOfWork.Purchase.GetByIdAsync(gameid, userid);
+            await _unitOfWork.Purchase.Delete(userid, gameid);
             await _unitOfWork.SaveAsync();
         }
     }

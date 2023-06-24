@@ -30,12 +30,7 @@ namespace BLL.Services.Implementation
 
         public async Task<ReviewForResponceDto> GetGameReviewByIdAsync(int gameid, int userid)
         {
-            CompoundKeyUserGame key = new()
-            {
-                UserId = userid,
-                GameId = gameid
-            };
-            return _mapper.Map<ReviewForResponceDto>(await _unitOfWork.Review.GetByIdAsync(key));
+            return _mapper.Map<ReviewForResponceDto>(await _unitOfWork.Review.GetByIdAsync(userid, gameid));
         }
 
         public async Task AddUserReviewAsync(int userid, int gameid, ReviewForCreationDto reviewForCreation)
@@ -49,25 +44,16 @@ namespace BLL.Services.Implementation
 
         public async Task UpdateUserReviewAsync(ReviewForUpdateDto reviewForUpdate)
         {
-            CompoundKeyUserGame key = new()
-            {
-                UserId = reviewForUpdate.UserId,
-                GameId = reviewForUpdate.GameId
-            };
-            Review review = await _unitOfWork.Review.GetByIdAsync(key);
+            Review review = await _unitOfWork.Review.GetByIdAsync(reviewForUpdate.UserId, reviewForUpdate.GameId);
             _mapper.Map(reviewForUpdate, review);
             await _unitOfWork.SaveAsync();
         }
 
         public async Task DeleteUserReviewAsync(int userid, int gameid)
         {
-            CompoundKeyUserGame key = new()
-            {
-                UserId = userid,
-                GameId = gameid
-            };
-            _ = await _unitOfWork.Review.GetByIdAsync(key);
-            await _unitOfWork.Review.Delete(key);
+            _ = await _unitOfWork.Review.GetByIdAsync(userid, gameid);
+            await _unitOfWork.Review.Delete(userid, gameid);
+            await _unitOfWork.SaveAsync();
         }
     }
 }
