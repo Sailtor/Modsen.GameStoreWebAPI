@@ -36,20 +36,14 @@ namespace BLL.Services.Implementation
         public async Task UpdateGameAsync(GameForUpdateDto gameForUpdate)
         {
             Game game = await _unitOfWork.Game.GetByIdAsync(gameForUpdate.Id);
-            if (game != null)
-            {
-                _mapper.Map(gameForUpdate, game);
-                await _unitOfWork.SaveAsync();
-            }
+            _mapper.Map(gameForUpdate, game);
+            await _unitOfWork.SaveAsync();
         }
         public async Task DeleteGameAsync(int gameid)
         {
-            Game game = await _unitOfWork.Game.GetByIdAsync(gameid);
-            if (game != null)
-            {
-                await _unitOfWork.Game.Delete(gameid);
-                await _unitOfWork.SaveAsync();
-            }
+            _ = await _unitOfWork.Game.GetByIdAsync(gameid);
+            await _unitOfWork.Game.Delete(gameid);
+            await _unitOfWork.SaveAsync();
         }
 
         public async Task AddGameGenreAsync(int gameid, int genreid)

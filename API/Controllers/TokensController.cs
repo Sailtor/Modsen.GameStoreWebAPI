@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Authorize]
     [Route("api/users")]
     [ApiController]
     public class TokenController : ControllerBase
@@ -19,12 +18,12 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("refreshtoken")]
-        public async Task<IActionResult> RefreshToken(TokenApiModel tokenApiModel)
+        public async Task<ActionResult<AuthenticatedResponse>> RefreshToken(TokenApiModel tokenApiModel)
         {
-            await _tokenService.RefreshTokenAsync(tokenApiModel);
-            return Ok();
+            return Ok(await _tokenService.RefreshTokenAsync(tokenApiModel));
         }
 
+        [Authorize]
         [HttpPost]
         [Route("revoketoken")]
         public async Task<IActionResult> RevokeToken()

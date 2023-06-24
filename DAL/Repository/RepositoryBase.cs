@@ -23,6 +23,16 @@ namespace DAL.Repository
             return entity;
         }
 
+        public async Task<TEntity> GetByIdAsync(TId entityid, TId entityid2)
+        {
+            var entity = await _context.Set<TEntity>().FindAsync(entityid,entityid2);
+            if (entity is null)
+            {
+                throw new DatabaseNotFoundException();
+            }
+            return entity;
+        }
+
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             return await _context.Set<TEntity>().ToListAsync();
@@ -46,6 +56,16 @@ namespace DAL.Repository
         public async Task Delete(TId entityid)
         {
             TEntity? entity = await _context.Set<TEntity>().FindAsync(entityid);
+            if (entity is null)
+            {
+                throw new DatabaseNotFoundException();
+            }
+            _context.Set<TEntity>().Remove(entity);
+        }
+
+        public async Task Delete(TId entityid, TId entityid2)
+        {
+            TEntity? entity = await _context.Set<TEntity>().FindAsync(entityid, entityid2);
             if (entity is null)
             {
                 throw new DatabaseNotFoundException();
