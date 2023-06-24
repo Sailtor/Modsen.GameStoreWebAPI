@@ -24,6 +24,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     builder.Configuration.AddUserSecrets<Program>();
 }
+app.UseExceptionHandlerMiddleware();
 
 app.UseHttpsRedirection();
 

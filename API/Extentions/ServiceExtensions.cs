@@ -1,4 +1,5 @@
-﻿using BLL.Services.Contracts;
+﻿using API.Middleware.Exception_Handler;
+using BLL.Services.Contracts;
 using BLL.Services.Implementation;
 using DAL.Data;
 using DAL.Repository.UnitOfWork;
@@ -82,6 +83,12 @@ namespace API.Extentions
                 });
                 options.OperationFilter<SecurityRequirementsOperationFilter>();
             });
+        }
+
+        /* --- CUSTOM MIDDLEWARE --- */
+        public static void UseExceptionHandlerMiddleware(this IApplicationBuilder app)
+        {
+            app.UseMiddleware<ExceptionHandlerMiddleware>();
         }
     }
 }

@@ -25,7 +25,7 @@ namespace DAL.Repository
 
         public async Task<TEntity> GetByIdAsync(TId entityid, TId entityid2)
         {
-            var entity = await _context.Set<TEntity>().FindAsync(entityid,entityid2);
+            var entity = await _context.Set<TEntity>().FindAsync(entityid, entityid2);
             if (entity is null)
             {
                 throw new DatabaseNotFoundException();
@@ -50,7 +50,12 @@ namespace DAL.Repository
 
         public async Task AddAsync(TEntity entity)
         {
+            if (_context.Set<TEntity>().Contains(entity))
+            {
+                throw new EntityAlreadyExistsException();
+            }
             await _context.Set<TEntity>().AddAsync(entity);
+            
         }
 
         public async Task Delete(TId entityid)

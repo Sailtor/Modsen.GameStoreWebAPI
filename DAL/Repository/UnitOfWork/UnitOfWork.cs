@@ -1,6 +1,8 @@
 ﻿using DAL.Data;
+using DAL.Exceptions;
 using DAL.Repository.Contracts;
 using DAL.Repository.Impementation;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repository.UnitOfWork
 {
@@ -96,7 +98,14 @@ namespace DAL.Repository.UnitOfWork
         }
         public async Task SaveAsync()
         {
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                throw new EntityAlreadyExistsException();
+            }
         }
     }
 }
