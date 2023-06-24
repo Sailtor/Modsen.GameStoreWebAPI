@@ -40,6 +40,7 @@ namespace BLL.Services.Implementation
             _mapper.Map(platformForUpdate, platform);
             await _unitOfWork.SaveAsync();
         }
+
         public async Task DeletePlatformAsync(int platformid)
         {
             _ = await _unitOfWork.Platform.GetByIdAsync(platformid);

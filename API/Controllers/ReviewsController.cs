@@ -35,7 +35,6 @@ namespace API.Controllers
         [HttpGet("users/{userid}/reviews/{gameid}")]
         public async Task<ActionResult<ReviewForResponceDto>> GetUserReviewForGame(int userid, int gameid)
         {
-
             return Ok(await _reviewService.GetGameReviewByIdAsync(gameid, userid));
         }
 

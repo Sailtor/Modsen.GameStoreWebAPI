@@ -102,9 +102,9 @@ namespace DAL.Repository.UnitOfWork
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateException)
+            catch
             {
-                throw new EntityAlreadyExistsException();
+                throw new DatabaseSaveFailedException();
             }
         }
     }

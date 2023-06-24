@@ -14,7 +14,6 @@ builder.Services.ConfigureAuthentication(builder.Configuration);
 builder.Services.ConfigureAuthorization();
 builder.Services.ConfigureAutomapper();
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

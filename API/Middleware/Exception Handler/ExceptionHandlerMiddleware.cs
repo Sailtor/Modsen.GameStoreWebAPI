@@ -34,6 +34,7 @@ namespace API.Middleware.Exception_Handler
             {
                 StatusCode = exception switch
                 {
+                    DatabaseSaveFailedException => (int)HttpStatusCode.InternalServerError,
                     EntityAlreadyExistsException => (int)HttpStatusCode.Conflict,
                     WrongPasswordException => (int)HttpStatusCode.BadRequest,
                     UserUnauthorizedException => (int)HttpStatusCode.Forbidden,
@@ -43,6 +44,7 @@ namespace API.Middleware.Exception_Handler
                 },
                 Message = exception switch
                 {
+                    DatabaseSaveFailedException => "Database save changes process failed",
                     EntityAlreadyExistsException => "Entity with this id already exists",
                     WrongPasswordException => "Wrong user password",
                     UserUnauthorizedException => "Forbidden",

@@ -40,6 +40,7 @@ namespace BLL.Services.Implementation
             _mapper.Map(developerForCreation, developer);
             await _unitOfWork.SaveAsync();
         }
+
         public async Task DeleteDeveloperAsync(int developerid)
         {
             _ = await _unitOfWork.Developer.GetByIdAsync(developerid);

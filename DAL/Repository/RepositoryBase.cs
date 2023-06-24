@@ -55,7 +55,6 @@ namespace DAL.Repository
                 throw new EntityAlreadyExistsException();
             }
             await _context.Set<TEntity>().AddAsync(entity);
-            
         }
 
         public async Task Delete(TId entityid)

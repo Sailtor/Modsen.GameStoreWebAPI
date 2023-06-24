@@ -40,6 +40,7 @@ namespace BLL.Services.Implementation
             _mapper.Map(genreForUpdate, genre);
             await _unitOfWork.SaveAsync();
         }
+
         public async Task DeleteGenreAsync(int genreid)
         {
             _ = await _unitOfWork.Genre.GetByIdAsync(genreid);

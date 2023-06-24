@@ -17,6 +17,7 @@ namespace BLL.Services.Implementation
             _mapper = mapper;
             _unitOfWork = unitOfWork;
         }
+
         public async Task<IEnumerable<GameForResponceDto>> GetAllGamesAsync()
         {
             return _mapper.Map<IEnumerable<GameForResponceDto>>(await _unitOfWork.Game.GetAllAsync());
@@ -24,7 +25,7 @@ namespace BLL.Services.Implementation
 
         public async Task<GameForResponceDto> GetGameByIdAsync(int gameid)
         {
-            return _mapper.Map<GameForResponceDto>(await _unitOfWork.Game.GetByIdIncludeAsync(gameid));
+            return _mapper.Map<GameForResponceDto>(await _unitOfWork.Game.GetByIdIncludeAllAsync(gameid));
         }
 
         public async Task AddGameAsync(GameForCreationDto gameForCreation)
@@ -39,6 +40,7 @@ namespace BLL.Services.Implementation
             _mapper.Map(gameForUpdate, game);
             await _unitOfWork.SaveAsync();
         }
+
         public async Task DeleteGameAsync(int gameid)
         {
             _ = await _unitOfWork.Game.GetByIdAsync(gameid);
