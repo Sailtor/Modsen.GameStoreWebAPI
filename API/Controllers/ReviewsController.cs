@@ -1,8 +1,11 @@
 ﻿using BLL.Dtos.InDto;
 using BLL.Dtos.OutDto;
 using BLL.Services.Contracts;
+using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Controllers
 {
@@ -43,15 +46,42 @@ namespace API.Controllers
         public async Task<ActionResult<ReviewForResponceDto>> PostUserReviewForGame(int userid, int gameid, ReviewForCreationDto reviewForCreation)
         {
             _authService.CheckAuthorization(userid, User);
-            await _reviewService.AddUserReviewAsync(userid, gameid, reviewForCreation);
-            return NoContent();
+            var context = new ValidationContext(reviewForCreation);
+            var results = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(reviewForCreation, context, results, true))
+            {
+                foreach (var error in results)
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
+                Console.WriteLine();
+            }
+            else
+            {
+                await _reviewService.AddUserReviewAsync(userid, gameid, reviewForCreation);
+                Console.WriteLine($"Review успешно создан. Name: {reviewForCreation}\n");
+            }
+                return NoContent();
         }
 
         [HttpPut("reviews")]
         public async Task<IActionResult> PutUserReviewForGame(ReviewForUpdateDto reviewForUpdate)
         {
             _authService.CheckAuthorization(reviewForUpdate.UserId, User);
-            await _reviewService.UpdateUserReviewAsync(reviewForUpdate);
+            var context = new ValidationContext(reviewForUpdate);
+            var results = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(reviewForUpdate, context, results, true))
+            {
+                foreach (var error in results)
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
+                Console.WriteLine();
+            }
+            else
+            {
+                await _reviewService.UpdateUserReviewAsync(reviewForUpdate);
+            }
             return NoContent();
         }
 

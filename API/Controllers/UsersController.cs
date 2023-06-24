@@ -5,6 +5,7 @@ using BLL.Services.Implementation;
 using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
 namespace API.Controllers
@@ -39,7 +40,18 @@ namespace API.Controllers
         public async Task<IActionResult> PutUser(UserForUpdateDto userForUpdate)
         {
             _authService.CheckAuthorization(userForUpdate.Id, User);
-            await _userService.UpdateUserAsync(userForUpdate);
+            var context = new ValidationContext(userForUpdate);
+            var results = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(userForUpdate, context, results, true))
+            {
+                foreach (var error in results)
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
+                Console.WriteLine();
+            }
+            else
+                await _userService.UpdateUserAsync(userForUpdate);
             return NoContent();
         }
 
@@ -55,7 +67,18 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<UserForResponceDto>> Register(UserForCreationDto userForCreation)
         {
-            await _userService.RegisterUserAsync(userForCreation);
+            var context = new ValidationContext(userForCreation);
+            var results = new List<ValidationResult>();
+            if (!Validator.TryValidateObject(userForCreation, context, results, true))
+            {
+                foreach (var error in results)
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
+                Console.WriteLine();
+            }
+            else
+                await _userService.RegisterUserAsync(userForCreation);
             return Ok();
         }
 
