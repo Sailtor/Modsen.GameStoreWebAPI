@@ -3,7 +3,6 @@ using BLL.Dtos.OutDto;
 using BLL.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -13,10 +12,12 @@ namespace API.Controllers
     public class ReviewsController : ControllerBase
     {
         private readonly IReviewService _reviewService;
+        private readonly IAuthService _authService;
 
-        public ReviewsController(IReviewService reviewService)
+        public ReviewsController(IReviewService reviewService, IAuthService authService)
         {
             _reviewService = reviewService;
+            _authService = authService;
         }
 
         [HttpGet("users/{userid}/reviews")]
@@ -41,15 +42,7 @@ namespace API.Controllers
         [HttpPost("users/{userid}/reviews/{gameid}")]
         public async Task<ActionResult<ReviewForResponceDto>> PostUserReviewForGame(int userid, int gameid, ReviewForCreationDto reviewForCreation)
         {
-            if (HttpContext.User.FindFirstValue(ClaimTypes.Role) != "1")
-            {
-                int tokenUserId = Convert.ToInt32(HttpContext.User.FindFirstValue("UserID"));
-
-                if (tokenUserId != userid)
-                {
-                    return Unauthorized();
-                }
-            }
+            _authService.CheckAuthorization(userid, User);
             await _reviewService.AddUserReviewAsync(userid, gameid, reviewForCreation);
             return NoContent();
         }
@@ -57,15 +50,7 @@ namespace API.Controllers
         [HttpPut("reviews")]
         public async Task<IActionResult> PutUserReviewForGame(ReviewForUpdateDto reviewForUpdate)
         {
-            if (HttpContext.User.FindFirstValue(ClaimTypes.Role) != "1")
-            {
-                int tokenUserId = Convert.ToInt32(HttpContext.User.FindFirstValue("UserID"));
-
-                if (tokenUserId != reviewForUpdate.UserId)
-                {
-                    return Unauthorized();
-                }
-            }
+            _authService.CheckAuthorization(reviewForUpdate.UserId, User);
             await _reviewService.UpdateUserReviewAsync(reviewForUpdate);
             return NoContent();
         }
@@ -73,15 +58,7 @@ namespace API.Controllers
         [HttpDelete("users/{userid}/reviews/{gameid}")]
         public async Task<IActionResult> DeleteUserReviewForGame(int userid, int gameid)
         {
-            if (HttpContext.User.FindFirstValue(ClaimTypes.Role) != "1")
-            {
-                int tokenUserId = Convert.ToInt32(HttpContext.User.FindFirstValue("UserID"));
-
-                if (tokenUserId != userid)
-                {
-                    return Unauthorized();
-                }
-            }
+            _authService.CheckAuthorization(userid, User);
             await _reviewService.DeleteUserReviewAsync(userid, gameid);
             return Ok();
         }

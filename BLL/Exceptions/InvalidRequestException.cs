@@ -1,6 +1,6 @@
 ﻿namespace BLL.Exceptions
 {
-    internal class InvalidRequestException : Exception
+    public class InvalidRequestException : Exception
     {
         public InvalidRequestException()
         {

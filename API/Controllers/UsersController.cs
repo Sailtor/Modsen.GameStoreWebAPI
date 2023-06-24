@@ -1,6 +1,8 @@
 ﻿using BLL.Dtos.InDto;
 using BLL.Dtos.OutDto;
 using BLL.Services.Contracts;
+using BLL.Services.Implementation;
+using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -13,10 +15,12 @@ namespace API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IAuthService _authService;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IAuthService authService)
         {
             _userService = userService;
+            _authService = authService;
         }
 
         [HttpGet]
@@ -34,15 +38,7 @@ namespace API.Controllers
         [HttpPut]
         public async Task<IActionResult> PutUser(UserForUpdateDto userForUpdate)
         {
-            if (HttpContext.User.FindFirstValue(ClaimTypes.Role) != "1")
-            {
-                int tokenUserId = Convert.ToInt32(HttpContext.User.FindFirstValue("UserID"));
-
-                if (tokenUserId != userForUpdate.Id)
-                {
-                    return Unauthorized();
-                }
-            }
+            _authService.CheckAuthorization(userForUpdate.Id, User);
             await _userService.UpdateUserAsync(userForUpdate);
             return NoContent();
         }
@@ -66,15 +62,7 @@ namespace API.Controllers
         [HttpDelete("{userid}")]
         public async Task<IActionResult> DeleteRole(int userid)
         {
-            if (HttpContext.User.FindFirstValue(ClaimTypes.Role) != "1")
-            {
-                int tokenUserId = Convert.ToInt32(HttpContext.User.FindFirstValue("UserID"));
-
-                if (tokenUserId != userid)
-                {
-                    return Unauthorized();
-                }
-            }
+            _authService.CheckAuthorization(userid, User);
             await _userService.DeleteUserAsync(userid);
             return NoContent();
         }
