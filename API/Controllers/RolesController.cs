@@ -37,10 +37,10 @@ namespace API.Controllers
             return NoContent();
         }
 
-        [HttpPut("{roleid}")]
-        public async Task<IActionResult> PutRole(int roleid, RoleForCreationDto roleForCreation)
+        [HttpPut]
+        public async Task<IActionResult> PutRole(RoleForUpdateDto roleForUpdate)
         {
-            await _roleService.UpdateRoleAsync(roleid, roleForCreation);
+            await _roleService.UpdateRoleAsync(roleForUpdate);
             return NoContent();
         }
 

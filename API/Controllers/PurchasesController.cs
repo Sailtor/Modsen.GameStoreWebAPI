@@ -3,7 +3,6 @@ using BLL.Dtos.OutDto;
 using BLL.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -13,54 +12,32 @@ namespace API.Controllers
     public class PurchasesController : ControllerBase
     {
         private readonly IPurchaseService _purchaseService;
+        private readonly IAuthService _authService;
 
-        public PurchasesController(IPurchaseService purchaseService)
+        public PurchasesController(IPurchaseService purchaseService, IAuthService authService)
         {
             _purchaseService = purchaseService;
+            _authService = authService;
         }
 
         [HttpGet("{userid}/games")]
         public async Task<ActionResult<IEnumerable<PurchaseForResponceDto>>> GetUserPurchases(int userid)
         {
-            if (HttpContext.User.FindFirstValue(ClaimTypes.Role) != "1")
-            {
-                int tokenUserId = Convert.ToInt32(HttpContext.User.FindFirstValue("UserID"));
-
-                if (tokenUserId != userid)
-                {
-                    return Unauthorized();
-                }
-            }
+            _authService.CheckAuthorization(userid, User);
             return Ok(await _purchaseService.GetUserPurchasesAsync(userid));
         }
 
         [HttpGet("{userid}/games/{gameid}")]
         public async Task<ActionResult<PurchaseForResponceDto>> GetUserPurchase(int userid, int gameid)
         {
-            if (HttpContext.User.FindFirstValue(ClaimTypes.Role) != "1")
-            {
-                int tokenUserId = Convert.ToInt32(HttpContext.User.FindFirstValue("UserID"));
-
-                if (tokenUserId != userid)
-                {
-                    return Unauthorized();
-                }
-            }
+            _authService.CheckAuthorization(userid, User);
             return Ok(await _purchaseService.GetUserPurchaseByIdAsync(gameid, userid));
         }
 
         [HttpPost("{userid}/games/{gameid}")]
         public async Task<IActionResult> PostPurchase(int userid, int gameid, PurchaseForCreationDto purchaseForCreation)
         {
-            if (HttpContext.User.FindFirstValue(ClaimTypes.Role) != "1")
-            {
-                int tokenUserId = Convert.ToInt32(HttpContext.User.FindFirstValue("UserID"));
-
-                if (tokenUserId != userid)
-                {
-                    return Unauthorized();
-                }
-            }
+            _authService.CheckAuthorization(userid, User);
             await _purchaseService.AddUserPurchaseAsync(purchaseForCreation, gameid, userid);
             return NoContent();
         }

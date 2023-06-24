@@ -34,9 +34,9 @@ namespace BLL.Services.Implementation
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task UpdateDeveloperAsync(int developerid, DeveloperForCreationDto developerForCreation)
+        public async Task UpdateDeveloperAsync(DeveloperForUpdateDto developerForCreation)
         {
-            var developer = await _unitOfWork.Developer.GetByIdAsync(developerid);
+            Developer developer = await _unitOfWork.Developer.GetByIdAsync(developerForCreation.Id);
             _mapper.Map(developerForCreation, developer);
             await _unitOfWork.SaveAsync();
         }

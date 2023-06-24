@@ -20,6 +20,7 @@ namespace BLL.Services.Implementation
             _configuration = configuration;
             _tokenService = tokenService;
         }
+
         public async Task<AuthenticatedResponse> Login(UserForLoginDto creds)
         {
             var user = (await _unitOfWork.User.FindAsync(u => u.Login == creds.Login)).First();
@@ -47,6 +48,19 @@ namespace BLL.Services.Implementation
                 Token = accessToken,
                 RefreshToken = refreshToken
             };
+        }
+
+        public void CheckAuthorization(int userid, ClaimsPrincipal user)
+        {
+            if (user.FindFirst(ClaimTypes.Role).Value != "1")
+            {
+                int tokenUserId = Convert.ToInt32(user.FindFirst("UserID").Value);
+
+                if (tokenUserId != userid)
+                {
+                    throw new UserUnauthorizedException();
+                }
+            }
         }
     }
 }

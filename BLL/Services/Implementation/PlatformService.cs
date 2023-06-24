@@ -34,9 +34,9 @@ namespace BLL.Services.Implementation
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task UpdatePlatformAsync(int platformid, PlatformForCreationDto platformForUpdate)
+        public async Task UpdatePlatformAsync(PlatformForUpdateDto platformForUpdate)
         {
-            var platform = await _unitOfWork.Platform.GetByIdAsync(platformid);
+            Platform platform = await _unitOfWork.Platform.GetByIdAsync(platformForUpdate.Id);
             _mapper.Map(platformForUpdate, platform);
             await _unitOfWork.SaveAsync();
         }

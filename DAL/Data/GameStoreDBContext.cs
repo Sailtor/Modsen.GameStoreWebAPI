@@ -135,7 +135,7 @@ namespace DAL.Data
                 entity.HasKey(e => new { e.UserId, e.GameId })
                     .HasName("PK__Review__D52345D18161759A");
 
-                entity.ToTable("Review");
+                entity.ToTable("Reviews");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
 

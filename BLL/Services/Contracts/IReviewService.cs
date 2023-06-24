@@ -9,7 +9,7 @@ namespace BLL.Services.Contracts
         Task<IEnumerable<ReviewForResponceDto>> GetGameReviewsByIdAsync(int gameid);
         Task<ReviewForResponceDto> GetGameReviewByIdAsync(int gameid, int userid);
         Task AddUserReviewAsync(int userid, int gameid, ReviewForCreationDto review);
-        Task UpdateUserReviewAsync(int userid, int gameid, ReviewForCreationDto review);
+        Task UpdateUserReviewAsync(ReviewForUpdateDto reviewForUpdate);
         Task DeleteUserReviewAsync(int userid, int gameid);
     }
 }

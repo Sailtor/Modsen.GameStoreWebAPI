@@ -8,7 +8,7 @@ namespace BLL.Services.Contracts
         Task<IEnumerable<GenreForResponceDto>> GetAllGenresAsync();
         Task<GenreForResponceDto> GetGenreByIdAsync(int genreid);
         Task AddGenreAsync(GenreForCreationDto genre);
-        Task UpdateGenreAsync(int genreid, GenreForCreationDto genre);
+        Task UpdateGenreAsync(GenreForUpdateDto genreForUpdate);
         Task DeleteGenreAsync(int genreid);
     }
 }

@@ -34,9 +34,9 @@ namespace BLL.Services.Implementation
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task UpdateGenreAsync(int genreid, GenreForCreationDto genreForUpdate)
+        public async Task UpdateGenreAsync(GenreForUpdateDto genreForUpdate)
         {
-            var genre = await _unitOfWork.Genre.GetByIdAsync(genreid);
+            Genre genre = await _unitOfWork.Genre.GetByIdAsync(genreForUpdate.Id);
             _mapper.Map(genreForUpdate, genre);
             await _unitOfWork.SaveAsync();
         }

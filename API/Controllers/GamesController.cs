@@ -39,10 +39,10 @@ namespace API.Controllers
         }
 
         [Authorize(Roles = "1")]
-        [HttpPut("{gameid}")]
-        public async Task<IActionResult> PutGame(int gameid, GameForCreationDto gameForCreation)
+        [HttpPut]
+        public async Task<IActionResult> PutGame(GameForUpdateDto gameForUpdate)
         {
-            await _gameService.UpdateGameAsync(gameid, gameForCreation);
+            await _gameService.UpdateGameAsync(gameForUpdate);
             return NoContent();
         }
 

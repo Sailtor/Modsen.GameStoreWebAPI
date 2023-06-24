@@ -11,7 +11,7 @@ namespace BLL.Services.Contracts
         Task<User> GetFullUserByIdAsync(int userid);
         Task RegisterUserAsync(UserForCreationDto user);
         Task UpdateUserRoleAsync(int userid, int roleid);
-        Task UpdateUserAsync(UserForCreationDto user, int userid);
+        Task UpdateUserAsync(UserForUpdateDto user);
         Task DeleteUserAsync(int userid);
         Task SaveAsync();
     }

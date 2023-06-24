@@ -8,7 +8,7 @@ namespace BLL.Services.Contracts
         Task<IEnumerable<RoleForResponceDto>> GetAllRolesAsync();
         Task<RoleForResponceDto> GetRoleByIdAsync(int roleid);
         Task AddRoleAsync(RoleForCreationDto role);
-        Task UpdateRoleAsync(int roleid, RoleForCreationDto role);
+        Task UpdateRoleAsync(RoleForUpdateDto roleForUpdate);
         Task DeleteRoleAsync(int roleid);
     }
 }

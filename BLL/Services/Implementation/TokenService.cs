@@ -22,20 +22,20 @@ namespace BLL.Services.Implementation
 
         public string GenerateAccessToken(IEnumerable<Claim> claims, string APIkey)
         {
-            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(APIkey));
-            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-            var tokenOptions = new JwtSecurityToken(
+            SymmetricSecurityKey secretKey = new(Encoding.UTF8.GetBytes(APIkey));
+            SigningCredentials signinCredentials = new(secretKey, SecurityAlgorithms.HmacSha256);
+            JwtSecurityToken tokenOptions = new(
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(5),
                 signingCredentials: signinCredentials
             );
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            string tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             return tokenString;
         }
         public string GenerateRefreshToken()
         {
-            var randomNumber = new byte[32];
-            using var rng = RandomNumberGenerator.Create();
+            byte[] randomNumber = new byte[32];
+            using RandomNumberGenerator rng = RandomNumberGenerator.Create();
             rng.GetBytes(randomNumber);
             return Convert.ToBase64String(randomNumber);
         }
@@ -50,8 +50,7 @@ namespace BLL.Services.Implementation
                 ValidateLifetime = false
             };
             var tokenHandler = new JwtSecurityTokenHandler();
-            SecurityToken securityToken;
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
             var jwtSecurityToken = securityToken as JwtSecurityToken;
             if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
                 throw new SecurityTokenException("Invalid token");

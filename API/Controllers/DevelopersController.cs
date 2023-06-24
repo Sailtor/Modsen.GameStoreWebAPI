@@ -31,10 +31,10 @@ namespace API.Controllers
         }
 
         [Authorize(Roles = "1")]
-        [HttpPut("{developerid}")]
-        public async Task<IActionResult> PutDeveloper(int developerid, DeveloperForCreationDto developerForCreation)
+        [HttpPut]
+        public async Task<IActionResult> PutDeveloper(DeveloperForUpdateDto developerForUpdate)
         {
-            await _developerService.UpdateDeveloperAsync(developerid, developerForCreation);
+            await _developerService.UpdateDeveloperAsync(developerForUpdate);
             return NoContent();
         }
 

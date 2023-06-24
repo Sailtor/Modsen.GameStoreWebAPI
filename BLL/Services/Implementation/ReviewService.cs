@@ -20,12 +20,12 @@ namespace BLL.Services.Implementation
 
         public async Task<IEnumerable<ReviewForResponceDto>> GetUserReviewsByIdAsync(int userid)
         {
-            return _mapper.Map<IEnumerable<ReviewForResponceDto>>(await _unitOfWork.Purchase.FindAsync(p => p.UserId == userid));
+            return _mapper.Map<IEnumerable<ReviewForResponceDto>>(await _unitOfWork.Review.FindAsync(p => p.UserId == userid));
         }
 
         public async Task<IEnumerable<ReviewForResponceDto>> GetGameReviewsByIdAsync(int gameid)
         {
-            return _mapper.Map<IEnumerable<ReviewForResponceDto>>(await _unitOfWork.Purchase.FindAsync(p => p.GameId == gameid));
+            return _mapper.Map<IEnumerable<ReviewForResponceDto>>(await _unitOfWork.Review.FindAsync(p => p.GameId == gameid));
         }
 
         public async Task<ReviewForResponceDto> GetGameReviewByIdAsync(int gameid, int userid)
@@ -47,15 +47,15 @@ namespace BLL.Services.Implementation
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task UpdateUserReviewAsync(int userid, int gameid, ReviewForCreationDto reviewForCreation)
+        public async Task UpdateUserReviewAsync(ReviewForUpdateDto reviewForUpdate)
         {
             CompoundKeyUserGame key = new()
             {
-                UserId = userid,
-                GameId = gameid
+                UserId = reviewForUpdate.UserId,
+                GameId = reviewForUpdate.GameId
             };
             Review review = await _unitOfWork.Review.GetByIdAsync(key);
-            _mapper.Map(reviewForCreation, review);
+            _mapper.Map(reviewForUpdate, review);
             await _unitOfWork.SaveAsync();
         }
 
