@@ -53,6 +53,7 @@ namespace BLL.Services.Implementation
             userEntity.RoleId = roleEntity.Id;
             await _unitOfWork.SaveAsync();
         }
+
         public async Task DeleteUserAsync(int userid)
         {
             _ = await _unitOfWork.User.GetByIdAsync(userid);

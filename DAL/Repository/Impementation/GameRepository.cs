@@ -11,7 +11,7 @@ namespace DAL.Repository.Impementation
         {
         }
 
-        public async Task<Game> GetByIdIncludeAsync(int gameid)
+        public async Task<Game> GetByIdIncludeAllAsync(int gameid)
         {
             var game = await _context.Set<Game>()
                                  .Include(g => g.Platforms)

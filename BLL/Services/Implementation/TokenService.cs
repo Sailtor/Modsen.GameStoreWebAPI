@@ -32,6 +32,7 @@ namespace BLL.Services.Implementation
             string tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
             return tokenString;
         }
+
         public string GenerateRefreshToken()
         {
             byte[] randomNumber = new byte[32];
@@ -39,6 +40,7 @@ namespace BLL.Services.Implementation
             rng.GetBytes(randomNumber);
             return Convert.ToBase64String(randomNumber);
         }
+
         public ClaimsPrincipal GetPrincipalFromExpiredToken(string token, string APIkey)
         {
             var tokenValidationParameters = new TokenValidationParameters

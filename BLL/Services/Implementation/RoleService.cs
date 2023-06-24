@@ -40,6 +40,7 @@ namespace BLL.Services.Implementation
             _mapper.Map(roleForUpdate, role);
             await _unitOfWork.SaveAsync();
         }
+
         public async Task DeleteRoleAsync(int roleid)
         {
             _ = await _unitOfWork.Role.GetByIdAsync(roleid);
