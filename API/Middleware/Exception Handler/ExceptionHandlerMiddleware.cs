@@ -24,7 +24,7 @@ namespace API.Middleware.Exception_Handler
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Exception was thrown : {ex}");
+                _logger.LogError($"Exception has been thrown : {ex}");
                 await HandleExceptionAsync(httpContext, ex);
             }
         }

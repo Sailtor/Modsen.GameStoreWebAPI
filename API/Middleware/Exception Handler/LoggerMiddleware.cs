@@ -36,7 +36,7 @@ namespace API.Middleware.Exception_Handler
 
             request.Body.Position = 0;
 
-            return $"{request.Scheme} {request.Host} {request.Path} {request.QueryString} {requestBody.Replace('\n', ' ')}";
+            return $"Request {request.Scheme} {request.Host} {request.Path} {request.QueryString} {requestBody.Replace('\n', ' ')}";
         }
 
         private async Task<string> FormatResponse(HttpResponse response)
