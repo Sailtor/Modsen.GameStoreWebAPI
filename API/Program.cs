@@ -26,6 +26,8 @@ if (app.Environment.IsDevelopment())
 }
 app.UseExceptionHandlerMiddleware();
 
+app.UseLoggerMiddleware();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

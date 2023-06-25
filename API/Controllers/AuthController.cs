@@ -12,12 +12,10 @@ namespace API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-        private readonly ILoggerManager _logger;
 
         public AuthController(IAuthService authService)
         {
             _authService = authService;
-            _logger = logger;
         }
 
         [AllowAnonymous]

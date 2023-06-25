@@ -97,5 +97,9 @@ namespace API.Extentions
         {
             app.UseMiddleware<ExceptionHandlerMiddleware>();
         }
+        public static void UseLoggerMiddleware(this IApplicationBuilder app)
+        {
+            app.UseMiddleware<LoggerMiddleware>();
+        }
     }
 }
