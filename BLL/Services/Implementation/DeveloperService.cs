@@ -4,6 +4,7 @@ using BLL.Dtos.OutDto;
 using BLL.Services.Contracts;
 using DAL.Models;
 using DAL.Repository.UnitOfWork;
+using FluentValidation;
 
 namespace BLL.Services.Implementation
 {
@@ -11,11 +12,15 @@ namespace BLL.Services.Implementation
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IValidator<DeveloperForCreationDto> _creationValidator;
+        private readonly IValidator<DeveloperForUpdateDto> _updateValidator;
 
-        public DeveloperService(IMapper mapper, IUnitOfWork unitOfWork)
+        public DeveloperService(IMapper mapper, IUnitOfWork unitOfWork, IValidator<DeveloperForCreationDto> creationValidator, IValidator<DeveloperForUpdateDto> updateValidator)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _creationValidator = creationValidator;
+            _updateValidator = updateValidator;
         }
 
         public async Task<IEnumerable<DeveloperForResponceDto>> GetAllDevelopersAsync()
@@ -30,6 +35,7 @@ namespace BLL.Services.Implementation
 
         public async Task AddDeveloperAsync(DeveloperForCreationDto developerForCreation)
         {
+            _creationValidator.ValidateAndThrow(developerForCreation);
             await _unitOfWork.Developer.AddAsync(_mapper.Map<Developer>(developerForCreation));
             await _unitOfWork.SaveAsync();
         }

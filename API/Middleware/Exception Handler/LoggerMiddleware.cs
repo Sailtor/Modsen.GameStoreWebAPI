@@ -16,15 +16,15 @@ namespace API.Middleware.Exception_Handler
         public async Task InvokeAsync(HttpContext httpContext)
         {
             _logger.LogInfo(await FormatRequest(httpContext.Request));
-            var originalBodyStream = httpContext.Response.Body;
-
-            using var responseBody = new MemoryStream();
-            httpContext.Response.Body = responseBody;
+            /*var originalBodyStream = httpContext.Response.Body;*/
 
             await _next(httpContext);
-
+            /*
+            var responseBody = new MemoryStream();
+            httpContext.Response.Body = responseBody;
+            */
             _logger.LogInfo(await FormatResponse(httpContext.Response));
-            await responseBody.CopyToAsync(originalBodyStream);
+            /*await responseBody.CopyToAsync(originalBodyStream);*/
         }
 
         private async Task<string> FormatRequest(HttpRequest request)
@@ -43,7 +43,9 @@ namespace API.Middleware.Exception_Handler
         {
             response.Body.Seek(0, SeekOrigin.Begin);
             var text = await new StreamReader(response.Body).ReadToEndAsync();
-            response.Body.Seek(0, SeekOrigin.Begin);
+            //response.Body.Seek(0, SeekOrigin.Begin);
+
+            response.Body.Position = 0;
 
             return $"Response {text}";
         }

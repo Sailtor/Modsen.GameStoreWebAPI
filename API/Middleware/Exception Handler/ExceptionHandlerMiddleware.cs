@@ -2,6 +2,7 @@
 using BLL.Infrastructure.Logger;
 using DAL.Exceptions;
 using DAL.Models;
+using FluentValidation;
 using System.Net;
 
 namespace API.Middleware.Exception_Handler
@@ -36,6 +37,8 @@ namespace API.Middleware.Exception_Handler
             {
                 StatusCode = exception switch
                 {
+                    ObjectDisposedException => 501,
+                    ValidationException => (int)HttpStatusCode.BadRequest,
                     DatabaseSaveFailedException => (int)HttpStatusCode.InternalServerError,
                     EntityAlreadyExistsException => (int)HttpStatusCode.Conflict,
                     WrongPasswordException => (int)HttpStatusCode.BadRequest,
@@ -46,6 +49,8 @@ namespace API.Middleware.Exception_Handler
                 },
                 Message = exception switch
                 {
+                    ObjectDisposedException => "WTF IS ObJECT DISPOSED EXCEPTION",
+                    ValidationException => "Invalid model",
                     DatabaseSaveFailedException => "Database save changes process failed",
                     EntityAlreadyExistsException => "Entity with this id already exists",
                     WrongPasswordException => "Wrong user password",
