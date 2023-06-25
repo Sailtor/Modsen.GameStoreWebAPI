@@ -1,4 +1,5 @@
 ﻿using API.Middleware.Exception_Handler;
+using BLL.Infrastructure.Logger;
 using BLL.Services.Contracts;
 using BLL.Services.Implementation;
 using DAL.Data;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using NLog;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text;
 
@@ -84,11 +86,20 @@ namespace API.Extentions
                 options.OperationFilter<SecurityRequirementsOperationFilter>();
             });
         }
+        public static void ConfigureLoggerService(this IServiceCollection services)
+        {
+            LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
+            services.AddSingleton<ILoggerManager, LoggerManagerService>();
+        }
 
         /* --- CUSTOM MIDDLEWARE --- */
         public static void UseExceptionHandlerMiddleware(this IApplicationBuilder app)
         {
             app.UseMiddleware<ExceptionHandlerMiddleware>();
+        }
+        public static void UseLoggerMiddleware(this IApplicationBuilder app)
+        {
+            app.UseMiddleware<LoggerMiddleware>();
         }
     }
 }

@@ -13,6 +13,7 @@ builder.Services.ConfigureTokenService();
 builder.Services.ConfigureAuthentication(builder.Configuration);
 builder.Services.ConfigureAuthorization();
 builder.Services.ConfigureAutomapper();
+builder.Services.ConfigureLoggerService();
 
 var app = builder.Build();
 
@@ -24,6 +25,8 @@ if (app.Environment.IsDevelopment())
     builder.Configuration.AddUserSecrets<Program>();
 }
 app.UseExceptionHandlerMiddleware();
+
+app.UseLoggerMiddleware();
 
 app.UseHttpsRedirection();
 

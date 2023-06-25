@@ -1,4 +1,5 @@
 ﻿using BLL.Exceptions;
+using BLL.Infrastructure.Logger;
 using DAL.Exceptions;
 using DAL.Models;
 using System.Net;
@@ -8,10 +9,10 @@ namespace API.Middleware.Exception_Handler
     public class ExceptionHandlerMiddleware
     {
         private readonly RequestDelegate _next;
-        /*private readonly ILoggerManager _logger;*/
-        public ExceptionHandlerMiddleware(RequestDelegate next/*, ILoggerManager logger*/)
+        private readonly ILoggerManager _logger;
+        public ExceptionHandlerMiddleware(RequestDelegate next, ILoggerManager logger)
         {
-            /*_logger = logger;*/
+            _logger = logger;
             _next = next;
         }
 
@@ -23,6 +24,7 @@ namespace API.Middleware.Exception_Handler
             }
             catch (Exception ex)
             {
+                _logger.LogError($"Exception has been thrown : {ex}");
                 await HandleExceptionAsync(httpContext, ex);
             }
         }
