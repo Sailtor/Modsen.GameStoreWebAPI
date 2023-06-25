@@ -1,6 +1,8 @@
 ﻿using BLL.Exceptions;
+using BLL.Infrastructure.Validators;
 using BLL.Services.Contracts;
 using DAL.Models;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,10 +16,13 @@ namespace BLL.Services.Implementation
     {
         private readonly IConfiguration _configuration;
         private readonly IUserService _userService;
-        public TokenService(IConfiguration configuration, IUserService userService)
+        private readonly IValidator<TokenApiModel> _tokenValidator;
+
+        public TokenService(IConfiguration configuration, IUserService userService, IValidator<TokenApiModel> tokenValidator)
         {
             _configuration = configuration;
             _userService = userService;
+            _tokenValidator = tokenValidator;
         }
 
         public string GenerateAccessToken(IEnumerable<Claim> claims, string APIkey)
@@ -61,6 +66,8 @@ namespace BLL.Services.Implementation
 
         public async Task<AuthenticatedResponse> RefreshTokenAsync(TokenApiModel tokenApiModel)
         {
+            _tokenValidator.ValidateAndThrowCustom(tokenApiModel);
+
             string accessToken = tokenApiModel.AccessToken;
             string refreshToken = tokenApiModel.RefreshToken;
 

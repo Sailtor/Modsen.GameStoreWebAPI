@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using BLL.Dtos.InDto;
 using BLL.Dtos.OutDto;
+using BLL.Infrastructure.Validators;
 using BLL.Services.Contracts;
 using DAL.Models;
 using DAL.Repository.UnitOfWork;
+using FluentValidation;
 
 namespace BLL.Services.Implementation
 {
@@ -11,11 +13,15 @@ namespace BLL.Services.Implementation
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IValidator<GameForCreationDto> _creationValidator;
+        private readonly IValidator<GameForUpdateDto> _updateValidator;
 
-        public GameService(IMapper mapper, IUnitOfWork unitOfWork)
+        public GameService(IMapper mapper, IUnitOfWork unitOfWork, IValidator<GameForCreationDto> creationValidator, IValidator<GameForUpdateDto> updateValidator)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _creationValidator = creationValidator;
+            _updateValidator = updateValidator;
         }
 
         public async Task<IEnumerable<GameForResponceDto>> GetAllGamesAsync()
@@ -30,12 +36,14 @@ namespace BLL.Services.Implementation
 
         public async Task AddGameAsync(GameForCreationDto gameForCreation)
         {
+            _creationValidator.ValidateAndThrowCustom(gameForCreation);
             await _unitOfWork.Game.AddAsync(_mapper.Map<Game>(gameForCreation));
             await _unitOfWork.SaveAsync();
         }
 
         public async Task UpdateGameAsync(GameForUpdateDto gameForUpdate)
         {
+            _updateValidator.ValidateAndThrowCustom(gameForUpdate);
             Game game = await _unitOfWork.Game.GetByIdAsync(gameForUpdate.Id);
             _mapper.Map(gameForUpdate, game);
             await _unitOfWork.SaveAsync();

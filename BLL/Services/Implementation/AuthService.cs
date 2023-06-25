@@ -1,8 +1,10 @@
 ﻿using BLL.Dtos.InDto;
 using BLL.Exceptions;
+using BLL.Infrastructure.Validators;
 using BLL.Services.Contracts;
 using DAL.Models;
 using DAL.Repository.UnitOfWork;
+using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 
@@ -13,16 +15,19 @@ namespace BLL.Services.Implementation
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _configuration;
         private readonly ITokenService _tokenService;
+        private readonly IValidator<UserForLoginDto> _userLoginValidator;
 
-        public AuthService(IUnitOfWork unitOfWork, IConfiguration configuration, ITokenService tokenService)
+        public AuthService(IUnitOfWork unitOfWork, IConfiguration configuration, ITokenService tokenService, IValidator<UserForLoginDto> userLoginValidator)
         {
             _unitOfWork = unitOfWork;
             _configuration = configuration;
             _tokenService = tokenService;
+            _userLoginValidator = userLoginValidator;
         }
 
         public async Task<AuthenticatedResponse> Login(UserForLoginDto creds)
         {
+            _userLoginValidator.ValidateAndThrowCustom(creds);
             var user = (await _unitOfWork.User.FindAsync(u => u.Login == creds.Login)).First();
             if (!(user.Password == creds.Password))
             {

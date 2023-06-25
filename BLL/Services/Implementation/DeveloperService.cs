@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BLL.Dtos.InDto;
 using BLL.Dtos.OutDto;
+using BLL.Infrastructure.Validators;
 using BLL.Services.Contracts;
 using DAL.Models;
 using DAL.Repository.UnitOfWork;
@@ -35,15 +36,16 @@ namespace BLL.Services.Implementation
 
         public async Task AddDeveloperAsync(DeveloperForCreationDto developerForCreation)
         {
-            _creationValidator.ValidateAndThrow(developerForCreation);
+            _creationValidator.ValidateAndThrowCustom(developerForCreation);
             await _unitOfWork.Developer.AddAsync(_mapper.Map<Developer>(developerForCreation));
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task UpdateDeveloperAsync(DeveloperForUpdateDto developerForCreation)
+        public async Task UpdateDeveloperAsync(DeveloperForUpdateDto developerForUpdate)
         {
-            Developer developer = await _unitOfWork.Developer.GetByIdAsync(developerForCreation.Id);
-            _mapper.Map(developerForCreation, developer);
+            _updateValidator.ValidateAndThrowCustom(developerForUpdate);
+            Developer developer = await _unitOfWork.Developer.GetByIdAsync(developerForUpdate.Id);
+            _mapper.Map(developerForUpdate, developer);
             await _unitOfWork.SaveAsync();
         }
 

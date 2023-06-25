@@ -3,6 +3,7 @@ using BLL.Infrastructure.Logger;
 using DAL.Exceptions;
 using DAL.Models;
 using FluentValidation;
+using Microsoft.IdentityModel.Tokens;
 using System.Net;
 
 namespace API.Middleware.Exception_Handler
@@ -35,6 +36,7 @@ namespace API.Middleware.Exception_Handler
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = exception switch
             {
+                SecurityTokenSignatureKeyNotFoundException => (int)HttpStatusCode.Unauthorized,
                 ObjectDisposedException => 501,
                 ValidationException => (int)HttpStatusCode.BadRequest,
                 DatabaseSaveFailedException => (int)HttpStatusCode.InternalServerError,
@@ -49,7 +51,8 @@ namespace API.Middleware.Exception_Handler
             {
                 Message = exception switch
                 {
-                    ObjectDisposedException => "WTF IS ObJECT DISPOSED EXCEPTION",
+                    SecurityTokenSignatureKeyNotFoundException => "Invalid authorization token",
+                    ObjectDisposedException => "WTF IS OBJECT DISPOSED EXCEPTION",
                     ValidationException => "Invalid model",
                     DatabaseSaveFailedException => "Database save changes process failed",
                     EntityAlreadyExistsException => "Entity with this id already exists",

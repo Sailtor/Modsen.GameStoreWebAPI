@@ -4,7 +4,6 @@ using BLL.Services.Contracts;
 using BLL.Services.Implementation;
 using DAL.Data;
 using DAL.Repository.UnitOfWork;
-using FluentValidation.AspNetCore;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -96,7 +95,6 @@ namespace API.Extentions
 
         public static void ConfigureFluentValidation(this IServiceCollection services)
         {
-            //services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
         }
 
