@@ -1,4 +1,5 @@
 ﻿using BLL.Dtos.InDto;
+using BLL.Infrastructure.Logger;
 using BLL.Services.Contracts;
 using DAL.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -11,10 +12,12 @@ namespace API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly ILoggerManager _logger;
 
-        public AuthController(IAuthService authService, IConfiguration configuration, ITokenService tokenService)
+        public AuthController(IAuthService authService)
         {
             _authService = authService;
+            _logger = logger;
         }
 
         [AllowAnonymous]
