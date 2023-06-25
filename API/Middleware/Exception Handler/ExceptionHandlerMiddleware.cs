@@ -33,20 +33,20 @@ namespace API.Middleware.Exception_Handler
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
+            context.Response.StatusCode = exception switch
+            {
+                ObjectDisposedException => 501,
+                ValidationException => (int)HttpStatusCode.BadRequest,
+                DatabaseSaveFailedException => (int)HttpStatusCode.InternalServerError,
+                EntityAlreadyExistsException => (int)HttpStatusCode.Conflict,
+                WrongPasswordException => (int)HttpStatusCode.BadRequest,
+                UserUnauthorizedException => (int)HttpStatusCode.Forbidden,
+                InvalidRequestException => (int)HttpStatusCode.BadRequest,
+                DatabaseNotFoundException => (int)HttpStatusCode.NotFound,
+                _ => (int)HttpStatusCode.InternalServerError
+            };
             await context.Response.WriteAsync(new ErrorDetails()
             {
-                StatusCode = exception switch
-                {
-                    ObjectDisposedException => 501,
-                    ValidationException => (int)HttpStatusCode.BadRequest,
-                    DatabaseSaveFailedException => (int)HttpStatusCode.InternalServerError,
-                    EntityAlreadyExistsException => (int)HttpStatusCode.Conflict,
-                    WrongPasswordException => (int)HttpStatusCode.BadRequest,
-                    UserUnauthorizedException => (int)HttpStatusCode.Forbidden,
-                    InvalidRequestException => (int)HttpStatusCode.BadRequest,
-                    DatabaseNotFoundException => (int)HttpStatusCode.NotFound,
-                    _ => (int)HttpStatusCode.InternalServerError
-                },
                 Message = exception switch
                 {
                     ObjectDisposedException => "WTF IS ObJECT DISPOSED EXCEPTION",
