@@ -45,9 +45,9 @@ namespace API.Controllers
         }
 
         [HttpDelete("{roleid}")]
-        public async Task<IActionResult> DeleteRole(int id)
+        public async Task<IActionResult> DeleteRole(int roleid)
         {
-            await _roleService.DeleteRoleAsync(id);
+            await _roleService.DeleteRoleAsync(roleid);
             return NoContent();
         }
 

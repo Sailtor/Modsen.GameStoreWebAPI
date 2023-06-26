@@ -6,7 +6,7 @@ namespace BLL.Infrastructure.Validators.CreateDto
 {
     public class PurchaseCreationDtoValidator : AbstractValidator<PurchaseForCreationDto>
     {
-        protected override bool PreValidate(ValidationContext<PurchaseForCreationDto> context, ValidationResult result)
+        /*protected override bool PreValidate(ValidationContext<PurchaseForCreationDto> context, ValidationResult result)
         {
             if (context.InstanceToValidate == null)
             {
@@ -14,6 +14,6 @@ namespace BLL.Infrastructure.Validators.CreateDto
             }
             result.Errors.Add(new ValidationFailure("", "Model should be null (yes it is, ima developer i decide lol))"));
             return false;
-        }
+        }*/
     }
 }
