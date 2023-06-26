@@ -50,10 +50,6 @@ namespace DAL.Repository
 
         public async Task AddAsync(TEntity entity)
         {
-            /*if (_context.Set<TEntity>().Contains(entity))
-            {
-                throw new EntityAlreadyExistsException();
-            }*/
             await _context.Set<TEntity>().AddAsync(entity);
         }
 
