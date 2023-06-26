@@ -29,7 +29,7 @@ namespace BLL.Services.Implementation
         {
             _userLoginValidator.ValidateAndThrowCustom(creds);
             var user = (await _unitOfWork.User.FindAsync(u => u.Login == creds.Login)).First();
-            if (!(user.Password == creds.Password))
+            if (!BCrypt.Net.BCrypt.EnhancedVerify(creds.Password, user.Password))
             {
                 throw new WrongPasswordException();
             }

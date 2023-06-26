@@ -6,6 +6,7 @@ using BLL.Services.Contracts;
 using DAL.Models;
 using DAL.Repository.UnitOfWork;
 using FluentValidation;
+using BCrypt.Net;
 
 namespace BLL.Services.Implementation
 {
@@ -41,6 +42,7 @@ namespace BLL.Services.Implementation
         public async Task RegisterUserAsync(UserForCreationDto userForCreation)
         {
             _creationValidator.ValidateAndThrowCustom(userForCreation);
+            userForCreation.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(userForCreation.Password);
             await _unitOfWork.User.AddAsync(_mapper.Map<User>(userForCreation));
             await _unitOfWork.SaveAsync();
         }
@@ -48,6 +50,7 @@ namespace BLL.Services.Implementation
         public async Task UpdateUserAsync(UserForUpdateDto userForUpdate)
         {
             _updateValidator.ValidateAndThrowCustom(userForUpdate);
+            userForUpdate.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(userForUpdate.Password);
             User user = await _unitOfWork.User.GetByIdAsync(userForUpdate.Id);
             _mapper.Map(userForUpdate, user);
             await _unitOfWork.SaveAsync();
