@@ -74,7 +74,7 @@ namespace BLL.Services.Implementation
 
         public async Task DeleteGamePlatformAsync(int gameid, int platformid)
         {
-            Game gameEntity = await _unitOfWork.Game.GetByIdAsync(gameid);
+            Game gameEntity = await _unitOfWork.Game.GetByIdIncludeAllAsync(gameid);
             Platform platformEntity = await _unitOfWork.Platform.GetByIdAsync(platformid);
             gameEntity.Platforms.Remove(platformEntity);
             await _unitOfWork.SaveAsync();
@@ -82,7 +82,7 @@ namespace BLL.Services.Implementation
 
         public async Task DeleteGameGenreAsync(int gameid, int genreid)
         {
-            Game gameEntity = await _unitOfWork.Game.GetByIdAsync(gameid);
+            Game gameEntity = await _unitOfWork.Game.GetByIdIncludeAllAsync(gameid);
             Genre genreEntity = await _unitOfWork.Genre.GetByIdAsync(genreid);
             gameEntity.Genres.Remove(genreEntity);
             await _unitOfWork.SaveAsync();

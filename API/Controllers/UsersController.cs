@@ -20,6 +20,7 @@ namespace API.Controllers
             _authService = authService;
         }
 
+        [Authorize(Roles = "1")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UserForResponceDto>>> GetUsers()
         {
@@ -29,6 +30,7 @@ namespace API.Controllers
         [HttpGet("{userid}")]
         public async Task<ActionResult<UserForResponceDto>> GetUser(int userid)
         {
+            _authService.CheckAuthorization(userid,User);
             return Ok(await _userService.GetUserByIdAsync(userid));
         }
 

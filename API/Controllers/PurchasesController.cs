@@ -46,7 +46,7 @@ namespace API.Controllers
         [HttpDelete("{userid}/games/{gameid}")]
         public async Task<IActionResult> DeletePurchase(int userid, int gameid)
         {
-            await _purchaseService.DeleteUserPurchaseAsync(userid, gameid);
+            await _purchaseService.DeleteUserPurchaseAsync(gameid, userid);
             return NoContent();
         }
     }

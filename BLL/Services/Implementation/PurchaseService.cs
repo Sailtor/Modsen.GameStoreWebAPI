@@ -43,7 +43,7 @@ namespace BLL.Services.Implementation
 
         public async Task DeleteUserPurchaseAsync(int gameid, int userid)
         {
-            _ = await _unitOfWork.Purchase.GetByIdAsync(gameid, userid);
+            _ = await _unitOfWork.Purchase.GetByIdAsync(userid, gameid);
             await _unitOfWork.Purchase.Delete(userid, gameid);
             await _unitOfWork.SaveAsync();
         }
