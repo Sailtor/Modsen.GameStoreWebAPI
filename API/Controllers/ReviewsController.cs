@@ -39,7 +39,7 @@ namespace API.Controllers
         }
 
         [HttpPost("users/{userid}/reviews/{gameid}")]
-        public async Task<ActionResult<ReviewForResponceDto>> PostUserReviewForGame(int userid, int gameid, ReviewForCreationDto reviewForCreation)
+        public async Task<IActionResult> PostUserReviewForGame(int userid, int gameid, ReviewForCreationDto reviewForCreation)
         {
             _authService.CheckAuthorization(userid, User);
             await _reviewService.AddUserReviewAsync(userid, gameid, reviewForCreation);

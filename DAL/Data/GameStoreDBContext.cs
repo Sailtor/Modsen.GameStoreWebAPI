@@ -136,6 +136,8 @@ namespace DAL.Data
 
                 entity.Property(e => e.GameId).HasColumnName("GameID");
 
+                entity.Property(e => e.Score).HasColumnType("int32");
+
                 entity.Property(e => e.ReviewDate).HasColumnType("datetime");
 
                 entity.Property(e => e.ReviewText).HasMaxLength(2048);
