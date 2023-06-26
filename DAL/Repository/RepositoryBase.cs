@@ -41,7 +41,7 @@ namespace DAL.Repository
         public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
             var entities = _context.Set<TEntity>().Where(predicate);
-            if (entities is null)
+            if ((entities is null) || (!entities.Any()))
             {
                 throw new DatabaseNotFoundException();
             }

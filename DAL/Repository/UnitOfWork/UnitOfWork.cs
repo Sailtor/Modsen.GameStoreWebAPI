@@ -104,7 +104,11 @@ namespace DAL.Repository.UnitOfWork
             {
                 await _context.SaveChangesAsync();
             }
-            catch
+            catch (DbUpdateConcurrencyException)
+            {
+                throw new DatabaseSaveFailedException();
+            }
+            catch (OperationCanceledException)
             {
                 throw new DatabaseSaveFailedException();
             }

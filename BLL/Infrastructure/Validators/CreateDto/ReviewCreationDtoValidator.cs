@@ -8,7 +8,7 @@ namespace BLL.Infrastructure.Validators.CreateDto
         public ReviewCreationDtoValidator()
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
-            RuleFor(m => m.Score).NotNull().Must(s => s >= 1 || s <= 5);
+            RuleFor(m => m.Score).NotNull().InclusiveBetween(1, 5);
             RuleFor(m => m.ReviewText).Length(1, 2047);
         }
     }

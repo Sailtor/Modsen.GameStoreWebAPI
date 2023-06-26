@@ -3,6 +3,7 @@ using BLL.Infrastructure.Logger;
 using DAL.Exceptions;
 using DAL.Models;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Net;
 
@@ -36,9 +37,10 @@ namespace API.Middleware.Exception_Handler
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = exception switch
             {
+                DbUpdateException => (int)HttpStatusCode.BadRequest,
                 SecurityTokenSignatureKeyNotFoundException => (int)HttpStatusCode.Unauthorized,
                 ObjectDisposedException => 501,
-                ValidationException => (int)HttpStatusCode.BadRequest,
+                ModelValidationFailedException => (int)HttpStatusCode.BadRequest,
                 DatabaseSaveFailedException => (int)HttpStatusCode.InternalServerError,
                 EntityAlreadyExistsException => (int)HttpStatusCode.Conflict,
                 WrongPasswordException => (int)HttpStatusCode.BadRequest,
@@ -51,9 +53,10 @@ namespace API.Middleware.Exception_Handler
             {
                 Message = exception switch
                 {
+                    DbUpdateException => "Invalid database operation (are you trying to create existing resource?)",
                     SecurityTokenSignatureKeyNotFoundException => "Invalid authorization token",
                     ObjectDisposedException => "WTF IS OBJECT DISPOSED EXCEPTION",
-                    ValidationException => "Invalid model",
+                    ModelValidationFailedException => "Invalid model",
                     DatabaseSaveFailedException => "Database save changes process failed",
                     EntityAlreadyExistsException => "Entity with this id already exists",
                     WrongPasswordException => "Wrong user password",
