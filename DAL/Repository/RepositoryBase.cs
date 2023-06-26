@@ -40,20 +40,16 @@ namespace DAL.Repository
 
         public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            var entities = await _context.Set<TEntity>().Where(predicate).ToListAsync();
+            var entities = _context.Set<TEntity>().Where(predicate);
             if (entities is null)
             {
                 throw new DatabaseNotFoundException();
             }
-            return entities;
+            return await entities.ToListAsync();
         }
 
         public async Task AddAsync(TEntity entity)
         {
-            if (_context.Set<TEntity>().Contains(entity))
-            {
-                throw new EntityAlreadyExistsException();
-            }
             await _context.Set<TEntity>().AddAsync(entity);
         }
 

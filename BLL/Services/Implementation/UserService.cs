@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using BLL.Dtos.InDto;
 using BLL.Dtos.OutDto;
+using BLL.Infrastructure.Validators;
 using BLL.Services.Contracts;
 using DAL.Models;
 using DAL.Repository.UnitOfWork;
+using FluentValidation;
 
 namespace BLL.Services.Implementation
 {
@@ -11,11 +13,14 @@ namespace BLL.Services.Implementation
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-
-        public UserService(IMapper mapper, IUnitOfWork unitOfWork)
+        private readonly IValidator<UserForCreationDto> _creationValidator;
+        private readonly IValidator<UserForUpdateDto> _updateValidator;
+        public UserService(IMapper mapper, IUnitOfWork unitOfWork, IValidator<UserForCreationDto> creationValidator, IValidator<UserForUpdateDto> updateValidator)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _creationValidator = creationValidator;
+            _updateValidator = updateValidator;
         }
 
         public async Task<IEnumerable<UserForResponceDto>> GetAllUsersAsync()
@@ -33,14 +38,16 @@ namespace BLL.Services.Implementation
             return await _unitOfWork.User.GetByIdAsync(userid);
         }
 
-        public async Task RegisterUserAsync(UserForCreationDto user)
+        public async Task RegisterUserAsync(UserForCreationDto userForCreation)
         {
-            await _unitOfWork.User.AddAsync(_mapper.Map<User>(user));
+            _creationValidator.ValidateAndThrowCustom(userForCreation);
+            await _unitOfWork.User.AddAsync(_mapper.Map<User>(userForCreation));
             await _unitOfWork.SaveAsync();
         }
 
         public async Task UpdateUserAsync(UserForUpdateDto userForUpdate)
         {
+            _updateValidator.ValidateAndThrowCustom(userForUpdate);
             User user = await _unitOfWork.User.GetByIdAsync(userForUpdate.Id);
             _mapper.Map(userForUpdate, user);
             await _unitOfWork.SaveAsync();

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using BLL.Dtos.InDto;
 using BLL.Dtos.OutDto;
+using BLL.Infrastructure.Validators;
 using BLL.Services.Contracts;
 using DAL.Models;
 using DAL.Repository.UnitOfWork;
+using FluentValidation;
 
 namespace BLL.Services.Implementation
 {
@@ -11,11 +13,14 @@ namespace BLL.Services.Implementation
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-
-        public PlatformService(IMapper mapper, IUnitOfWork unitOfWork)
+        private readonly IValidator<PlatformForCreationDto> _creationValidator;
+        private readonly IValidator<PlatformForUpdateDto> _updateValidator;
+        public PlatformService(IMapper mapper, IUnitOfWork unitOfWork, IValidator<PlatformForCreationDto> creationValidator, IValidator<PlatformForUpdateDto> updateValidator)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _creationValidator = creationValidator;
+            _updateValidator = updateValidator;
         }
 
         public async Task<IEnumerable<PlatformForResponceDto>> GetAllPlatformsAsync()
@@ -30,12 +35,14 @@ namespace BLL.Services.Implementation
 
         public async Task AddPlatformAsync(PlatformForCreationDto platformForCreation)
         {
+            _creationValidator.ValidateAndThrowCustom(platformForCreation);
             await _unitOfWork.Platform.AddAsync(_mapper.Map<Platform>(platformForCreation));
             await _unitOfWork.SaveAsync();
         }
 
         public async Task UpdatePlatformAsync(PlatformForUpdateDto platformForUpdate)
         {
+            _updateValidator.ValidateAndThrowCustom(platformForUpdate);
             Platform platform = await _unitOfWork.Platform.GetByIdAsync(platformForUpdate.Id);
             _mapper.Map(platformForUpdate, platform);
             await _unitOfWork.SaveAsync();

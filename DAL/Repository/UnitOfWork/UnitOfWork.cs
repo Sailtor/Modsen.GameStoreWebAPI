@@ -92,10 +92,12 @@ namespace DAL.Repository.UnitOfWork
                 return _user;
             }
         }
-        public UnitOfWork (GameStoreDBContext context)
+
+        public UnitOfWork(GameStoreDBContext context)
         {
             _context = context;
         }
+
         public async Task SaveAsync()
         {
             try

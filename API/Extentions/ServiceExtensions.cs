@@ -4,6 +4,7 @@ using BLL.Services.Contracts;
 using BLL.Services.Implementation;
 using DAL.Data;
 using DAL.Repository.UnitOfWork;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -90,6 +91,11 @@ namespace API.Extentions
         {
             LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
             services.AddSingleton<ILoggerManager, LoggerManagerService>();
+        }
+
+        public static void ConfigureFluentValidation(this IServiceCollection services)
+        {
+            services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         /* --- CUSTOM MIDDLEWARE --- */

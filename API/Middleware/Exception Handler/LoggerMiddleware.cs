@@ -1,5 +1,4 @@
 ﻿using BLL.Infrastructure.Logger;
-using System.Text;
 
 namespace API.Middleware.Exception_Handler
 {
@@ -16,17 +15,22 @@ namespace API.Middleware.Exception_Handler
         public async Task InvokeAsync(HttpContext httpContext)
         {
             _logger.LogInfo(await FormatRequest(httpContext.Request));
-            var originalBodyStream = httpContext.Response.Body;
+            Stream originalBody = httpContext.Response.Body;
+            using (var memStream = new MemoryStream())
+            {
+                httpContext.Response.Body = memStream;
 
-            using var responseBody = new MemoryStream();
-            httpContext.Response.Body = responseBody;
+                await _next(httpContext);
 
-            await _next(httpContext);
+                memStream.Position = 0;
+                string responseBody = new StreamReader(memStream).ReadToEnd();
 
-            _logger.LogInfo(await FormatResponse(httpContext.Response));
-            await responseBody.CopyToAsync(originalBodyStream);
+                memStream.Position = 0;
+                await memStream.CopyToAsync(originalBody);
+                httpContext.Response.Body = originalBody;
+                _logger.LogInfo("Responce " + httpContext.Response.StatusCode + " " + responseBody);
+            }
         }
-
         private async Task<string> FormatRequest(HttpRequest request)
         {
             HttpRequestRewindExtensions.EnableBuffering(request);
@@ -37,15 +41,6 @@ namespace API.Middleware.Exception_Handler
             request.Body.Position = 0;
 
             return $"Request {request.Scheme} {request.Host} {request.Path} {request.QueryString} {requestBody.Replace('\n', ' ')}";
-        }
-
-        private async Task<string> FormatResponse(HttpResponse response)
-        {
-            response.Body.Seek(0, SeekOrigin.Begin);
-            var text = await new StreamReader(response.Body).ReadToEndAsync();
-            response.Body.Seek(0, SeekOrigin.Begin);
-
-            return $"Response {text}";
         }
     }
 }

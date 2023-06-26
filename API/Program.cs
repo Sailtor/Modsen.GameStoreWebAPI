@@ -14,6 +14,7 @@ builder.Services.ConfigureAuthentication(builder.Configuration);
 builder.Services.ConfigureAuthorization();
 builder.Services.ConfigureAutomapper();
 builder.Services.ConfigureLoggerService();
+builder.Services.ConfigureFluentValidation();
 
 var app = builder.Build();
 
@@ -24,9 +25,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     builder.Configuration.AddUserSecrets<Program>();
 }
-app.UseExceptionHandlerMiddleware();
 
 app.UseLoggerMiddleware();
+
+app.UseExceptionHandlerMiddleware();
 
 app.UseHttpsRedirection();
 

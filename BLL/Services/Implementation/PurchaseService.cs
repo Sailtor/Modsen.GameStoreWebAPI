@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using BLL.Dtos.InDto;
 using BLL.Dtos.OutDto;
+using BLL.Infrastructure.Validators;
 using BLL.Services.Contracts;
 using DAL.Models;
 using DAL.Repository.UnitOfWork;
+using FluentValidation;
 
 namespace BLL.Services.Implementation
 {
@@ -11,11 +13,12 @@ namespace BLL.Services.Implementation
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-
-        public PurchaseService(IMapper mapper, IUnitOfWork unitOfWork)
+        private readonly IValidator<PurchaseForCreationDto> _creationValidator;
+        public PurchaseService(IMapper mapper, IUnitOfWork unitOfWork, IValidator<PurchaseForCreationDto> creationValidator)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _creationValidator = creationValidator;
         }
 
         public async Task<IEnumerable<PurchaseForResponceDto>> GetUserPurchasesAsync(int userid)
@@ -30,6 +33,7 @@ namespace BLL.Services.Implementation
 
         public async Task AddUserPurchaseAsync(PurchaseForCreationDto purchaseForCreation, int gameid, int userid)
         {
+            _creationValidator.ValidateAndThrowCustom(purchaseForCreation);
             var purchase = _mapper.Map<Purchase>(purchaseForCreation);
             purchase.GameId = gameid;
             purchase.UserId = userid;
