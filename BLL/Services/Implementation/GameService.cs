@@ -27,7 +27,7 @@ namespace BLL.Services.Implementation
 
         public async Task<PagedList<GameForResponceDto>> GetAllGamesAsync(GameParameters parameters)
         {
-            return _mapper.Map<PagedList<GameForResponceDto>>(await _unitOfWork.Game.GetAllIncludeAllAsync(parameters));
+            return _mapper.Map<PagedList<GameForResponceDto>>(await _unitOfWork.Game.GetAllFilteredAsync(parameters));
         }
 
         public async Task<GameForResponceDto> GetGameByIdAsync(int gameid)

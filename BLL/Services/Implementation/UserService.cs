@@ -27,7 +27,7 @@ namespace BLL.Services.Implementation
 
         public async Task<PagedList<UserForResponceDto>> GetAllUsersAsync(UserParameters parameters)
         {
-            return _mapper.Map<PagedList<UserForResponceDto>>(await _unitOfWork.User.GetAllAsync(parameters));
+            return _mapper.Map<PagedList<UserForResponceDto>>(await _unitOfWork.User.GetAllFilteredAsync(parameters));
         }
 
         public async Task<UserForResponceDto> GetUserByIdAsync(int userid)

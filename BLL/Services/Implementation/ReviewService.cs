@@ -26,12 +26,12 @@ namespace BLL.Services.Implementation
 
         public async Task<PagedList<ReviewForResponceDto>> GetUserReviewsByIdAsync(int userid, ReviewParameters parameters)
         {
-            return _mapper.Map<PagedList<ReviewForResponceDto>>(await _unitOfWork.Review.FindAsync(p => p.UserId == userid, parameters));
+            return _mapper.Map<PagedList<ReviewForResponceDto>>(await _unitOfWork.Review.GetUserReviewsAsync(userid, parameters));
         }
 
         public async Task<PagedList<ReviewForResponceDto>> GetGameReviewsByIdAsync(int gameid, ReviewParameters parameters)
         {
-            return _mapper.Map<PagedList<ReviewForResponceDto>>(await _unitOfWork.Review.FindAsync(p => p.GameId == gameid, parameters));
+            return _mapper.Map<PagedList<ReviewForResponceDto>>(await _unitOfWork.Review.GetGameReviewsAsync(gameid, parameters));
         }
 
         public async Task<ReviewForResponceDto> GetGameReviewByIdAsync(int gameid, int userid)
