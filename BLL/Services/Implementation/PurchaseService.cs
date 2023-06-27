@@ -4,6 +4,7 @@ using BLL.Dtos.OutDto;
 using BLL.Infrastructure.Validators;
 using BLL.Services.Contracts;
 using DAL.Models;
+using DAL.Models.Query_String_Parameters;
 using DAL.Repository.UnitOfWork;
 using FluentValidation;
 
@@ -21,9 +22,9 @@ namespace BLL.Services.Implementation
             _creationValidator = creationValidator;
         }
 
-        public async Task<IEnumerable<PurchaseForResponceDto>> GetUserPurchasesAsync(int userid)
+        public async Task<PagedList<PurchaseForResponceDto>> GetUserPurchasesAsync(int userid, PurchaseParameters parameters)
         {
-            return _mapper.Map<IEnumerable<PurchaseForResponceDto>>(await _unitOfWork.Purchase.FindAsync(p => p.UserId == userid));
+            return _mapper.Map<PagedList<PurchaseForResponceDto>>(await _unitOfWork.Purchase.FindAsync(p => p.UserId == userid, parameters));
         }
 
         public async Task<PurchaseForResponceDto> GetUserPurchaseByIdAsync(int gameid, int userid)

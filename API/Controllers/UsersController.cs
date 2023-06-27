@@ -1,6 +1,8 @@
 ﻿using BLL.Dtos.InDto;
 using BLL.Dtos.OutDto;
 using BLL.Services.Contracts;
+using DAL.Models;
+using DAL.Models.Query_String_Parameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,15 +24,15 @@ namespace API.Controllers
 
         [Authorize(Roles = "1")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserForResponceDto>>> GetUsers()
+        public async Task<ActionResult<PagedList<UserForResponceDto>>> GetUsers([FromQuery] UserParameters userParameters)
         {
-            return Ok(await _userService.GetAllUsersAsync());
+            return Ok(await _userService.GetAllUsersAsync(userParameters));
         }
 
         [HttpGet("{userid}")]
         public async Task<ActionResult<UserForResponceDto>> GetUser(int userid)
         {
-            _authService.CheckAuthorization(userid,User);
+            _authService.CheckAuthorization(userid, User);
             return Ok(await _userService.GetUserByIdAsync(userid));
         }
 

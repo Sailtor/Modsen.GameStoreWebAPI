@@ -1,4 +1,5 @@
 ﻿using DAL.Models;
+using DAL.Models.Query_String_Parameters;
 using DAL.Repository.Contracts;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,14 +11,20 @@ namespace DAL.Repository.Impementation
         {
         }
 
-        public async Task<IEnumerable<Review>> GetGameReviewsAsync(int gameid)
+        public async Task<PagedList<Review>> GetGameReviewsAsync(int gameid, ReviewParameters parameters)
         {
-            return await _context.Set<Review>().Where(r => r.GameId == gameid).ToListAsync();
+            return PagedList<Review>.ToPagedList(_context.Set<Review>()
+                .Where(r => r.GameId == gameid)
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize), parameters.PageNumber, parameters.PageSize);
         }
 
-        public async Task<IEnumerable<Review>> GetUserReviewsAsync(int userid)
+        public async Task<PagedList<Review>> GetUserReviewsAsync(int userid, ReviewParameters parameters)
         {
-            return await _context.Set<Review>().Where(r => r.UserId == userid).ToListAsync();
+            return PagedList<Review>.ToPagedList(_context.Set<Review>()
+                .Where(r => r.UserId == userid)
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize), parameters.PageNumber, parameters.PageSize);
         }
     }
 }

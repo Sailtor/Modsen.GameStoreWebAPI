@@ -1,7 +1,7 @@
 ﻿using BLL.Dtos.InDto;
 using FluentValidation;
 
-namespace BLL.Infrastructure.Validators.CreateDto
+namespace BLL.Infrastructure.Validators.Other
 {
     public class UserLoginDtoValidator : AbstractValidator<UserForLoginDto>
     {

@@ -4,6 +4,7 @@ using BLL.Dtos.OutDto;
 using BLL.Infrastructure.Validators;
 using BLL.Services.Contracts;
 using DAL.Models;
+using DAL.Models.Query_String_Parameters;
 using DAL.Repository.UnitOfWork;
 using FluentValidation;
 
@@ -23,9 +24,9 @@ namespace BLL.Services.Implementation
             _updateValidator = updateValidator;
         }
 
-        public async Task<IEnumerable<GenreForResponceDto>> GetAllGenresAsync()
+        public async Task<PagedList<GenreForResponceDto>> GetAllGenresAsync(GenreParameters parameters)
         {
-            return _mapper.Map<IEnumerable<GenreForResponceDto>>(await _unitOfWork.Genre.GetAllAsync());
+            return _mapper.Map<PagedList<GenreForResponceDto>>(await _unitOfWork.Genre.GetAllAsync(parameters));
         }
 
         public async Task<GenreForResponceDto> GetGenreByIdAsync(int genreid)

@@ -1,6 +1,8 @@
 ﻿using BLL.Dtos.InDto;
 using BLL.Dtos.OutDto;
 using BLL.Services.Contracts;
+using DAL.Models;
+using DAL.Models.Query_String_Parameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,15 +23,15 @@ namespace API.Controllers
         }
 
         [HttpGet("users/{userid}/reviews")]
-        public async Task<ActionResult<IEnumerable<ReviewForResponceDto>>> GetUserReviews(int userid)
+        public async Task<ActionResult<PagedList<ReviewForResponceDto>>> GetUserReviews(int userid, [FromQuery] ReviewParameters reviewParameters)
         {
-            return Ok(await _reviewService.GetUserReviewsByIdAsync(userid));
+            return Ok(await _reviewService.GetUserReviewsByIdAsync(userid, reviewParameters));
         }
 
         [HttpGet("games/{gameid}/reviews")]
-        public async Task<ActionResult<ReviewForResponceDto>> GetGameReviews(int gameid)
+        public async Task<ActionResult<PagedList<ReviewForResponceDto>>> GetGameReviews(int gameid, [FromQuery] ReviewParameters reviewParameters)
         {
-            return Ok(await _reviewService.GetGameReviewsByIdAsync(gameid));
+            return Ok(await _reviewService.GetGameReviewsByIdAsync(gameid, reviewParameters));
         }
 
         [HttpGet("users/{userid}/reviews/{gameid}")]

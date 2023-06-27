@@ -4,6 +4,7 @@ using BLL.Dtos.OutDto;
 using BLL.Infrastructure.Validators;
 using BLL.Services.Contracts;
 using DAL.Models;
+using DAL.Models.Query_String_Parameters;
 using DAL.Repository.UnitOfWork;
 using FluentValidation;
 
@@ -23,9 +24,9 @@ namespace BLL.Services.Implementation
             _updateValidator = updateValidator;
         }
 
-        public async Task<IEnumerable<PlatformForResponceDto>> GetAllPlatformsAsync()
+        public async Task<PagedList<PlatformForResponceDto>> GetAllPlatformsAsync(PlatformParameters parameters)
         {
-            return _mapper.Map<IEnumerable<PlatformForResponceDto>>(await _unitOfWork.Platform.GetAllAsync());
+            return _mapper.Map<PagedList<PlatformForResponceDto>>(await _unitOfWork.Platform.GetAllAsync(parameters));
         }
 
         public async Task<PlatformForResponceDto> GetPlatformByIdAsync(int platformid)

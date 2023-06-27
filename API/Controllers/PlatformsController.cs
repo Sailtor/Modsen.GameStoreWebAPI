@@ -1,6 +1,8 @@
 ﻿using BLL.Dtos.InDto;
 using BLL.Dtos.OutDto;
 using BLL.Services.Contracts;
+using DAL.Models;
+using DAL.Models.Query_String_Parameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,9 +21,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<PlatformForResponceDto>>> GetPlatforms()
+        public async Task<ActionResult<PagedList<PlatformForResponceDto>>> GetPlatforms([FromQuery] PlatformParameters platformParameters)
         {
-            return Ok(await _platformService.GetAllPlatformsAsync());
+            return Ok(await _platformService.GetAllPlatformsAsync(platformParameters));
         }
 
         [HttpGet("{platformid}")]

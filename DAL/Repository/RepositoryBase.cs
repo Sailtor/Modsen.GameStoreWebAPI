@@ -1,4 +1,5 @@
 ﻿using DAL.Exceptions;
+using DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -33,19 +34,22 @@ namespace DAL.Repository
             return entity;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task<PagedList<TEntity>> GetAllAsync(QueryStringParameters parameters)
         {
-            return await _context.Set<TEntity>().ToListAsync();
+            var list = PagedList<TEntity>.ToPagedList(_context.Set<TEntity>(), parameters.PageNumber, parameters.PageSize);
+            return list;
         }
 
-        public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<PagedList<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, QueryStringParameters parameters)
         {
-            var entities = _context.Set<TEntity>().Where(predicate);
+            var entities = PagedList<TEntity>.ToPagedList(_context.Set<TEntity>()
+                .Where(predicate), parameters.PageNumber, parameters.PageSize);
+
             if ((entities is null) || (!entities.Any()))
             {
                 throw new DatabaseNotFoundException();
             }
-            return await entities.ToListAsync();
+            return entities;
         }
 
         public async Task AddAsync(TEntity entity)

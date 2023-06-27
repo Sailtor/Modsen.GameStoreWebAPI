@@ -1,7 +1,7 @@
 ﻿using BLL.Dtos.InDto;
 using FluentValidation;
 
-namespace BLL.Infrastructure.Validators.CreateDto
+namespace BLL.Infrastructure.Validators.UpdateDto
 {
     public class ReviewUpdateDtoValidator : AbstractValidator<ReviewForUpdateDto>
     {

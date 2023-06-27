@@ -1,6 +1,8 @@
 ﻿using BLL.Dtos.InDto;
 using BLL.Dtos.OutDto;
 using BLL.Services.Contracts;
+using DAL.Models;
+using DAL.Models.Query_String_Parameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,9 +21,9 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RoleForResponceDto>>> GetRoles()
+        public async Task<ActionResult<PagedList<RoleForResponceDto>>> GetRoles([FromQuery] RoleParameters roleParameters)
         {
-            return Ok(await _roleService.GetAllRolesAsync());
+            return Ok(await _roleService.GetAllRolesAsync(roleParameters));
         }
 
         [HttpGet("{roleid}")]
