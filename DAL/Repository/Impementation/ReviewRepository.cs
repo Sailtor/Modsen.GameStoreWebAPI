@@ -14,17 +14,13 @@ namespace DAL.Repository.Impementation
         public async Task<PagedList<Review>> GetGameReviewsAsync(int gameid, ReviewParameters parameters)
         {
             return PagedList<Review>.ToPagedList(_context.Set<Review>()
-                .Where(r => r.GameId == gameid)
-                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
-                .Take(parameters.PageSize), parameters.PageNumber, parameters.PageSize);
+                .Where(r => r.GameId == gameid), parameters.PageNumber, parameters.PageSize);
         }
 
         public async Task<PagedList<Review>> GetUserReviewsAsync(int userid, ReviewParameters parameters)
         {
             return PagedList<Review>.ToPagedList(_context.Set<Review>()
-                .Where(r => r.UserId == userid)
-                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
-                .Take(parameters.PageSize), parameters.PageNumber, parameters.PageSize);
+                .Where(r => r.UserId == userid), parameters.PageNumber, parameters.PageSize);
         }
     }
 }
