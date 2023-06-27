@@ -14,7 +14,7 @@ namespace DAL.Repository
             _context = context;
         }
 
-        public async Task<TEntity> GetByIdAsync(TId entityid)
+        public virtual async Task<TEntity> GetByIdAsync(TId entityid)
         {
             var entity = await _context.Set<TEntity>().FindAsync(entityid);
             if (entity is null)
@@ -24,7 +24,7 @@ namespace DAL.Repository
             return entity;
         }
 
-        public async Task<TEntity> GetByIdAsync(TId entityid, TId entityid2)
+        public virtual async Task<TEntity> GetByIdAsync(TId entityid, TId entityid2)
         {
             var entity = await _context.Set<TEntity>().FindAsync(entityid, entityid2);
             if (entity is null)
@@ -34,7 +34,7 @@ namespace DAL.Repository
             return entity;
         }
 
-        public async Task<PagedList<TEntity>> GetAllAsync(QueryStringParameters parameters)
+        public virtual async Task<PagedList<TEntity>> GetAllAsync(QueryStringParameters parameters)
         {
             var list = PagedList<TEntity>.ToPagedList(_context.Set<TEntity>(), parameters.PageNumber, parameters.PageSize);
             if ((list is null) || (!list.Any()))
@@ -44,7 +44,7 @@ namespace DAL.Repository
             return list;
         }
 
-        public async Task<PagedList<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, QueryStringParameters parameters)
+        public virtual async Task<PagedList<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, QueryStringParameters parameters)
         {
             var entities = PagedList<TEntity>.ToPagedList(_context.Set<TEntity>()
                 .Where(predicate), parameters.PageNumber, parameters.PageSize);

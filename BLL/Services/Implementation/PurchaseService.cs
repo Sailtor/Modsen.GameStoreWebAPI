@@ -24,7 +24,7 @@ namespace BLL.Services.Implementation
 
         public async Task<PagedList<PurchaseForResponceDto>> GetUserPurchasesAsync(int userid, PurchaseParameters parameters)
         {
-            return _mapper.Map<PagedList<PurchaseForResponceDto>>(await _unitOfWork.Purchase.FindAsync(p => p.UserId == userid, parameters));
+            return _mapper.Map<PagedList<PurchaseForResponceDto>>(await _unitOfWork.Purchase.FindFilteredAsync(p => p.UserId == userid, parameters));
         }
 
         public async Task<PurchaseForResponceDto> GetUserPurchaseByIdAsync(int gameid, int userid)

@@ -17,7 +17,7 @@ namespace DAL.Models
         public int DeveloperId { get; set; }
         public string Name { get; set; } = null!;
         public DateTime ReleaseDate { get; set; }
-        public string? Description { get; set; }
+        public string Description { get; set; }
         public decimal Price { get; set; }
         public virtual Developer Developer { get; set; } = null!;
         public virtual ICollection<Purchase> Purchases { get; set; }

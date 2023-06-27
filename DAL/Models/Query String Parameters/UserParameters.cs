@@ -2,5 +2,6 @@
 {
     public class UserParameters : QueryStringParameters
     {
+        public int? RoleId { get; set; }
     }
 }
