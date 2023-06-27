@@ -37,6 +37,10 @@ namespace DAL.Repository
         public async Task<PagedList<TEntity>> GetAllAsync(QueryStringParameters parameters)
         {
             var list = PagedList<TEntity>.ToPagedList(_context.Set<TEntity>(), parameters.PageNumber, parameters.PageSize);
+            if ((list is null) || (!list.Any()))
+            {
+                throw new DatabaseNotFoundException();
+            }
             return list;
         }
 

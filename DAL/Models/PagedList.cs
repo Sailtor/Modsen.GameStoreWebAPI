@@ -1,4 +1,8 @@
-﻿namespace DAL.Models
+﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System.Net.Http.Headers;
+
+namespace DAL.Models
 {
     public class PagedList<T> : List<T>
     {
@@ -28,6 +32,20 @@
             int count = source.Count();
             IEnumerable<T> items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
             return new PagedList<T>(items, count, pageNumber, pageSize);
+        }
+
+        public void WritePaginationData(IHeaderDictionary headers)
+        {
+            var metadata = new
+            {
+                TotalCount,
+                PageSize,
+                CurrentPage,
+                TotalPages,
+                HasNext,
+                HasPrevious
+            };
+            headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
         }
     }
 }

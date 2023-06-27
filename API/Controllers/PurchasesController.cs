@@ -1,6 +1,7 @@
 ﻿using BLL.Dtos.InDto;
 using BLL.Dtos.OutDto;
 using BLL.Services.Contracts;
+using BLL.Services.Implementation;
 using DAL.Models;
 using DAL.Models.Query_String_Parameters;
 using Microsoft.AspNetCore.Authorization;
@@ -26,7 +27,9 @@ namespace API.Controllers
         public async Task<ActionResult<PagedList<PurchaseForResponceDto>>> GetUserPurchases(int userid, [FromQuery] PurchaseParameters purchaseParameters)
         {
             _authService.CheckAuthorization(userid, User);
-            return Ok(await _purchaseService.GetUserPurchasesAsync(userid, purchaseParameters));
+            var purchases = await _purchaseService.GetUserPurchasesAsync(userid, purchaseParameters);
+            purchases.WritePaginationData(Response.Headers);
+            return Ok(purchases);
         }
 
         [HttpGet("{userid}/games/{gameid}")]

@@ -13,13 +13,16 @@ namespace DAL.Repository.Impementation
         }
         public async Task<PagedList<Game>> GetAllIncludeAllAsync(GameParameters parameters)
         {
-            var games = _context.Set<Game>()
-;
-
             var list = PagedList<Game>.ToPagedList(_context.Set<Game>()
                 .Include(g => g.Platforms)
                 .Include(g => g.Genres)
                 .Include(g => g.Reviews), parameters.PageNumber, parameters.PageSize);
+
+            if ((list is null) || (!list.Any()))
+            {
+                throw new DatabaseNotFoundException();
+            }
+
             return list;
         }
 

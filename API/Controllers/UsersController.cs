@@ -26,7 +26,9 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<PagedList<UserForResponceDto>>> GetUsers([FromQuery] UserParameters userParameters)
         {
-            return Ok(await _userService.GetAllUsersAsync(userParameters));
+            var users = await _userService.GetAllUsersAsync(userParameters);
+            users.WritePaginationData(Response.Headers);
+            return Ok(users);
         }
 
         [HttpGet("{userid}")]

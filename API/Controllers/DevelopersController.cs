@@ -23,7 +23,9 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<PagedList<DeveloperForResponceDto>>> GetDevelopers([FromQuery] DeveloperParameters developerParameters)
         {
-            return Ok(await _developerService.GetAllDevelopersAsync(developerParameters));
+            var developers = await _developerService.GetAllDevelopersAsync(developerParameters);
+            developers.WritePaginationData(Response.Headers);
+            return Ok(developers);
         }
 
         [HttpGet("{developerid}")]

@@ -1,6 +1,7 @@
 ﻿using BLL.Dtos.InDto;
 using BLL.Dtos.OutDto;
 using BLL.Services.Contracts;
+using BLL.Services.Implementation;
 using DAL.Models;
 using DAL.Models.Query_String_Parameters;
 using Microsoft.AspNetCore.Authorization;
@@ -23,7 +24,9 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<PagedList<PlatformForResponceDto>>> GetPlatforms([FromQuery] PlatformParameters platformParameters)
         {
-            return Ok(await _platformService.GetAllPlatformsAsync(platformParameters));
+            var platforms = await _platformService.GetAllPlatformsAsync(platformParameters);
+            platforms.WritePaginationData(Response.Headers);
+            return Ok(platforms);
         }
 
         [HttpGet("{platformid}")]

@@ -1,6 +1,7 @@
 ﻿using BLL.Dtos.InDto;
 using BLL.Dtos.OutDto;
 using BLL.Services.Contracts;
+using BLL.Services.Implementation;
 using DAL.Models;
 using DAL.Models.Query_String_Parameters;
 using Microsoft.AspNetCore.Authorization;
@@ -23,7 +24,9 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<PagedList<GameForResponceDto>>> GetGames([FromQuery] GameParameters gameParameters)
         {
-            return Ok(await _gameService.GetAllGamesAsync(gameParameters));
+            var games = await _gameService.GetAllGamesAsync(gameParameters);
+            games.WritePaginationData(Response.Headers);
+            return Ok(games);
         }
 
         [HttpGet("{gameid}")]
