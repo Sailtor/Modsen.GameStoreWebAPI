@@ -8,7 +8,7 @@ namespace BLL.Infrastructure.Validators.CreateDto
         public GenreCreationDtoValidator()
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
-            RuleFor(m => m.Name).NotNull().Length(2, 1000);
+            RuleFor(m => m.Name).NotNull().Length(2, 2047);
         }
     }
 }

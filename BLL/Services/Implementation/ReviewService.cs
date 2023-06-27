@@ -4,6 +4,7 @@ using BLL.Dtos.OutDto;
 using BLL.Infrastructure.Validators;
 using BLL.Services.Contracts;
 using DAL.Models;
+using DAL.Models.Query_String_Parameters;
 using DAL.Repository.UnitOfWork;
 using FluentValidation;
 
@@ -23,14 +24,14 @@ namespace BLL.Services.Implementation
             _updateValidator = updateValidator;
         }
 
-        public async Task<IEnumerable<ReviewForResponceDto>> GetUserReviewsByIdAsync(int userid)
+        public async Task<PagedList<ReviewForResponceDto>> GetUserReviewsByIdAsync(int userid, ReviewParameters parameters)
         {
-            return _mapper.Map<IEnumerable<ReviewForResponceDto>>(await _unitOfWork.Review.FindAsync(p => p.UserId == userid));
+            return _mapper.Map<PagedList<ReviewForResponceDto>>(await _unitOfWork.Review.FindAsync(p => p.UserId == userid, parameters));
         }
 
-        public async Task<IEnumerable<ReviewForResponceDto>> GetGameReviewsByIdAsync(int gameid)
+        public async Task<PagedList<ReviewForResponceDto>> GetGameReviewsByIdAsync(int gameid, ReviewParameters parameters)
         {
-            return _mapper.Map<IEnumerable<ReviewForResponceDto>>(await _unitOfWork.Review.FindAsync(p => p.GameId == gameid));
+            return _mapper.Map<PagedList<ReviewForResponceDto>>(await _unitOfWork.Review.FindAsync(p => p.GameId == gameid, parameters));
         }
 
         public async Task<ReviewForResponceDto> GetGameReviewByIdAsync(int gameid, int userid)

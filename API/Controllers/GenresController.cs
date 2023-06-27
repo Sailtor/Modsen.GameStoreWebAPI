@@ -1,6 +1,9 @@
 ﻿using BLL.Dtos.InDto;
 using BLL.Dtos.OutDto;
 using BLL.Services.Contracts;
+using BLL.Services.Implementation;
+using DAL.Models;
+using DAL.Models.Query_String_Parameters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,9 +22,11 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GenreForResponceDto>>> GetGenres()
+        public async Task<ActionResult<PagedList<GenreForResponceDto>>> GetGenres([FromQuery] GenreParameters genreParameters)
         {
-            return Ok(await _genreService.GetAllGenresAsync());
+            var genres = await _genreService.GetAllGenresAsync(genreParameters);
+            genres.WritePaginationData(Response.Headers);
+            return Ok(genres);
         }
 
         [HttpGet("{genreid}")]

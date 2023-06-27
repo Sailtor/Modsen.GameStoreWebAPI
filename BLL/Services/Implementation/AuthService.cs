@@ -3,6 +3,7 @@ using BLL.Exceptions;
 using BLL.Infrastructure.Validators;
 using BLL.Services.Contracts;
 using DAL.Models;
+using DAL.Models.Query_String_Parameters;
 using DAL.Repository.UnitOfWork;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
@@ -28,7 +29,7 @@ namespace BLL.Services.Implementation
         public async Task<AuthenticatedResponse> Login(UserForLoginDto creds)
         {
             _userLoginValidator.ValidateAndThrowCustom(creds);
-            var user = (await _unitOfWork.User.FindAsync(u => u.Login == creds.Login)).First();
+            var user = (await _unitOfWork.User.FindAsync(u => u.Login == creds.Login, new UserParameters() { PageNumber = 1, PageSize = 1 })).First();
             if (!BCrypt.Net.BCrypt.EnhancedVerify(creds.Password, user.Password))
             {
                 throw new WrongPasswordException();

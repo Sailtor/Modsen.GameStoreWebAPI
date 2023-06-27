@@ -4,6 +4,7 @@ using BLL.Dtos.OutDto;
 using BLL.Infrastructure.Validators;
 using BLL.Services.Contracts;
 using DAL.Models;
+using DAL.Models.Query_String_Parameters;
 using DAL.Repository.UnitOfWork;
 using FluentValidation;
 
@@ -24,9 +25,9 @@ namespace BLL.Services.Implementation
             _updateValidator = updateValidator;
         }
 
-        public async Task<IEnumerable<RoleForResponceDto>> GetAllRolesAsync()
+        public async Task<PagedList<RoleForResponceDto>> GetAllRolesAsync(RoleParameters parameters)
         {
-            return _mapper.Map<IEnumerable<RoleForResponceDto>>(await _unitOfWork.Role.GetAllAsync());
+            return _mapper.Map<PagedList<RoleForResponceDto>>(await _unitOfWork.Role.GetAllAsync(parameters));
         }
 
         public async Task<RoleForResponceDto> GetRoleByIdAsync(int roleid)

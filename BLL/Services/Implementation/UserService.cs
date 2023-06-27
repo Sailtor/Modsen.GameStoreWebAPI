@@ -7,6 +7,7 @@ using DAL.Models;
 using DAL.Repository.UnitOfWork;
 using FluentValidation;
 using BCrypt.Net;
+using DAL.Models.Query_String_Parameters;
 
 namespace BLL.Services.Implementation
 {
@@ -24,9 +25,9 @@ namespace BLL.Services.Implementation
             _updateValidator = updateValidator;
         }
 
-        public async Task<IEnumerable<UserForResponceDto>> GetAllUsersAsync()
+        public async Task<PagedList<UserForResponceDto>> GetAllUsersAsync(UserParameters parameters)
         {
-            return _mapper.Map<IEnumerable<UserForResponceDto>>(await _unitOfWork.User.GetAllAsync());
+            return _mapper.Map<PagedList<UserForResponceDto>>(await _unitOfWork.User.GetAllAsync(parameters));
         }
 
         public async Task<UserForResponceDto> GetUserByIdAsync(int userid)
