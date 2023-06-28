@@ -20,6 +20,7 @@ namespace DAL.Repository.Impementation
                 .Include(g => g.Reviews)
                 .AsQueryable();
 
+            //Filtering
             if (parameters.DeveloperId is not null)
             {
                 list = list.Where(g => g.DeveloperId == parameters.DeveloperId);
@@ -32,7 +33,6 @@ namespace DAL.Repository.Impementation
             {
                 list = list.Where(g => g.Price >= parameters.MinPrice && g.Price <= parameters.MaxPrice);
             }
-
             //Not all advice worth listening to...
             /*if (parameters.MinScore is not null && parameters.MaxScore is not null)
             {
@@ -56,7 +56,11 @@ namespace DAL.Repository.Impementation
                 }
             }
 
-            var pagedList = PagedList<Game>.ToPagedList(list, parameters.PageNumber, parameters.PageSize);
+            //Searching
+            SearchByName(ref list, parameters.SearchName);
+            SearchByDesc(ref list, parameters.SearchDesc);
+
+            var pagedList = PagedList<Game>.ToPagedList(list.OrderBy(g => g.Name), parameters.PageNumber, parameters.PageSize);
 
             if ((pagedList is null) || (!pagedList.Any()))
             {
@@ -93,6 +97,19 @@ namespace DAL.Repository.Impementation
                 throw new DatabaseNotFoundException();
             }
             return game;
+        }
+
+        private void SearchByName(ref IQueryable<Game> games, string gameName)
+        {
+            if (string.IsNullOrWhiteSpace(gameName))
+                return;
+            games = games.Where(o => o.Name.ToLower().Contains(gameName.Trim().ToLower()));
+        }
+        private void SearchByDesc(ref IQueryable<Game> games, string gameDesc)
+        {
+            if (string.IsNullOrWhiteSpace(gameDesc))
+                return;
+            games = games.Where(g => g.Description.ToLower().Contains(gameDesc.Trim().ToLower()));
         }
     }
 }

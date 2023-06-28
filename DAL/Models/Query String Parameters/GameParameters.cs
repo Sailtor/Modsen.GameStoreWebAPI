@@ -11,5 +11,7 @@
         public double? MinScore { get; set; }*/
         public ICollection<int>? GenresIds { get; set; }
         public ICollection<int>? PlatformsIds { get; set; }
+        public string? SearchName { get; set; }
+        public string? SearchDesc { get; set; }
     }
 }

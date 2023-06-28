@@ -26,7 +26,7 @@ namespace BLL.Services.Implementation
 
         public async Task<PagedList<GenreForResponceDto>> GetAllGenresAsync(GenreParameters parameters)
         {
-            return _mapper.Map<PagedList<GenreForResponceDto>>(await _unitOfWork.Genre.GetAllAsync(parameters));
+            return _mapper.Map<PagedList<GenreForResponceDto>>(_unitOfWork.Genre.GetAllGenres(parameters));
         }
 
         public async Task<GenreForResponceDto> GetGenreByIdAsync(int genreid)

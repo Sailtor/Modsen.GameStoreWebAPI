@@ -27,7 +27,7 @@ namespace BLL.Services.Implementation
 
         public async Task<PagedList<RoleForResponceDto>> GetAllRolesAsync(RoleParameters parameters)
         {
-            return _mapper.Map<PagedList<RoleForResponceDto>>(await _unitOfWork.Role.GetAllAsync(parameters));
+            return _mapper.Map<PagedList<RoleForResponceDto>>(_unitOfWork.Role.GetAllRoles(parameters));
         }
 
         public async Task<RoleForResponceDto> GetRoleByIdAsync(int roleid)

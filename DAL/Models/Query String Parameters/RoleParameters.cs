@@ -2,5 +2,6 @@
 {
     public class RoleParameters : QueryStringParameters
     {
+        public string? SearchName { get; set; }
     }
 }

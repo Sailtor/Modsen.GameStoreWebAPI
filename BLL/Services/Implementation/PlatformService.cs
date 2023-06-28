@@ -26,7 +26,7 @@ namespace BLL.Services.Implementation
 
         public async Task<PagedList<PlatformForResponceDto>> GetAllPlatformsAsync(PlatformParameters parameters)
         {
-            return _mapper.Map<PagedList<PlatformForResponceDto>>(await _unitOfWork.Platform.GetAllAsync(parameters));
+            return _mapper.Map<PagedList<PlatformForResponceDto>>(_unitOfWork.Platform.GetAllPlatforms(parameters));
         }
 
         public async Task<PlatformForResponceDto> GetPlatformByIdAsync(int platformid)

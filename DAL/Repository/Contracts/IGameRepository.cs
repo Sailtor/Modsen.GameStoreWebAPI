@@ -5,8 +5,8 @@ namespace DAL.Repository.Contracts
 {
     public interface IGameRepository : IRepository<Game, int>
     {
-        public Task<PagedList<Game>> GetAllFilteredAsync(GameParameters parameters);
-        public Task<PagedList<Game>> GetAllIncludeAllAsync(GameParameters parameters);
+        Task<PagedList<Game>> GetAllFilteredAsync(GameParameters parameters);
+        Task<PagedList<Game>> GetAllIncludeAllAsync(GameParameters parameters);
         Task<Game> GetByIdIncludeAllAsync(int gameid);
     }
 }
