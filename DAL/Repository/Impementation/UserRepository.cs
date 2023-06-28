@@ -12,7 +12,8 @@ namespace DAL.Repository.Impementation
         public UserRepository(DbContext context) : base(context)
         {
         }
-        public virtual async Task<PagedList<User>> GetAllFilteredAsync(UserParameters parameters)
+
+        public virtual async Task<PagedList<User>> GetAllAsync(UserParameters parameters)
         {
             var list = _context.Set<User>().
                 AsQueryable();
@@ -22,12 +23,31 @@ namespace DAL.Repository.Impementation
                 list = list.Where(u => u.RoleId == parameters.RoleId);
             }
 
-            var pagedList = PagedList<User>.ToPagedList(_context.Set<User>(), parameters.PageNumber, parameters.PageSize);
+            SearchByLogin(ref list, parameters.SearchLogin);
+            SearchByEmail(ref list, parameters.SearchEmail);
+
+            var pagedList = PagedList<User>.ToPagedList(list.OrderBy(u => u.Login), parameters.PageNumber, parameters.PageSize);
+
             if ((pagedList is null) || (!pagedList.Any()))
             {
                 throw new DatabaseNotFoundException();
             }
+
             return pagedList;
+        }
+
+        private void SearchByLogin(ref IQueryable<User> users, string userLogin)
+        {
+            if (string.IsNullOrWhiteSpace(userLogin))
+                return;
+            users = users.Where(u => u.Login.ToLower().Contains(userLogin.Trim().ToLower()));
+        }
+
+        private void SearchByEmail(ref IQueryable<User> users, string userEmail)
+        {
+            if (string.IsNullOrWhiteSpace(userEmail))
+                return;
+            users = users.Where(g => g.Email.ToLower().Contains(userEmail.Trim().ToLower()));
         }
     }
 }

@@ -2,5 +2,6 @@
 {
     public class PlatformParameters : QueryStringParameters
     {
+        public string? SearchName { get; set; }
     }
 }

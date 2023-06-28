@@ -28,6 +28,8 @@ namespace DAL.Repository.Impementation
                 list = list.Where(g => g.Score >= parameters.MinScore && g.Score <= parameters.MaxScore);
             }
 
+            SearchByRevText(ref list, parameters.SearchText);
+
             var pagedList = PagedList<Review>.ToPagedList(list, parameters.PageNumber, parameters.PageSize);
 
             if ((pagedList is null) || (!pagedList.Any()))
@@ -52,13 +54,23 @@ namespace DAL.Repository.Impementation
                 list = list.Where(g => g.Score >= parameters.MinScore && g.Score <= parameters.MaxScore);
             }
 
-            var pagedList = PagedList<Review>.ToPagedList(list, parameters.PageNumber, parameters.PageSize);
+            SearchByRevText(ref list, parameters.SearchText);
+
+            var pagedList = PagedList<Review>.ToPagedList(list.OrderBy(r => r.ReviewDate), parameters.PageNumber, parameters.PageSize);
 
             if ((pagedList is null) || (!pagedList.Any()))
             {
                 throw new DatabaseNotFoundException();
             }
             return pagedList;
+        }
+
+        private void SearchByRevText(ref IQueryable<Review> reviews, string revText)
+        {
+            if (string.IsNullOrWhiteSpace(revText))
+                return;
+            reviews = reviews.Where(r => !(r.ReviewText == null))
+                .Where(r => r.ReviewText.ToLower().Contains(revText.Trim().ToLower()));
         }
     }
 }

@@ -27,7 +27,7 @@ namespace BLL.Services.Implementation
 
         public async Task<PagedList<DeveloperForResponceDto>> GetAllDevelopersAsync(DeveloperParameters parameters)
         {
-            return _mapper.Map<PagedList<DeveloperForResponceDto>>(await _unitOfWork.Developer.GetAllAsync(parameters));
+            return _mapper.Map<PagedList<DeveloperForResponceDto>>(_unitOfWork.Developer.GetAllDevelopers(parameters));
         }
 
         public async Task<DeveloperForResponceDto> GetDeveloperByIdAsync(int developerid)
