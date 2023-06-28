@@ -19,7 +19,11 @@ namespace DAL.Repository.Impementation
 
             if (parameters.MinPurchaseDate is not null)
             {
-                list = list.Where(g => g.PurchaseDate >= parameters.MinPurchaseDate && g.PurchaseDate <= parameters.MaxPurchaseDate);
+                list = list.Where(g => g.PurchaseDate >= parameters.MinPurchaseDate);
+            }
+            if (parameters.MaxPurchaseDate is not null)
+            {
+                list = list.Where(g => g.PurchaseDate <= parameters.MaxPurchaseDate);
             }
 
             var pagedList = PagedList<Purchase>.ToPagedList(list, parameters.PageNumber, parameters.PageSize);
@@ -39,10 +43,14 @@ namespace DAL.Repository.Impementation
 
             if (parameters.MinPurchaseDate is not null)
             {
-                list = list.Where(g => g.PurchaseDate >= parameters.MinPurchaseDate && g.PurchaseDate <= parameters.MaxPurchaseDate);
+                list = list.Where(g => g.PurchaseDate >= parameters.MinPurchaseDate);
+            }
+            if (parameters.MaxPurchaseDate is not null)
+            {
+                list = list.Where(g => g.PurchaseDate <= parameters.MaxPurchaseDate);
             }
 
-            var pagedList = PagedList<Purchase>.ToPagedList(list, parameters.PageNumber, parameters.PageSize);
+            var pagedList = PagedList<Purchase>.ToPagedList(list.OrderBy(p => p.PurchaseDate), parameters.PageNumber, parameters.PageSize);
 
             if ((pagedList is null) || (!pagedList.Any()))
             {

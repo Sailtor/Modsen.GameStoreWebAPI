@@ -25,15 +25,25 @@ namespace DAL.Repository.Impementation
             {
                 list = list.Where(g => g.DeveloperId == parameters.DeveloperId);
             }
+            //idfk how does this work. DateTime is stupid
             if (parameters.MinReleaseDate is not null)
             {
-                list = list.Where(g => g.ReleaseDate >= parameters.MinReleaseDate && g.ReleaseDate <= parameters.MaxReleaseDate);
+                list = list.Where(g => g.ReleaseDate >= parameters.MinReleaseDate);
             }
-            if (parameters.MinPrice is not null && parameters.MinPrice is not null)
+            if (parameters.MaxReleaseDate is not null)
             {
-                list = list.Where(g => g.Price >= parameters.MinPrice && g.Price <= parameters.MaxPrice);
+                list = list.Where(g => g.ReleaseDate <= parameters.MaxReleaseDate);
             }
-            //Not all advice worth listening to...
+            if (parameters.MinPrice is not null)
+            {
+                list = list.Where(g => g.Price >= parameters.MinPrice);
+            }
+            if (parameters.MaxPrice is not null)
+            {
+                list = list.Where(g => g.Price <= parameters.MaxPrice);
+            }
+
+            //Not all advice are worth listening to...
             /*if (parameters.MinScore is not null && parameters.MaxScore is not null)
             {
                 list = list.Where(g => g.Score >= parameters.MinScore && g.Score <= parameters.MaxScore);

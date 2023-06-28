@@ -2,7 +2,7 @@
 {
     public class PurchaseParameters : QueryStringParameters
     {
-        public DateTime? MaxPurchaseDate { get; set; } = DateTime.Now;
+        public DateTime? MaxPurchaseDate { get; set; }
         public DateTime? MinPurchaseDate { get; set; }
     }
 }

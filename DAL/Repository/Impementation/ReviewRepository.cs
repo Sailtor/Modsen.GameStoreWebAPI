@@ -19,13 +19,22 @@ namespace DAL.Repository.Impementation
                 .Where(r => r.GameId == gameid)
                 .AsQueryable();
 
+            //idfk how does this work. DateTime is stupid
             if (parameters.MinReviewDate is not null)
             {
-                list = list.Where(g => g.ReviewDate >= parameters.MinReviewDate && g.ReviewDate <= parameters.MaxReviewDate);
+                list = list.Where(g => g.ReviewDate >= parameters.MinReviewDate);
             }
-            if (parameters.MinScore is not null && parameters.MaxScore is not null)
+            if (parameters.MaxReviewDate is not null)
             {
-                list = list.Where(g => g.Score >= parameters.MinScore && g.Score <= parameters.MaxScore);
+                list = list.Where(g => g.ReviewDate <= parameters.MaxReviewDate);
+            }
+            if (parameters.MinScore is not null)
+            {
+                list = list.Where(g => g.Score >= parameters.MinScore);
+            }
+            if (parameters.MaxScore is not null)
+            {
+                list = list.Where(g => g.Score <= parameters.MaxScore);
             }
 
             SearchByRevText(ref list, parameters.SearchText);
@@ -47,11 +56,19 @@ namespace DAL.Repository.Impementation
 
             if (parameters.MinReviewDate is not null)
             {
-                list = list.Where(g => g.ReviewDate >= parameters.MinReviewDate && g.ReviewDate <= parameters.MaxReviewDate);
+                list = list.Where(g => g.ReviewDate >= parameters.MinReviewDate);
+            }
+            if (parameters.MaxReviewDate is not null)
+            {
+                list = list.Where(g => g.ReviewDate <= parameters.MaxReviewDate);
             }
             if (parameters.MinScore is not null)
             {
-                list = list.Where(g => g.Score >= parameters.MinScore && g.Score <= parameters.MaxScore);
+                list = list.Where(g => g.Score >= parameters.MinScore);
+            }
+            if (parameters.MaxScore is not null)
+            {
+                list = list.Where(g => g.Score <= parameters.MaxScore);
             }
 
             SearchByRevText(ref list, parameters.SearchText);
