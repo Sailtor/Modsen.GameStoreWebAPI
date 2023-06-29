@@ -15,25 +15,28 @@ namespace DAL.Repository.Impementation
 
         public virtual async Task<PagedList<User>> GetAllAsync(UserParameters parameters)
         {
-            var list = _context.Set<User>().
+            return await Task.Run(() =>
+            {
+                var list = _context.Set<User>().
                 AsQueryable();
 
-            if (parameters.RoleId is not null)
-            {
-                list = list.Where(u => u.RoleId == parameters.RoleId);
-            }
+                if (parameters.RoleId is not null)
+                {
+                    list = list.Where(u => u.RoleId == parameters.RoleId);
+                }
 
-            SearchByLogin(ref list, parameters.SearchLogin);
-            SearchByEmail(ref list, parameters.SearchEmail);
+                SearchByLogin(ref list, parameters.SearchLogin);
+                SearchByEmail(ref list, parameters.SearchEmail);
 
-            var pagedList = PagedList<User>.ToPagedList(list.OrderBy(u => u.Login), parameters.PageNumber, parameters.PageSize);
+                var pagedList = PagedList<User>.ToPagedList(list.OrderBy(u => u.Login), parameters.PageNumber, parameters.PageSize);
 
-            if ((pagedList is null) || (!pagedList.Any()))
-            {
-                throw new DatabaseNotFoundException();
-            }
+                if ((pagedList is null) || (!pagedList.Any()))
+                {
+                    throw new DatabaseNotFoundException();
+                }
 
-            return pagedList;
+                return pagedList;
+            });
         }
 
         private void SearchByLogin(ref IQueryable<User> users, string userLogin)

@@ -15,71 +15,77 @@ namespace DAL.Repository.Impementation
 
         public async Task<PagedList<Review>> GetGameReviewsAsync(int gameid, ReviewParameters parameters)
         {
-            var list = _context.Set<Review>()
+            return await Task.Run(() =>
+            {
+                var list = _context.Set<Review>()
                 .Where(r => r.GameId == gameid)
                 .AsQueryable();
 
-            //idfk how does this work. DateTime is stupid
-            if (parameters.MinReviewDate is not null)
-            {
-                list = list.Where(g => g.ReviewDate >= parameters.MinReviewDate);
-            }
-            if (parameters.MaxReviewDate is not null)
-            {
-                list = list.Where(g => g.ReviewDate <= parameters.MaxReviewDate);
-            }
-            if (parameters.MinScore is not null)
-            {
-                list = list.Where(g => g.Score >= parameters.MinScore);
-            }
-            if (parameters.MaxScore is not null)
-            {
-                list = list.Where(g => g.Score <= parameters.MaxScore);
-            }
+                //idfk how does this work. DateTime is stupid
+                if (parameters.MinReviewDate is not null)
+                {
+                    list = list.Where(g => g.ReviewDate >= parameters.MinReviewDate);
+                }
+                if (parameters.MaxReviewDate is not null)
+                {
+                    list = list.Where(g => g.ReviewDate <= parameters.MaxReviewDate);
+                }
+                if (parameters.MinScore is not null)
+                {
+                    list = list.Where(g => g.Score >= parameters.MinScore);
+                }
+                if (parameters.MaxScore is not null)
+                {
+                    list = list.Where(g => g.Score <= parameters.MaxScore);
+                }
 
-            SearchByRevText(ref list, parameters.SearchText);
+                SearchByRevText(ref list, parameters.SearchText);
 
-            var pagedList = PagedList<Review>.ToPagedList(list, parameters.PageNumber, parameters.PageSize);
+                var pagedList = PagedList<Review>.ToPagedList(list, parameters.PageNumber, parameters.PageSize);
 
-            if ((pagedList is null) || (!pagedList.Any()))
-            {
-                throw new DatabaseNotFoundException();
-            }
-            return pagedList;
+                if ((pagedList is null) || (!pagedList.Any()))
+                {
+                    throw new DatabaseNotFoundException();
+                }
+                return pagedList;
+            });
         }
 
         public async Task<PagedList<Review>> GetUserReviewsAsync(int userid, ReviewParameters parameters)
         {
-            var list = _context.Set<Review>()
+            return await Task.Run(() =>
+            {
+                var list = _context.Set<Review>()
                 .Where(r => r.UserId == userid)
                 .AsQueryable();
 
-            if (parameters.MinReviewDate is not null)
-            {
-                list = list.Where(g => g.ReviewDate >= parameters.MinReviewDate);
-            }
-            if (parameters.MaxReviewDate is not null)
-            {
-                list = list.Where(g => g.ReviewDate <= parameters.MaxReviewDate);
-            }
-            if (parameters.MinScore is not null)
-            {
-                list = list.Where(g => g.Score >= parameters.MinScore);
-            }
-            if (parameters.MaxScore is not null)
-            {
-                list = list.Where(g => g.Score <= parameters.MaxScore);
-            }
+                if (parameters.MinReviewDate is not null)
+                {
+                    list = list.Where(g => g.ReviewDate >= parameters.MinReviewDate);
+                }
+                if (parameters.MaxReviewDate is not null)
+                {
+                    list = list.Where(g => g.ReviewDate <= parameters.MaxReviewDate);
+                }
+                if (parameters.MinScore is not null)
+                {
+                    list = list.Where(g => g.Score >= parameters.MinScore);
+                }
+                if (parameters.MaxScore is not null)
+                {
+                    list = list.Where(g => g.Score <= parameters.MaxScore);
+                }
 
-            SearchByRevText(ref list, parameters.SearchText);
+                SearchByRevText(ref list, parameters.SearchText);
 
-            var pagedList = PagedList<Review>.ToPagedList(list.OrderBy(r => r.ReviewDate), parameters.PageNumber, parameters.PageSize);
+                var pagedList = PagedList<Review>.ToPagedList(list.OrderBy(r => r.ReviewDate), parameters.PageNumber, parameters.PageSize);
 
-            if ((pagedList is null) || (!pagedList.Any()))
-            {
-                throw new DatabaseNotFoundException();
-            }
-            return pagedList;
+                if ((pagedList is null) || (!pagedList.Any()))
+                {
+                    throw new DatabaseNotFoundException();
+                }
+                return pagedList;
+            });
         }
 
         private void SearchByRevText(ref IQueryable<Review> reviews, string revText)

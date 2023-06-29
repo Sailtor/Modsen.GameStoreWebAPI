@@ -12,21 +12,24 @@ namespace DAL.Repository.Impementation
         {
         }
 
-        public PagedList<Platform> GetAllPlatforms(PlatformParameters parameters)
+        public async Task<PagedList<Platform>> GetAllPlatformsAsync(PlatformParameters parameters)
         {
-            var platforms = _context.Set<Platform>().AsQueryable();
-
-            SearchByName(ref platforms, parameters.SearchName);
-
-            var pagedList = PagedList<Platform>.ToPagedList(platforms.OrderBy(p => p.Name),
-                parameters.PageNumber,
-                parameters.PageSize);
-
-            if ((pagedList is null) || (!pagedList.Any()))
+            return await Task.Run(() =>
             {
-                throw new DatabaseNotFoundException();
-            }
-            return pagedList;
+                var platforms = _context.Set<Platform>().AsQueryable();
+
+                SearchByName(ref platforms, parameters.SearchName);
+
+                var pagedList = PagedList<Platform>.ToPagedList(platforms.OrderBy(p => p.Name),
+                    parameters.PageNumber,
+                    parameters.PageSize);
+
+                if ((pagedList is null) || (!pagedList.Any()))
+                {
+                    throw new DatabaseNotFoundException();
+                }
+                return pagedList;
+            });
         }
 
         private void SearchByName(ref IQueryable<Platform> platforms, string platfName)

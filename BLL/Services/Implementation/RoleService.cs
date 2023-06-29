@@ -27,7 +27,7 @@ namespace BLL.Services.Implementation
 
         public async Task<PagedList<RoleForResponceDto>> GetAllRolesAsync(RoleParameters parameters)
         {
-            return _mapper.Map<PagedList<RoleForResponceDto>>(_unitOfWork.Role.GetAllRoles(parameters));
+            return _mapper.Map<PagedList<RoleForResponceDto>>(await _unitOfWork.Role.GetAllRolesAsync(parameters));
         }
 
         public async Task<RoleForResponceDto> GetRoleByIdAsync(int roleid)
@@ -53,7 +53,7 @@ namespace BLL.Services.Implementation
         public async Task DeleteRoleAsync(int roleid)
         {
             _ = await _unitOfWork.Role.GetByIdAsync(roleid);
-            await _unitOfWork.Role.Delete(roleid);
+            await _unitOfWork.Role.DeleteAsync(roleid);
             await _unitOfWork.SaveAsync();
         }
     }

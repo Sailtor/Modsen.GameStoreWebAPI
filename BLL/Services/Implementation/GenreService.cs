@@ -26,7 +26,7 @@ namespace BLL.Services.Implementation
 
         public async Task<PagedList<GenreForResponceDto>> GetAllGenresAsync(GenreParameters parameters)
         {
-            return _mapper.Map<PagedList<GenreForResponceDto>>(_unitOfWork.Genre.GetAllGenres(parameters));
+            return _mapper.Map<PagedList<GenreForResponceDto>>(await _unitOfWork.Genre.GetAllGenresAsync(parameters));
         }
 
         public async Task<GenreForResponceDto> GetGenreByIdAsync(int genreid)
@@ -52,7 +52,7 @@ namespace BLL.Services.Implementation
         public async Task DeleteGenreAsync(int genreid)
         {
             _ = await _unitOfWork.Genre.GetByIdAsync(genreid);
-            await _unitOfWork.Genre.Delete(genreid);
+            await _unitOfWork.Genre.DeleteAsync(genreid);
             await _unitOfWork.SaveAsync();
         }
     }

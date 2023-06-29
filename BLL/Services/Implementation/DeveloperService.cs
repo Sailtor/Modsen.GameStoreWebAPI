@@ -27,7 +27,7 @@ namespace BLL.Services.Implementation
 
         public async Task<PagedList<DeveloperForResponceDto>> GetAllDevelopersAsync(DeveloperParameters parameters)
         {
-            return _mapper.Map<PagedList<DeveloperForResponceDto>>(_unitOfWork.Developer.GetAllDevelopers(parameters));
+            return _mapper.Map<PagedList<DeveloperForResponceDto>>(await _unitOfWork.Developer.GetAllDevelopersAsync(parameters));
         }
 
         public async Task<DeveloperForResponceDto> GetDeveloperByIdAsync(int developerid)
@@ -53,7 +53,7 @@ namespace BLL.Services.Implementation
         public async Task DeleteDeveloperAsync(int developerid)
         {
             _ = await _unitOfWork.Developer.GetByIdAsync(developerid);
-            await _unitOfWork.Developer.Delete(developerid);
+            await _unitOfWork.Developer.DeleteAsync(developerid);
             await _unitOfWork.SaveAsync();
         }
     }

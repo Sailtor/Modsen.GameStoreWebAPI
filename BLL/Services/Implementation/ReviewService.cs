@@ -60,7 +60,7 @@ namespace BLL.Services.Implementation
         public async Task DeleteUserReviewAsync(int userid, int gameid)
         {
             _ = await _unitOfWork.Review.GetByIdAsync(userid, gameid);
-            await _unitOfWork.Review.Delete(userid, gameid);
+            await _unitOfWork.Review.DeleteAsync(userid, gameid);
             await _unitOfWork.SaveAsync();
         }
     }

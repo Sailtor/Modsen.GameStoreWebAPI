@@ -68,7 +68,7 @@ namespace BLL.Services.Implementation
         public async Task DeleteUserAsync(int userid)
         {
             _ = await _unitOfWork.User.GetByIdAsync(userid);
-            await _unitOfWork.User.Delete(userid);
+            await _unitOfWork.User.DeleteAsync(userid);
             await _unitOfWork.SaveAsync();
         }
 

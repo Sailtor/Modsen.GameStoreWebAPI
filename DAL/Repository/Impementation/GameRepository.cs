@@ -14,84 +14,90 @@ namespace DAL.Repository.Impementation
 
         public async Task<PagedList<Game>> GetAllFilteredAsync(GameParameters parameters)
         {
-            var list = _context.Set<Game>()
+            return await Task.Run(() =>
+            {
+                var list = _context.Set<Game>()
                 .Include(g => g.Platforms)
                 .Include(g => g.Genres)
                 .Include(g => g.Reviews)
                 .AsQueryable();
 
-            //Filtering
-            if (parameters.DeveloperId is not null)
-            {
-                list = list.Where(g => g.DeveloperId == parameters.DeveloperId);
-            }
-            //idfk how does this work. DateTime is stupid
-            if (parameters.MinReleaseDate is not null)
-            {
-                list = list.Where(g => g.ReleaseDate >= parameters.MinReleaseDate);
-            }
-            if (parameters.MaxReleaseDate is not null)
-            {
-                list = list.Where(g => g.ReleaseDate <= parameters.MaxReleaseDate);
-            }
-            if (parameters.MinPrice is not null)
-            {
-                list = list.Where(g => g.Price >= parameters.MinPrice);
-            }
-            if (parameters.MaxPrice is not null)
-            {
-                list = list.Where(g => g.Price <= parameters.MaxPrice);
-            }
-
-            //Not all advice are worth listening to...
-            /*if (parameters.MinScore is not null && parameters.MaxScore is not null)
-            {
-                list = list.Where(g => g.Score >= parameters.MinScore && g.Score <= parameters.MaxScore);
-            }*/
-
-            //If those two work, I'm fucking genius
-            //Upd: THEY WORK, HAHAHHAHHHAHAHHAHHA, YEAAHHHHHHH!!!
-            if (parameters.GenresIds is not null)
-            {
-                foreach (int genreid in parameters.GenresIds)
+                //Filtering
+                if (parameters.DeveloperId is not null)
                 {
-                    list = list.Where(g => g.Genres.Any(g => g.Id == genreid));
+                    list = list.Where(g => g.DeveloperId == parameters.DeveloperId);
                 }
-            }
-            if (parameters.PlatformsIds is not null)
-            {
-                foreach (int platformid in parameters.PlatformsIds)
+                //idfk how does this work. DateTime is stupid
+                if (parameters.MinReleaseDate is not null)
                 {
-                    list = list.Where(g => g.Platforms.Any(p => p.Id == platformid));
+                    list = list.Where(g => g.ReleaseDate >= parameters.MinReleaseDate);
                 }
-            }
+                if (parameters.MaxReleaseDate is not null)
+                {
+                    list = list.Where(g => g.ReleaseDate <= parameters.MaxReleaseDate);
+                }
+                if (parameters.MinPrice is not null)
+                {
+                    list = list.Where(g => g.Price >= parameters.MinPrice);
+                }
+                if (parameters.MaxPrice is not null)
+                {
+                    list = list.Where(g => g.Price <= parameters.MaxPrice);
+                }
 
-            //Searching
-            SearchByName(ref list, parameters.SearchName);
-            SearchByDesc(ref list, parameters.SearchDesc);
+                //Not all advice are worth listening to...
+                /*if (parameters.MinScore is not null && parameters.MaxScore is not null)
+                {
+                    list = list.Where(g => g.Score >= parameters.MinScore && g.Score <= parameters.MaxScore);
+                }*/
 
-            var pagedList = PagedList<Game>.ToPagedList(list.OrderBy(g => g.Name), parameters.PageNumber, parameters.PageSize);
+                //If those two work, I'm fucking genius
+                //Upd: THEY WORK, HAHAHHAHHHAHAHHAHHA, YEAAHHHHHHH!!!
+                if (parameters.GenresIds is not null)
+                {
+                    foreach (int genreid in parameters.GenresIds)
+                    {
+                        list = list.Where(g => g.Genres.Any(g => g.Id == genreid));
+                    }
+                }
+                if (parameters.PlatformsIds is not null)
+                {
+                    foreach (int platformid in parameters.PlatformsIds)
+                    {
+                        list = list.Where(g => g.Platforms.Any(p => p.Id == platformid));
+                    }
+                }
 
-            if ((pagedList is null) || (!pagedList.Any()))
-            {
-                throw new DatabaseNotFoundException();
-            }
-            return pagedList;
+                //Searching
+                SearchByName(ref list, parameters.SearchName);
+                SearchByDesc(ref list, parameters.SearchDesc);
+
+                var pagedList = PagedList<Game>.ToPagedList(list.OrderBy(g => g.Name), parameters.PageNumber, parameters.PageSize);
+
+                if ((pagedList is null) || (!pagedList.Any()))
+                {
+                    throw new DatabaseNotFoundException();
+                }
+                return pagedList;
+            });
         }
 
         public async Task<PagedList<Game>> GetAllIncludeAllAsync(GameParameters parameters)
         {
-            var list = PagedList<Game>.ToPagedList(_context.Set<Game>()
+            return await Task.Run(() =>
+            {
+                var list = PagedList<Game>.ToPagedList(_context.Set<Game>()
                 .Include(g => g.Platforms)
                 .Include(g => g.Genres)
                 .Include(g => g.Reviews), parameters.PageNumber, parameters.PageSize);
 
-            if ((list is null) || (!list.Any()))
-            {
-                throw new DatabaseNotFoundException();
-            }
+                if ((list is null) || (!list.Any()))
+                {
+                    throw new DatabaseNotFoundException();
+                }
 
-            return list;
+                return list;
+            });
         }
 
         public async Task<Game> GetByIdIncludeAllAsync(int gameid)

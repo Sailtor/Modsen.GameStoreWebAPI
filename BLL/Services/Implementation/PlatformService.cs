@@ -26,7 +26,7 @@ namespace BLL.Services.Implementation
 
         public async Task<PagedList<PlatformForResponceDto>> GetAllPlatformsAsync(PlatformParameters parameters)
         {
-            return _mapper.Map<PagedList<PlatformForResponceDto>>(_unitOfWork.Platform.GetAllPlatforms(parameters));
+            return _mapper.Map<PagedList<PlatformForResponceDto>>(await _unitOfWork.Platform.GetAllPlatformsAsync(parameters));
         }
 
         public async Task<PlatformForResponceDto> GetPlatformByIdAsync(int platformid)
@@ -52,7 +52,7 @@ namespace BLL.Services.Implementation
         public async Task DeletePlatformAsync(int platformid)
         {
             _ = await _unitOfWork.Platform.GetByIdAsync(platformid);
-            await _unitOfWork.Platform.Delete(platformid);
+            await _unitOfWork.Platform.DeleteAsync(platformid);
             await _unitOfWork.SaveAsync();
         }
     }

@@ -12,21 +12,24 @@ namespace DAL.Repository.Impementation
         {
         }
 
-        public PagedList<Genre> GetAllGenres(GenreParameters parameters)
+        public async Task<PagedList<Genre>> GetAllGenresAsync(GenreParameters parameters)
         {
-            var genres = _context.Set<Genre>().AsQueryable();
-
-            SearchByName(ref genres, parameters.SearchName);
-
-            var pagedList = PagedList<Genre>.ToPagedList(genres.OrderBy(g => g.Name),
-                parameters.PageNumber,
-                parameters.PageSize);
-
-            if ((pagedList is null) || (!pagedList.Any()))
+            return await Task.Run(() =>
             {
-                throw new DatabaseNotFoundException();
-            }
-            return pagedList;
+                var genres = _context.Set<Genre>().AsQueryable();
+
+                SearchByName(ref genres, parameters.SearchName);
+
+                var pagedList = PagedList<Genre>.ToPagedList(genres.OrderBy(g => g.Name),
+                    parameters.PageNumber,
+                    parameters.PageSize);
+
+                if ((pagedList is null) || (!pagedList.Any()))
+                {
+                    throw new DatabaseNotFoundException();
+                }
+                return pagedList;
+            });
         }
 
         private void SearchByName(ref IQueryable<Genre> genres, string genreName)

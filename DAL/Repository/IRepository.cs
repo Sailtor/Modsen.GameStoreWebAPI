@@ -11,7 +11,7 @@ namespace DAL.Repository
         Task<PagedList<TEntity>> GetAllAsync(QueryStringParameters parameters);
         Task<PagedList<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, QueryStringParameters parameters);
         Task AddAsync(TEntity entity);
-        Task Delete(TId entityid);
-        Task Delete(TId entityid, TId entityid2);
+        Task DeleteAsync(TId entityid);
+        Task DeleteAsync(TId entityid, TId entityid2);
     }
 }

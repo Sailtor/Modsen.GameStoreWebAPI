@@ -15,48 +15,55 @@ namespace DAL.Repository.Impementation
         }
         public async Task<PagedList<Purchase>> GetAllFilteredAsync(PurchaseParameters parameters)
         {
-            var list = _context.Set<Purchase>().AsQueryable();
-
-            if (parameters.MinPurchaseDate is not null)
+            return await Task.Run(() =>
             {
-                list = list.Where(g => g.PurchaseDate >= parameters.MinPurchaseDate);
-            }
-            if (parameters.MaxPurchaseDate is not null)
-            {
-                list = list.Where(g => g.PurchaseDate <= parameters.MaxPurchaseDate);
-            }
+                var list = _context.Set<Purchase>().AsQueryable();
 
-            var pagedList = PagedList<Purchase>.ToPagedList(list, parameters.PageNumber, parameters.PageSize);
+                if (parameters.MinPurchaseDate is not null)
+                {
+                    list = list.Where(g => g.PurchaseDate >= parameters.MinPurchaseDate);
+                }
+                if (parameters.MaxPurchaseDate is not null)
+                {
+                    list = list.Where(g => g.PurchaseDate <= parameters.MaxPurchaseDate);
+                }
 
-            if ((pagedList is null) || (!pagedList.Any()))
-            {
-                throw new DatabaseNotFoundException();
-            }
-            return pagedList;
+                var pagedList = PagedList<Purchase>.ToPagedList(list, parameters.PageNumber, parameters.PageSize);
+
+                if ((pagedList is null) || (!pagedList.Any()))
+                {
+                    throw new DatabaseNotFoundException();
+                }
+                return pagedList;
+            });
+
         }
 
         public async Task<PagedList<Purchase>> FindFilteredAsync(Expression<Func<Purchase, bool>> predicate, PurchaseParameters parameters)
         {
-            var list = _context.Set<Purchase>()
+            return await Task.Run(() =>
+            {
+                var list = _context.Set<Purchase>()
                 .Where(predicate)
                 .AsQueryable();
 
-            if (parameters.MinPurchaseDate is not null)
-            {
-                list = list.Where(g => g.PurchaseDate >= parameters.MinPurchaseDate);
-            }
-            if (parameters.MaxPurchaseDate is not null)
-            {
-                list = list.Where(g => g.PurchaseDate <= parameters.MaxPurchaseDate);
-            }
+                if (parameters.MinPurchaseDate is not null)
+                {
+                    list = list.Where(g => g.PurchaseDate >= parameters.MinPurchaseDate);
+                }
+                if (parameters.MaxPurchaseDate is not null)
+                {
+                    list = list.Where(g => g.PurchaseDate <= parameters.MaxPurchaseDate);
+                }
 
-            var pagedList = PagedList<Purchase>.ToPagedList(list.OrderBy(p => p.PurchaseDate), parameters.PageNumber, parameters.PageSize);
+                var pagedList = PagedList<Purchase>.ToPagedList(list.OrderBy(p => p.PurchaseDate), parameters.PageNumber, parameters.PageSize);
 
-            if ((pagedList is null) || (!pagedList.Any()))
-            {
-                throw new DatabaseNotFoundException();
-            }
-            return pagedList;
+                if ((pagedList is null) || (!pagedList.Any()))
+                {
+                    throw new DatabaseNotFoundException();
+                }
+                return pagedList;
+            });
         }
     }
 }

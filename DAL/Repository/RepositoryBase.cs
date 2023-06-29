@@ -36,24 +36,30 @@ namespace DAL.Repository
 
         public virtual async Task<PagedList<TEntity>> GetAllAsync(QueryStringParameters parameters)
         {
-            var list = PagedList<TEntity>.ToPagedList(_context.Set<TEntity>(), parameters.PageNumber, parameters.PageSize);
-            if ((list is null) || (!list.Any()))
+            return await Task.Run(() =>
             {
-                throw new DatabaseNotFoundException();
-            }
-            return list;
+                var list = PagedList<TEntity>.ToPagedList(_context.Set<TEntity>(), parameters.PageNumber, parameters.PageSize);
+                if ((list is null) || (!list.Any()))
+                {
+                    throw new DatabaseNotFoundException();
+                }
+                return list;
+            });
         }
 
         public virtual async Task<PagedList<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, QueryStringParameters parameters)
         {
-            var entities = PagedList<TEntity>.ToPagedList(_context.Set<TEntity>()
+            return await Task.Run(() =>
+            {
+                var entities = PagedList<TEntity>.ToPagedList(_context.Set<TEntity>()
                 .Where(predicate), parameters.PageNumber, parameters.PageSize);
 
-            if ((entities is null) || (!entities.Any()))
-            {
-                throw new DatabaseNotFoundException();
-            }
-            return entities;
+                if ((entities is null) || (!entities.Any()))
+                {
+                    throw new DatabaseNotFoundException();
+                }
+                return entities;
+            });
         }
 
         public async Task AddAsync(TEntity entity)
@@ -61,7 +67,7 @@ namespace DAL.Repository
             await _context.Set<TEntity>().AddAsync(entity);
         }
 
-        public async Task Delete(TId entityid)
+        public async Task DeleteAsync(TId entityid)
         {
             TEntity? entity = await _context.Set<TEntity>().FindAsync(entityid);
             if (entity is null)
@@ -71,7 +77,7 @@ namespace DAL.Repository
             _context.Set<TEntity>().Remove(entity);
         }
 
-        public async Task Delete(TId entityid, TId entityid2)
+        public async Task DeleteAsync(TId entityid, TId entityid2)
         {
             TEntity? entity = await _context.Set<TEntity>().FindAsync(entityid, entityid2);
             if (entity is null)

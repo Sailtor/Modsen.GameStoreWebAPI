@@ -5,6 +5,6 @@ namespace DAL.Repository.Contracts
 {
     public interface IRoleRepository : IRepository<Role, int>
     {
-        PagedList<Role> GetAllRoles(RoleParameters parameters);
+        Task<PagedList<Role>> GetAllRolesAsync(RoleParameters parameters);
     }
 }

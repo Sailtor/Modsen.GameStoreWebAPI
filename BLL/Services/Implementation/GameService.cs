@@ -53,7 +53,7 @@ namespace BLL.Services.Implementation
         public async Task DeleteGameAsync(int gameid)
         {
             _ = await _unitOfWork.Game.GetByIdAsync(gameid);
-            await _unitOfWork.Game.Delete(gameid);
+            await _unitOfWork.Game.DeleteAsync(gameid);
             await _unitOfWork.SaveAsync();
         }
 

@@ -11,21 +11,24 @@ namespace DAL.Repository.Impementation
         public RoleRepository(DbContext context) : base(context)
         {
         }
-        public PagedList<Role> GetAllRoles(RoleParameters parameters)
+        public async Task<PagedList<Role>> GetAllRolesAsync(RoleParameters parameters)
         {
-            var roles = _context.Set<Role>().AsQueryable();
-
-            SearchByName(ref roles, parameters.SearchName);
-
-            var pagedList = PagedList<Role>.ToPagedList(roles.OrderBy(r => r.Name),
-                parameters.PageNumber,
-                parameters.PageSize);
-
-            if ((pagedList is null) || (!pagedList.Any()))
+            return await Task.Run(() =>
             {
-                throw new DatabaseNotFoundException();
-            }
-            return pagedList;
+                var roles = _context.Set<Role>().AsQueryable();
+
+                SearchByName(ref roles, parameters.SearchName);
+
+                var pagedList = PagedList<Role>.ToPagedList(roles.OrderBy(r => r.Name),
+                    parameters.PageNumber,
+                    parameters.PageSize);
+
+                if ((pagedList is null) || (!pagedList.Any()))
+                {
+                    throw new DatabaseNotFoundException();
+                }
+                return pagedList;
+            });
         }
 
         private void SearchByName(ref IQueryable<Role> roles, string roleName)

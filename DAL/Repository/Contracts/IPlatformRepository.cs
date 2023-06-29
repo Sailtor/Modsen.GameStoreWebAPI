@@ -5,6 +5,6 @@ namespace DAL.Repository.Contracts
 {
     public interface IPlatformRepository : IRepository<Platform, int>
     {
-        public PagedList<Platform> GetAllPlatforms(PlatformParameters parameters);
+        Task<PagedList<Platform>> GetAllPlatformsAsync(PlatformParameters parameters);
     }
 }
