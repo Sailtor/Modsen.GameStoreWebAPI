@@ -4,10 +4,9 @@ using BLL.Dtos.OutDto;
 using BLL.Infrastructure.Validators;
 using BLL.Services.Contracts;
 using DAL.Models;
+using DAL.Models.Query_String_Parameters;
 using DAL.Repository.UnitOfWork;
 using FluentValidation;
-using BCrypt.Net;
-using DAL.Models.Query_String_Parameters;
 
 namespace BLL.Services.Implementation
 {

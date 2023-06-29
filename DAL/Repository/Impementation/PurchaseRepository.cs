@@ -13,6 +13,7 @@ namespace DAL.Repository.Impementation
         {
 
         }
+
         public async Task<PagedList<Purchase>> GetAllFilteredAsync(PurchaseParameters parameters)
         {
             return await Task.Run(() =>

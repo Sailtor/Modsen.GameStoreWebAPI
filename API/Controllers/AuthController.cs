@@ -1,5 +1,4 @@
 ﻿using BLL.Dtos.InDto;
-using BLL.Infrastructure.Logger;
 using BLL.Services.Contracts;
 using DAL.Models;
 using Microsoft.AspNetCore.Authorization;

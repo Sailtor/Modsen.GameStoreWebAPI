@@ -4,11 +4,13 @@
     {
         public DatabaseNotFoundException()
         {
+
         }
 
         public DatabaseNotFoundException(string message)
             : base(message)
         {
+
         }
     }
 }

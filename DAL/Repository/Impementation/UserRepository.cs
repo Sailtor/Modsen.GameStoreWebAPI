@@ -3,7 +3,6 @@ using DAL.Models;
 using DAL.Models.Query_String_Parameters;
 using DAL.Repository.Contracts;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace DAL.Repository.Impementation
 {
@@ -11,6 +10,7 @@ namespace DAL.Repository.Impementation
     {
         public UserRepository(DbContext context) : base(context)
         {
+
         }
 
         public virtual async Task<PagedList<User>> GetAllAsync(UserParameters parameters)

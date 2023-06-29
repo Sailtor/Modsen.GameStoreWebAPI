@@ -8,8 +8,8 @@ namespace BLL.Infrastructure.Validators.Other
         public UserLoginDtoValidator()
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
-            RuleFor(m => m.Login).NotNull().Length(1, 2047);
-            RuleFor(m => m.Password).NotNull().Length(1, 2047);
+            RuleFor(m => m.Login).NotNull().Length(2, 2047);
+            RuleFor(m => m.Password).NotNull().Length(2, 2047);
         }
     }
 }

@@ -10,6 +10,7 @@ namespace DAL.Repository.Impementation
     {
         public GameRepository(DbContext context) : base(context)
         {
+
         }
 
         public async Task<PagedList<Game>> GetAllFilteredAsync(GameParameters parameters)

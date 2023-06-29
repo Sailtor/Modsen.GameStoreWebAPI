@@ -4,10 +4,12 @@
     {
         public DatabaseSaveFailedException()
         {
+
         }
         public DatabaseSaveFailedException(string message)
             : base(message)
         {
+
         }
     }
 }

@@ -10,7 +10,9 @@ namespace DAL.Repository.Impementation
     {
         public RoleRepository(DbContext context) : base(context)
         {
+
         }
+
         public async Task<PagedList<Role>> GetAllRolesAsync(RoleParameters parameters)
         {
             return await Task.Run(() =>

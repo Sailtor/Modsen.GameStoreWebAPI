@@ -39,7 +39,7 @@ namespace API.Middleware.Exception_Handler
             {
                 DbUpdateException => (int)HttpStatusCode.BadRequest,
                 SecurityTokenSignatureKeyNotFoundException => (int)HttpStatusCode.Unauthorized,
-                ObjectDisposedException => 501,
+                ObjectDisposedException => (int)HttpStatusCode.NotImplemented, //idfk what am I doing
                 ModelValidationFailedException => (int)HttpStatusCode.BadRequest,
                 DatabaseSaveFailedException => (int)HttpStatusCode.InternalServerError,
                 EntityAlreadyExistsException => (int)HttpStatusCode.Conflict,

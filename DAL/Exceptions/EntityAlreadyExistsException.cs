@@ -4,11 +4,13 @@
     {
         public EntityAlreadyExistsException()
         {
+
         }
 
         public EntityAlreadyExistsException(string message)
             : base(message)
         {
+
         }
     }
 }

@@ -8,7 +8,7 @@ namespace BLL.Infrastructure.Validators.CreateDto
         public RoleCreationDtoValidator()
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
-            RuleFor(m => m.Name).NotNull().Length(1, 2047);
+            RuleFor(m => m.Name).NotNull().Length(2, 2047);
         }
     }
 }

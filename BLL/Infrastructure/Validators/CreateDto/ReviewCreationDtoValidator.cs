@@ -9,7 +9,7 @@ namespace BLL.Infrastructure.Validators.CreateDto
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
             RuleFor(m => m.Score).NotNull().InclusiveBetween(1, 5);
-            RuleFor(m => m.ReviewText).Length(1, 2047);
+            RuleFor(m => m.ReviewText).Length(2, 2047);
         }
     }
 }

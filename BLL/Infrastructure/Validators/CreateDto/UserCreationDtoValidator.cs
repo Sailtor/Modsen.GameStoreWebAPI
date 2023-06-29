@@ -8,9 +8,9 @@ namespace BLL.Infrastructure.Validators.CreateDto
         public UserCreationDtoValidator()
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
-            RuleFor(m => m.Login).NotNull().Length(1, 2047);
-            RuleFor(m => m.Password).NotNull().Length(1, 2047);
-            RuleFor(m => m.Email).NotNull().Length(1, 2047).EmailAddress();
+            RuleFor(m => m.Login).NotNull().Length(2, 2047);
+            RuleFor(m => m.Password).NotNull().Length(2, 2047);
+            RuleFor(m => m.Email).NotNull().Length(2, 2047).EmailAddress();
         }
     }
 }

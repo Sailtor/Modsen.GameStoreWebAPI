@@ -10,6 +10,7 @@ namespace DAL.Repository.Impementation
     {
         public GenreRepository(DbContext context) : base(context)
         {
+
         }
 
         public async Task<PagedList<Genre>> GetAllGenresAsync(GenreParameters parameters)

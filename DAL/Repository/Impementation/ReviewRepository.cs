@@ -3,7 +3,6 @@ using DAL.Models;
 using DAL.Models.Query_String_Parameters;
 using DAL.Repository.Contracts;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace DAL.Repository.Impementation
 {
@@ -11,6 +10,7 @@ namespace DAL.Repository.Impementation
     {
         public ReviewRepository(DbContext context) : base(context)
         {
+
         }
 
         public async Task<PagedList<Review>> GetGameReviewsAsync(int gameid, ReviewParameters parameters)

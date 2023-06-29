@@ -10,6 +10,7 @@ namespace DAL.Repository.Impementation
     {
         public DeveloperRepository(DbContext context) : base(context)
         {
+
         }
 
         public async Task<PagedList<Developer>> GetAllDevelopersAsync(DeveloperParameters parameters)

@@ -10,6 +10,7 @@ namespace DAL.Repository.Impementation
     {
         public PlatformRepository(DbContext context) : base(context)
         {
+
         }
 
         public async Task<PagedList<Platform>> GetAllPlatformsAsync(PlatformParameters parameters)

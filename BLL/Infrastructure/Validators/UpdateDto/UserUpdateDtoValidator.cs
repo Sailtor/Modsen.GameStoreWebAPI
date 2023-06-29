@@ -8,10 +8,10 @@ namespace BLL.Infrastructure.Validators.UpdateDto
         public UserUpdateDtoValidator()
         {
             ClassLevelCascadeMode = CascadeMode.Stop;
-            RuleFor(m => m.Id).GreaterThan(0);
-            RuleFor(m => m.Login).NotNull().Length(1, 2047);
-            RuleFor(m => m.Password).NotNull().Length(1, 2047);
-            RuleFor(m => m.Email).NotNull().Length(1, 2047).EmailAddress();
+            RuleFor(m => m.Id).NotNull().GreaterThan(0);
+            RuleFor(m => m.Login).NotNull().Length(2, 2047);
+            RuleFor(m => m.Password).NotNull().Length(2, 2047);
+            RuleFor(m => m.Email).NotNull().Length(2, 2047).EmailAddress();
         }
     }
 }
